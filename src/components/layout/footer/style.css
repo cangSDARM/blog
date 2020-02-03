@@ -1,0 +1,23 @@
+footer {
+  display: flex;
+  background-color: transparent;
+}
+
+.default-footer {
+  position: relative;
+  margin: 0 auto;
+  margin-top: 1rem;
+  padding: 0.25rem 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.default-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 2px;
+  width: 75vw;
+  background: #eee;
+}

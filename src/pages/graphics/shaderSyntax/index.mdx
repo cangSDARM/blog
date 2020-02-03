@@ -1,0 +1,244 @@
+---
+date: "2018-01-26"
+title: "Graphics Programming(四) —— Shader语法"
+tags: ["graphics"]
+---
+
+export const QuoteList = [
+	"shader名字显示在Inspector中. 类似于\"Custom/Shader\"的会出现在材质面板中的Shader->Custom->Shader",
+	"属性, 类似c#的public字段. Properties仅仅是为了在面板中展示字段, 其中的定义与赋值可以在任何内容中写",
+	"2D贴图的 \" \" 内 可选择: white, red, bump, black 或 空字符串",
+	"3D纹理只能用脚本创建, 且 OpenGL3.0 以上才支持",
+	"相当于main函数. 而当当前显卡不支持时就会报错. 单独出错则跳过, 全部出错跳转到Fallback",
+	"每个 Pass 引起一次渲染流水线",
+	"#7未使用",
+	"渲染设置, 如颜色混合等. 也可以在Pass中设置. 在这里设置适用于所有Pass",
+	"这里所写的所有标签key值是SubShader独有的. Pass中无法设置",
+	"名字应该全为大写字符(因为Unity自动将小写转为大写)",
+	"5.3时Unity只支持: SoftVegetation"
+];
+
+<Aphorism>过多的计算和所有的控制语句是降低FPS的元凶之一</Aphorism>
+
+Shader <Quote id="#1">"ShaderName"</Quote>&#123;
+<Tab>
+
+<Expansion><Quote id="#2">Properties</Quote></Expansion>&#123;
+<Tab expan>
+    //定义方式1:<br/>
+    变量名 ("Inspector显示的名字", <Expansion>类型名</Expansion>) = 初始值
+    <Tab expan>
+        <table class="UpWord"><tbody>
+        <tr>
+            <th>含义</th>
+            <th>类型名</th>
+            <th>初始值/注意事项</th>
+        </tr>
+        <tr>
+            <td>滑块</td>
+            <td>Range(min初始值, max初始值)</td>
+            <td>滑块位置</td>
+        </tr>
+        <tr>
+            <td>整型</td>
+            <td>Int</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>浮点数</td>
+            <td>Float</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>颜色</td>
+            <td>Color</td>
+            <td>(R, G, B, A) / 范围[0, 1]</td>
+        </tr>
+        <tr>
+            <td>四维向量</td>
+            <td>Vector</td>
+            <td>(1, 2, 3, 4)</td>
+        </tr>
+        <tr>
+            <td>2D贴图</td>
+            <td>2D</td>
+            <td>"" &#123;&#125; / <Quote id="#3">(一)</Quote></td>
+        </tr>
+        <tr>
+            <td>六面贴图</td>
+            <td>Cube</td>
+            <td>"" &#123;&#125;</td>
+        </tr>
+        <tr>
+            <td>3D纹理</td>
+            <td>3D</td>
+            <td>"" &#123;&#125; / <Quote id="#4">(二)</Quote></td>
+        </tr>
+        </tbody></table>
+    </Tab>
+</Tab>
+&#125;
+<br/><br/>
+
+//可能存在多个 SubShader. unity顺序执行 SubShader.
+<Expansion><Quote id="#5">SubShader</Quote></Expansion>&#123;
+<Tab expan>
+    // SubShader的标签, 是键值对
+    <br/>
+    <Expansion><Quote id="#9">Tags</Quote></Expansion>
+    <Tab expan>
+    <table><tbody>
+        <tr>
+            <th>类型</th>
+            <th>说明</th>
+        </tr>
+        <tr>
+            <td>Queue</td>
+            <td>控制渲染顺序. 通过这种方式来保证透明物体在不透明物体的渲染队列后</td>
+        </tr>
+        <tr>
+            <td>RenderType</td>
+            <td>对着色器分类. 可用于着色器替换功能</td>
+        </tr>
+        <tr>
+            <td>DisableBatching</td>
+            <td>说明是否对该SubShader使用批处理</td>
+        </tr>
+        <tr>
+            <td>ForceNoShadowCasting</td>
+            <td>控制物体是否会产生投影</td>
+        </tr>
+        <tr>
+            <td>IgnoreProjector</td>
+            <td>控制物体是否会受Projector的影响. 通常用于半透明物体</td>
+        </tr>
+        <tr>
+            <td>CanUseSpriteAtlas</td>
+            <td>当用于精灵体时, 该标签应为False</td>
+        </tr>
+        <tr>
+            <td>PreviewType</td>
+            <td>指明材质面板如何预览材质. 值可以是Plane/Cube/SkyBox/Sphere等</td>
+        </tr>
+    </tbody></table>
+    </Tab>
+    <br/>
+    <Quote id="#8">//公用设置区域</Quote>
+    <br/>
+    <Expansion>...</Expansion>
+    <Tab expan>
+        <table><tbody>
+            <tr>
+                <th>设置指令</th>
+                <th>解释</th>
+            </tr>
+            <tr>
+                <td>Cull Back|Front|Off</td>
+                <td>设置剔除: 背面/正面/关闭</td>
+            </tr>
+            <tr>
+                <td>ZTest Less Greater|LEqual|GEqual|Equal|NotEqual|Aways</td>
+                <td>设置深度测试时的函数</td>
+            </tr>
+            <tr>
+                <td>ZWrite On|Off</td>
+                <td>设置深度写入开启/关闭</td>
+            </tr>
+            <tr>
+                <td>Blend SrcFactor DstFactor</td>
+                <td>开启并设置混合模式</td>
+            </tr>
+        </tbody></table>
+    </Tab>
+    <br/>
+    //可能有多个 Pass. unity顺序执行 Pass
+    <br/>
+    <Expansion><Quote id="#6">Pass</Quote></Expansion>&#123;
+    <Tab expan>
+        <Quote id="#10">// 该pass的名字</Quote>
+        <br/>
+        Name "PASSNAME"
+        <br/>
+        <br/>
+        // pass的标签, 同样是键值对
+        <br/>
+        <Expansion>Tags</Expansion>
+        <Tab expan>
+        <table><tbody>
+            <tr>
+                <th>类型</th>
+                <th>说明</th>
+            </tr>
+            <tr>
+                <td>LightMode</td>
+                <td>定义该Pass在渲染流水线的角色</td>
+            </tr>
+            <tr>
+                <td><Quote id="#11">RequireOptions</Quote></td>
+                <td>用于指定满足条件才渲染该Pass. 条件由空格分割</td>
+            </tr>
+            <tr>
+                <td>UsePass</td>
+                <td>复用其它shader文件中的Pass. 值是其它Pass的Name</td>
+            </tr>
+            <tr>
+                <td>GarbPass</td>
+                <td>该Pass负责截取屏幕并储存在一张纹理中, 用于后续处理</td>
+            </tr>
+        </tbody></table>
+        </Tab>
+        <br/>
+        //纹理设置, 只有在 fixed function shader 才可用
+        <br/>
+        [Texture Setup]
+        <br/>
+        <br/>
+        CGPROGRAM
+        <Tab>
+        //调用CG语言
+        </Tab>
+        ENDCG
+    </Tab>
+    &#125;
+</Tab>
+
+&#125;
+<br/>
+SubShader&#123;
+<br/>
+&#125;
+<br/>
+<br/>
+//此处的代码应对所有GPU都支持
+<br/>
+Fallback "name"|Off
+<br/>
+<br/>
+//对shader中的命令进行分组(没什么卵用)
+<br/>
+Category&#123;&#125;
+
+</Tab>
+&#125;
+<br/>
+<br/>
+
+#### BUG调试:
+<Tab>
+
+[VS中的Graphics Debugger](https://docs.unity3d.com/Manual/SL-DebuggingD3D11ShadersWithVS.html)
+
+Unity中的Frame Debugger(Window->Frame Debugger)
+
+Intel GPA, RenderDoc, NVIDIA NSight
+
+</Tab>
+<br/>
+
+[固定函数着色器语法(Fixed Function shader)](./shader1.0)
+
+[顶点/片元着色器(CG)语法(Vertex/Fragment shader)](./shader2.0)
+
+[表面着色器语法(Surface shader)](./shader3.0)
+
+[shaderLab与CG的联系与区别](./shaderLab&CG)

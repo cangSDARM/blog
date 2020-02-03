@@ -1,0 +1,306 @@
+---
+date: "2018-01-25"
+title: "Graphics Programming(三) —— 编写shader的数学基础"
+tags: ["graphics"]
+---
+
+export const QuoteList = [
+    "对于\"相互垂直\"的 基矢量 来说:<br/>其长度都为1时, 称为标准正交基(orthonormal basis);<br/>长度不全为1时, 称为正交基(orthogonal basis).",
+    "点积(dot product) 也被称为 内积(inner product)<br/>叉积(cross product) 也被称为 外积(outer product)",
+    "表示: 对一个矢量缩放的结果==对点积结果进行缩放",
+    "表示: 点积的操作数可以先进行矢量的加减",
+    "表示: 可以直接用点积来求矢量的模, 而不需要模的计算公式",
+    "通常情况下, 将多出来的分量称为 ω",
+    "这并不是数学定义的矩阵, 而是图形学中的重要组成",
+    "如果 λ₁ = λ₂ = λ₃, 则称为统一缩放(uniform scale); 否则称为非统一缩放(nouniform scale)",
+    "这是因为unity是带轴旋转. 带轴旋转的 ZXYv 和不带轴旋转中的 YXZv 运算结果相同, 其逻辑顺序都是从Z轴->X轴->Y轴的旋转.",
+    "这里是形象的说法. 因为A到B的空间变换就是将A空间的坐标系映射到B的坐标系, 因此可以将A当作B的子空间. 同理, 将B空间作为A空间的子空间也完全可以",
+    "之所以是坐标系, 因为这样获得的矩阵是正交的. 因此其转置就是其逆, 才是变换矩阵",
+    "T: Transform; R: Rotation; S: Scale",
+    "投影指将顶点从View space 变换到 CVV中, 而阴影的产生是在之后的齐次除法(homogeneous division)中",
+    "即满足从右手坐标系, 依照从右往左的矩阵计算顺序, 映射到Z∈[-ω, ω]的CVV中. 若对于DirectX([0, ω]之间), 需要进一步更改",
+    "注意与透视投影的区别! 正交投影的ω值没有被矩阵改变, 而透视投影的ω值被矩阵改为了-Z(原来的Z)",
+    "在unity中, 这一步是底层完成的. 我们只需要处理到Clip space即可",
+    "这里的五个空间只是基础流水线上必须经过的五个空间. 实际上还有很多(例如切线空间)"
+];
+
+export const ImgList = [
+    "图形学矩阵和变换.png",
+    "基础变换矩阵.png",
+    "旋转矩阵.png",
+    "子空间到父空间的坐标变换.png",
+    "正交投影和透视投影.png",
+    "透视摄像机.png",
+    "透视投影变换.png",
+    "透视矩阵变换后的XYZW.png",
+    "正交摄像机.png",
+    "正交投影变换.png",
+    "正交矩阵变换后的XYZW.png",
+    "转化为屏幕坐标的简化公式.png"
+];
+
+<Aphorism>正因为它的复杂和难度, 才使得其结果如此的美</Aphorism>
+
+#### 坐标系:
+<Tab>
+    <Expansion>数学定义</Expansion>:
+    <Tab expan>
+        对于一个坐标系来说, 坐标轴是该坐标系的<Quote id="#1">基矢量(basis vector)</Quote><br/>
+        旋向性(handedness): 定义了正向旋转方向
+        <Tab>
+            分为左手坐标系和右手坐标系(数学书上普遍使用的坐标系).<br/>
+            不同旋向性的坐标系无法重合.
+        </Tab>
+    </Tab>
+    <Expansion>unity的解释</Expansion>: 绝大部分计算基于笛卡尔坐标系(Cartesian Coordinate System).
+    <Tab expan>
+        <table><tbody>
+        <tr>
+            <th>Object space</th>
+            <td>使用左手坐标系</td>
+        </tr>
+        <tr>
+            <th>World space</th>
+            <td>使用左手坐标系</td>
+        </tr>
+        <tr style="color: red;">
+            <th>View space</th>
+            <td>使用右手坐标系</td>
+        </tr>
+        <tr>
+            <th>Clip space</th>
+            <td>使用左手坐标系</td>
+        </tr>
+        <tr>
+            <th>Project space</th>
+            <td>使用左手坐标系</td>
+        </tr>
+        </tbody></table>
+    </Tab>
+</Tab>
+
+#### 点及矢量:
+<Tab>
+    矢量通常用于表示对于一个点的偏离(displacement)<br/>
+    <Expansion>矢量的计算</Expansion>:
+    <Tab expan>
+        矢量不能和标量进行加减运算<br/>
+        矢量 × 标量, 两者可以互换,<br/>
+        矢量 ÷ 标量, 不能互换(标量÷矢量没有意义)<br/>
+        不同维度的矢量无法进行运算<br/>
+        ▕矢量▏= 矢量的模 = √(分量²和)<br/>
+        <Expansion><Quote id="#2">点积和叉积</Quote></Expansion>:
+        <table><tbody>
+            <tr>
+                <th>点积</th>
+                <td>对应分量相乘再取和</td>
+                <td>b•a = ▕a▏▕b▏cos(θ)</td>
+                <td>结果是个标量, 表示b在a的投影长</td>
+            </tr>
+            <tr>
+                <th>叉积</th>
+                <td>三维: a×b = (aYbZ-aZbY, aZbX-aXbZ, aXbY-aYbX)</td>
+                <td>▕a×b▏=▕a▏▕b▏sin(θ)</td>
+                <td>结果仍是矢量, 表示夹角所在平行四边形的面积</td>
+            </tr>
+        </tbody></table>
+        <Tab expan>
+            点积满足:
+            <Tab>
+                交换律: a•b = b•a
+                <br/>
+                <Quote id="#3">结合律</Quote>: (λa)•b = a•(λb) = λ(a•b)
+                <br/>
+                <Quote id="#4">加法结合律</Quote>: a•b + a•c = a•(b+c)
+                <br/>
+                <Quote id="#5">平方</Quote>: a•a = ▕a▏²
+                <br/>
+                其夹角θ: θ = acos(a•b)
+            </Tab>
+            叉积满足:
+            <Tab>
+                结果方向: 对应坐标系的旋向性方向(从乘数到被乘数)
+                <br/>
+                反交换律: a×b = -(b×a)
+            </Tab>
+        </Tab>
+    </Tab>
+    单位矢量指模为一的矢量:
+    <Tab>
+        将 非零矢量 转化为 单位矢量 称为归一化(normalization): ê = e ÷▕e▏
+    </Tab>
+</Tab>
+
+#### 矩阵:
+<Tab>
+    将矢量转换为矩阵:
+    <Tab>
+        方便于"空间变换"
+    </Tab>
+    <Expansion>矩阵运算</Expansion>:
+    <Tab expan>
+        矩阵乘法满足:
+        <Tab>
+            结合律: (AB)C = A(BC)
+        </Tab>
+        矩阵转置满足:
+        <Tab>
+            转置的转置: (A′)′ = A
+            <br/>
+            乘法转置: (AB)′ = B′A′
+        </Tab>
+        矩阵的逆满足:
+        <Tab>
+            逆的逆: inv(inv(A)) = A
+            <br/>
+            可交换: A*inv(A) = inv(A)*A = 单位矩阵
+            <br/>
+            逆和转置: inv(A′) = inv(A)′
+            <br/>
+            乘法逆: inv(ABC) = inv(C)*inv(B)*inv(A)
+        </Tab>
+    </Tab>
+    <Expansion>正交矩阵</Expansion>:
+    <Tab expan>
+        若: 矩阵*其转置 = 单位矩阵, 则该矩阵称为正交矩阵(orthogonal matrix)
+        <br/>
+        正交矩阵性质:
+        <Tab>
+            逆 == 转置
+            <br/>
+            每一行: 之间互相垂直(点积为0)且都是单位矢量(与自己点积为1)
+            <br/>
+            每一列: 之间互相垂直(点积为0)且都是单位矢量(与自己点积为1)
+        </Tab>
+    </Tab>
+    <Expansion><Quote id="#7">基础变换矩阵</Quote></Expansion>: 4×4的矩阵
+    <Tab expan>
+        表示纯平移, 纯缩放和纯旋转的4×4变换矩阵称为基础变换矩阵
+        <br/>
+        <Model about="@2">该矩阵的组成为</Model>:
+        <br/>
+        衍生矩阵:
+        <Tab>
+            平移矩阵: M矩阵为单位矩阵, 不是正交矩阵
+            <br/>
+            沿坐标轴缩放的矩阵: t矩阵为0矩阵, M矩阵 = (<Quote id="#8">[λ₁, λ₂, λ₃]′</Quote> * 单位矩阵), 一般不是正交矩阵
+            <br/>
+            旋转矩阵: <Model about="@3">需要选定旋转轴</Model>. 是正交矩阵, 且其同类型矩阵相加减也是正交的
+        </Tab>
+    </Tab>
+</Tab>
+
+#### 变换:
+<Tab>
+    <Expansion>线性变换</Expansion>:
+    <Tab expan>
+        满足 f(x)+f(y) = f(x+y) 且 λf(x) = f(λx) 的变换称为线性变换(linear transform)
+        <br/>
+        用于: 缩放(scale), 旋转(rotation), 错切(shear), 镜像(mirroring), 反射(reflection), 正交投影(orthographic)等
+    </Tab>
+    <Expansion>平移变换</Expansion>:
+    <Tab expan>
+        满足 f(x) = x + A,(A是一个平移矩阵) 的变换称为平移变换(translation transform)
+        <br/>
+        通常物体的平移使用的就是平移变换
+    </Tab>
+    <Expansion>仿射变换</Expansion>:
+    <Tab expan>
+        将 平移变换 和 线性变换相合并, 称为仿射变换(affine transform)
+        <br/>
+        仿射变换在三维空间下无法实现, 因此将矢量扩充到"<Expansion><Quote id="#6">四维齐次坐标空间</Quote></Expansion>"(homogeneous space)
+        <Tab expan>
+            对于"点", 转换方式是将 ω 设置为1
+            <br/>
+            对于"矢量", 转换方式是将 ω 设置为0
+        </Tab>
+    </Tab>
+    <Expansion >坐标空间的变换</Expansion>:
+    <Tab expan>
+        <Quote id="#10">每个坐标空间都有一个父坐标空间</Quote>, 对坐标空间的变换就是在父空间和子空间之间变换
+        <br/>
+        如果知道父空间的<Quote id="#11">坐标系</Quote>在子空间的表示, 则"按行填入"该表示就是子空间到父空间的变换矩阵中的 M 矩阵
+        <br/>
+        从子空间变换到父空间, <Model about="@4">满足</Model>: (反过来变换就是其逆矩阵)
+        <br/>
+        对矢量的变换不需要考虑平移, 因此矩阵的 M矩阵 可以表示矢量的空间变换
+        <br/>
+        反之也可以简单的获取子空间的坐标轴和原点. 例如: 此矩阵×[1, 0, 0, 0]′ = 子空间的X轴
+    </Tab>
+    附录: <Model about="@1">图形学常用矩阵及其变换</Model>
+</Tab>
+
+#### unity中
+<Tab>
+    <Expansion><Quote id="#17">五个空间的变换</Quote></Expansion>:
+    <Tab expan>
+        在顶点着色器中会串联矩阵(形成MVP矩阵), 完成模型空间到裁剪空间的转换
+        <br/>
+        在片元着色器中, 已经可以获取屏幕空间的坐标了
+        <br/>
+        Object space -> World space:
+        <Tab>
+            利用仿射变换中的"四维齐次空间"法则进行"复合变换"(顶点使用点的规则)
+        </Tab>
+        World space -> View space:
+        <Tab>
+            直接正向调整计算较为复杂, 可以反向构造.
+            <br/>
+            View -> World: SRT, 再用矩阵([0, 0, -1, 0])乘以其结果来转换坐标系的旋向性即为View space
+        </Tab>
+        View space -> Clip space: Clip space即规范立方体CVV
+        <Tab>
+            用于此处的矩阵通常被称为裁剪矩阵(Clip matrix)或投影矩阵(Projection matrix)
+            <br/>
+            视锥中的近裁剪平面(near clip plane)和远裁剪平面(far clip plane)决定了视野深度
+            <br/>
+            对于<Quote id="#13"><Model about="@5">不同投影</Model></Quote>的视锥不同, 其<Expansion>裁剪矩阵也不尽相同</Expansion>:
+            <Tab expan>
+                <Expansion>正交投影(orthographic projection)</Expansion>: 网格大小相同, 且平行相交等关系不会改变(如HUB中的小地图)
+                <Tab expan>
+                    视锥是一个长方体, 在unity中<Model about="@9">由Camera定义</Model>
+                    <br/>
+                    其<Model about="@10">矩阵变化</Model>后的<Quote id="#15"><Model about="@11">X Y Z 分量都在[-ω, ω], 即[-1, 1]</Model></Quote>
+                </Tab>
+                <br/>
+                <Expansion>透视投影(perspective projection)</Expansion>: 更接近于真实
+                <Tab expan>
+                    视锥是一个四棱台型, 在unity中<Model about="@6">由Camera定义</Model>
+                    <br/>
+                    <Quote id="#14">在unity的规则下</Quote>, 其<Model about="@7">矩阵变化</Model>后的<Model about="@8">X Y Z 分量都在[-ω, ω], 即[-Z, Z](原来的Z)</Model>
+                    <br/>
+                    任何不满足的图元都将被剔除或裁剪
+                </Tab>
+            </Tab>
+        </Tab>
+        <Quote id="#16">Clip space -> Project space</Quote>:
+        <Tab>
+            在unity中过程可以简要的<Model about="@12">使用公式来计算</Model>, 但实际上不是这样;
+            <br/>
+            这个过程有两个步骤: <Expansion>齐次除法(homogeneous division)</Expansion> -> 底层算法映射
+            <Tab expan>
+                就是用"X,Y,Z分量 ÷ ω分量"经行归一化, 使得其范围都是[-1, 1]. 得到归一化的设备坐标(Normalized Device Coordinates, NDC)
+            </Tab>
+        </Tab>
+    </Tab>
+    <Expansion>复合变换</Expansion>: 所谓复合变换就是组合各种基础变换矩阵
+    <Tab expan>
+        矢量放在矩阵的右侧, 且矢量转换为列矩阵. 如: CBAv == (C(B(Av))), 即先对v使用A进行变换, 再使用B, 最后使用C
+        <br/>
+        矩阵运算的阅读顺序是"从右到左"
+        <br/>
+        依照先缩放, 后旋转, 最后平移的顺序操作. 代码中顺序是<Quote id="#12"> TRS </Quote>
+        <br/>
+        如果有多个轴参与旋转, 则顺序是: ZXYv<Quote id="#9">(也是代码中矩阵的顺序)</Quote>, 即先对Z轴旋转, 再对X轴旋转, 最后对Y轴
+    </Tab>
+    <Expansion>法线变换</Expansion>:
+    <Tab expan>
+        如果运用基础变换矩阵, 则变换后法线(normal)就不再和平面垂直, 因此需要一个特殊矩阵: 法线变换矩阵G
+        <br/>
+        G = (基础变换矩阵的逆)′ = (基础变换矩阵′)的逆
+        <br/>
+        只包含"旋转"时, G = 旋转矩阵; 只包含"旋转"和"统一缩放"时, G = 基础变换矩阵 ÷ λ.
+    </Tab>
+
+[内置形式(变量)](./innerMatrix)
+</Tab>

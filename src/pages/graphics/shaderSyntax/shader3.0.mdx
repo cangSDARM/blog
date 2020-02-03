@@ -1,0 +1,39 @@
+---
+date: "2018-01-26 02:00"
+title: "表面着色器: Surface Shader"
+tags: ["graphics"]
+---
+
+export const QuoteList = [
+	"unity标准的struct:  \\Unity\\Editor\\Data\\CGIncludes\\中 appdata_tan, appdata_base, appdata_full"
+];
+
+[返回](./)
+
+-------------------------是Unity自己创造的着色器代码类型. 需要的代码量很少, 但渲染代价较大-------------------------
+
+---------------------------本质上是将其转换为顶点片元着色器运行, 是对顶点片元着色器的封装---------------------------
+
+<Tab>
+SubShader&#123;
+    <Tab>
+        //表面着色器被定义在SubShdaer块(而非Pass块)
+        <br/>
+        <br/>
+        CGPROGRAM
+        <br/>
+        #pragma surface surf Lambert
+        <br/>
+        struct Input&#123;
+        <br/>
+        &#125;;
+        <br/>
+        <br/>
+        void surf(Input IN, inout SurfaceOutput o)&#123;
+        <br/>
+        &#125;
+        <br/>
+        ENDCG
+    </Tab>
+&#125;
+</Tab>

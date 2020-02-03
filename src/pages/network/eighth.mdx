@@ -1,0 +1,86 @@
+---
+date: "2018-01-30"
+title: "第八章"
+tags: ["network"]
+---
+
+## 机密性
+按照攻击者的信息，攻击有三种情况
+
+1. *唯密文攻击(ciphertext-only attack)*，攻击者只知道密文
+2. *已知密文攻击(known-plaintext attack)*，攻击者知道密文必定携带的一些信息
+3. *选择明文攻击(chosen-plaintext attack)*，攻击者能够让加密者发送特定的明文
+
+对称加密技术有两种类型：**流密码(stream cipher)**和**块密码(block cipher)**
+
+块密码将加密报文分为k块，每块被单独加密。其通常使用函数模拟随机排列表生成，如**DES(Data Encryption Standard)**、**3DES**、**ADS(Advanced Encryption Standard)**
+![Pixlr_20191217155208460.jpg](../../images/network/1576567398023_c9fd037ebe550d09d361de56b9c18e7f.jpg)
+由于块密码采用函数，因此输入总对应同一输出，因此需要引入随机值，但随机需要传输更多比特，因此有**密码块链接(Cipher Block Chaining, CBC)技术**
+
+- 发送加密内容前，发送方生成随机的k比特**初始向量(Initialization Vector, IV)**(c(0))，以明文方式发送
+- 对于传输加密块c(i)，c(i)=K(m(i)⊕c(i-1))，其中K表示块加密函数，m(i)表示第i个明文，c(i-1)是上次传输的加密块
+
+由于分发对称密钥困难，因此有非对称密钥体系，如公钥私钥体系，如**RSA算法**
+
+但RSA算法复杂，因此通信时仍采用对称密钥，而使用非对称密钥加密对称密钥(称为**会话密钥**)，并在每次发送数据时变动(发送会话密钥和数据)
+## 报文完整性
+**密码散列函数(cryptographic hash function)**将m作为输入，并得到一个固定长度字符串H(m)。其中，对于报文x和y，其散列函数H(x)=H(y)，当且仅当x=y成立。典型的如**MD5**、**SHA-1**
+
+**报文完整性(message integrity)**用于鉴别来源和非篡改
+
+1. 使用**报文鉴别码(Message Authentication Code, MAC)**。
+　　- 发送方生成报文m，用**鉴别密钥(authentication key)**s(双方已知)级联m，并计算其散列函数H(m+s) 即MAC
+　　- 发送方将MAC附加到报文m上，形成扩展报文(m, H(m+s))发送
+　　- 接收方接收，由于知道s，因此计算出H(m+s)，如果计算和发送结果相同，则一切正常
+2. 使用**数字签名(digital signature)**。
+　　- 发送方对报文m使用私钥加密，生成签名RSA(m)(因为RSA性质，私钥(公钥(m))=公钥(私钥(m))=m，因此可行)
+　　- 发送方将签名附加到报文m上，形成扩展报文(m, RSA(m))发送
+　　- 接收方使用发送方的公钥计算，如果计算公钥(私钥(m))=m，则一切正常
+3. 混合MAC和签名(RSA太复杂所致)
+　　- 发送方对MAC进行私钥加密
+　　- 发送扩展报文
+　　- 接收方验证
+## 端点鉴别
+**端点鉴别(end-point authentication)**用于表明实体身份确实是其声称的那样
+
+典型的有**公钥认证(public key certification)**，其使用**CA(Certification Authority, 认证中心)**颁发数字签名实现
+
+**PGP(Pretty Good Privacy)**是一类用于消息加密、验证的应用程序的统称
+## 传输层安全性: SSL
+**SSL(Secure Socket Layer, 安全套接字层)**是TCP的一个强化版本，SSL3的一个稍加修改的版本称为**运输层安全性(Transport Layer Security, TLS)**
+![Pixlr_20191218145812239.jpg](../../images/network/1576651938746_760ed0d7900f570b21638ce3260c487e.jpg)
+SSL具有三个阶段
+
+1. 握手。
+　　- TCP三次握手
+　　- 客户端发送其支持的密码算法列表(明文)，和一个不重数(防止**重放攻击(replay attack)**)
+　　- 服务器从列表中选择对称算法、公钥算法和MAC算法各一种。将选择、证书和一个不重数返回
+　　- 客户端验证证书，提取服务器公钥并生成一个**前主密钥(Pre-Master Secret, PMS)**，并用服务器公钥加密PMS发送
+　　- 使用相同的密钥导出函数，客户端和服务端独立的从PMS和不重数计算出**主密钥(Master Secret, MS)**
+2. 密钥导出
+　　- 对MS切片，生成来回单独使用的加密密钥和MAC密钥，共4个密钥
+　　- 客户端发送所有握手报文的一个MAC，服务端也同样发送所有握手报文的一个MAC(防止篡改之前的握手环节报文)
+3. 数据传输
+　　- SSL将数据流分割为*记录*，用"数据+MAC密钥+序号(防止重排序)"生成MACs，并加密"记录+对应MACs"，然后填充给TCP传输
+![Pixlr_20191218152133144.jpg](../../images/network/1576651938812_0a9fdc56e83d6b8a74226192a212e7e7.jpg)
+SSL关闭要么超时，要么使用类型字段表明终止(不使用TCP FIN，防止**截断攻击(truncation attack)**)。该字段为明文，但使用MAC验证
+## 网络层安全性: IPsec和虚拟专用网
+**IP安全(IP Security, IPsec)协议簇**用于向IP数据报提供安全，**虚拟专用网(Vitual Private Network, VPN)**建于其上
+
+某IPsec实体发送安全数据报时，可以使用**AH(Authentication Header, 鉴别首部)协议**或**ESP(Encapsulation Security Payload, ESP)协议**做到，但AH只提供源鉴别和完整性服务，ESP还能加密，因此之后讨论关注于ESP
+
+在发送IPsec前，端系统需要建立一个网络层的单工逻辑连接称为**安全关联(Security Association, SA)**。其维护了如SA的32比特索引(**安全参数索引(Security Parameter Index, SPI)**)、初始地址及目标地址、加密类型和密钥。所有的SA被维护于**安全关联数据库(Security Association Database, SAD)**中
+
+SA可由人工生成或使用**因特网密钥交换(Internet Key Exchange, IKE)**协议生成
+![Pixlr_20191218155414859.jpg](../../images/network/1576651938946_3ffa37571cb1b4c89c4668f5c81ad4c5.jpg)
+## 无线传输安全: WEP
+**WEP(Wired Equivalent Privacy, 有线等效保密)**是802.11标准化的安全性规范，(后来还有安全性更好的802.11i)
+
+WEP要求鉴别方式如下进行
+- 主机和AP以其他方式确认了密钥
+- 主机请求鉴别
+- AP返回一个128字节不重数响应
+- 主机使用密钥加密该不重数并返回
+- AP解密。若发送和接受的值相同则通过鉴别
+
+## 看书

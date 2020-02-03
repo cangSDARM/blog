@@ -1,0 +1,104 @@
+---
+date: "2018-02-02"
+title: "Graphics Programming(九) —— 后期处理效果"
+tags: ["graphics"]
+---
+
+export const QuoteList = [
+    "参考: https://docs.unity3d.com/Manual/compImageEffects.html<br/>GPU GAME系列: https://developer.nvidia.com/gpugames/GPUGames",
+    "视锥体射线: 从摄像机指向图像的某一点. 存储了该像素在世界空间下到摄像机的方向",
+    "linearDepth是深度纹理得到的线性深度值, interpolatedRay是后期处理平面四个角到摄像机的距离方向值"
+];
+
+export const ImgList = [
+    "常见边缘检测算子.png",
+    "高斯方程.png",
+    "高斯核的简化.png"
+];
+
+前置知识
+<Tab>
+    屏幕后期处理效果:
+    <Tab>
+        屏幕后期处理(Screen Post-processing Effects): 指在渲染完整个场景后, 再对整个屏幕图像进行处理
+        <br/>
+        获取屏幕图像是在C#中的OnRenderImage函数中
+        <br/>
+        屏幕后期处理其实是在场景中绘制一个和屏幕同宽高的面片, 为防止对其它物体产生影响, 需要设置相关渲染状态.
+    </Tab>
+    <Expansion>OnRenderImage</Expansion>:
+    <Tab expan>
+        public void OnRenderImage(SenderTexture src, RenderTexture dest)&#123;
+        <Tab>
+            将预处理的屏幕图像写入src, 经过处理后得到最终图像dest显示在屏幕上
+            <br/>
+            可以加入ImageEffectOpaque来更改渲染管道, 区分透明和不透明物体效果
+            <br/>
+            在该函数中又通常使用 Graphics.Blit 函数处理图像
+            <br/>
+            public static void Blit(Texture src, RenderTexture dest);
+            <br/>
+            public static void Blit(Texture src, RenderTexture dest, Material mat, int pass=-1);
+            <br/>
+            public static void Blit(Texture src, Material mat, int pass=-1);
+        </Tab>
+        &#125;
+    </Tab>
+</Tab><p></p>
+
+处理效果
+<Tab>
+    <Expansion>边缘检测</Expansion>:
+    <Tab expan>
+        边缘检测: 用以实现物体的描边效果
+        <br/>
+        产生卷积核(convolution kernel)来操作屏幕, 计算边缘
+        <br/>
+        边界: 如果相邻像素之间颜色亮度和纹理等属性有明显差别, 认为其之间有边界. 并用梯度G表示这种差异性
+        <br/>
+        使用<Model about="@1">边缘检测算子</Model>对每个像素进行卷积, 得到两个方向的梯度Gx和Gy, 并得到G = |Gx|+|Gy|, 较大时可能是边缘点
+    </Tab>
+    <Expansion>模糊处理</Expansion>:
+    <Tab expan>
+        模糊: 实现类似于景深或毛玻璃的效果
+        <br/>
+        常见有: 均值模糊(卷积核各元素相等且相加等于一), 中值模糊(对邻近区域像素排序取中值), 以及<Expansion>高斯模糊</Expansion>
+        <Tab expan>
+            使用名为"高斯核"的卷积核, 是一种正方形的滤波核, 每个元素都基于<Model about="@2">高斯方程</Model>计算
+            <br/>
+            高斯核的维数越高模糊程度越大, 使用NxN维高斯核需要进行NxNxWxH次纹理采样
+            <br/>
+            需要<Model about="@3">将其拆分</Model>, 缩减计算量
+        </Tab>
+    </Tab>
+    <Expansion>Bloom</Expansion>:
+    <Tab expan>
+        Bloom: 模拟光线照在物体表面的散射效果
+        <br/>
+        实现简单, 只需要提取图片的光线较强的像素, 并高斯模糊该像素周围, 之后和原图混合
+    </Tab>
+    <Expansion>运动模糊</Expansion>:
+    <Tab expan>
+        计算机图形缺少曝光现象, 需要特殊实现
+        <br/>
+        其实现有多种方式: 积累缓存(accumulation buffer)和速度缓存(velocity buffer)
+        <br/>
+        积累缓存混合连续图像进行叠加模糊. 效果好, 但是消耗大
+        <br/>
+        速度缓存存储像素当前速度, 利用速度值决定模糊方向及大小
+    </Tab>
+    <Expansion>雾化效果</Expansion>:
+    <Tab expan>
+        雾效(Fog): 需要根据深度纹理来重建每个像素在世界空间中的坐标.
+        <br/>
+        使用快速深度重建技术, 将首先对<Quote id="#2">视锥体射线</Quote>进行插值, 用该射线*处理后的深度值+摄像机坐标 = 该像素在世界空间的坐标
+        <br/>
+        该技术基于坐标可以通过对另一坐标的偏移来求取的思想: worldPos = _WorldSpaceCameraPos + <Quote class="Quote" id="#3">linearDepth * interpolatedRay</Quote>
+        <br/>
+        雾效实现需要一个系数f, 来作为颜色和雾的混合系数. 在unity内置中, 有三种: 线性, 指数, 指数平方
+        <br/>
+        若要雾效移动和深浅不一, 还需要噪声纹理
+    </Tab>
+</Tab>
+
+<Quote id="#1">不止于此</Quote>:

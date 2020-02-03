@@ -1,0 +1,32 @@
+.icon {
+  align-self: flex-start;
+}
+header {
+  user-select: none;
+  background: rebeccapurple;
+  border-bottom: 1px solid rgba(50, 50, 50, 0.5);
+  overflow: hidden; /*enable to BFC*/
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 50px;
+  font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
+  height: 96px; /* if want expanded to hidden Y scrollbar, need this*/
+}
+#head {
+  color: white;
+  text-decoration: none;
+}
+.default-wrapper {
+  margin: 0 auto;
+  max-width: 960px;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  padding: 1.45rem 1.0875rem;
+}
+
+.default-wrapper > h1{
+  display: inline-block;
+}
