@@ -54,7 +54,7 @@ function passSets(el) {
         //没配置
         !passSets(el) &&
           fs.mkdir(newPath, e => {
-            e && e.errno != -4075 && console.error("exisit config", e);
+            e && console.warn("exisit config", e);
             templateConfig[el] = {
               slug: `/${el}`,
               template: `src/templates/${ele}`,

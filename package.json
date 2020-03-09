@@ -5,7 +5,8 @@
   "version": "0.1.0",
   "author": "AllenLee <648384410li@gmail.com>",
   "dependencies": {
-    "@material-ui/styles": "^4.9.0",
+    "@material-ui/core": "~4.9.5",
+    "@material-ui/styles": "~4.9.0",
     "@mdx-js/mdx": "~1.5.1",
     "@mdx-js/react": "~1.5.1",
     "gatsby": "~2.18.2",

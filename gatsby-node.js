@@ -65,7 +65,7 @@ exports.createPages = async ({ actions, graphql }) => {
     }
   `);
   if (result.errors) {
-    console.error(result.errors);
+    console.error("query error", result.errors);
   }
 
   templateContextInject(result.data.postsRemark.edges);

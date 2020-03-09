@@ -47,7 +47,6 @@ const Tags = ({ pageContext, data }) => {
           })}
         </ul>
       </div>
-      <Link to="/tags">All tags</Link>
     </Layout>
   );
 };
