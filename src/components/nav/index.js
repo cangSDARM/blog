@@ -2,7 +2,7 @@ import React from "react";
 
 import { graphql, useStaticQuery, Link } from "gatsby";
 
-export default ({ tag, slug }) => {
+export const Nav = ({ tag, slug }) => {
   const data = useStaticQuery(graphql`
     query MyQuery {
       tags: allMdx(sort: { fields: frontmatter___date }) {

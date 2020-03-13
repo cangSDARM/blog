@@ -17,14 +17,23 @@ const shotCodes = {
 };
 
 export default function Template({ data }) {
-  const { mdx } = data;
+  const resizeWeight = 0.5625;
+  const { mdx, headerIamge } = data;
   const { frontmatter, body, fields } = mdx;
   let title =
     fields.slug === `/${fields.templateTag}`
       ? `Network-Top2Down`
       : frontmatter.title;
   return (
-    <Layout>
+    <Layout
+      header={{
+        //FIXME: header的图像表示有问题。参看haskell的header处理
+        style: {
+          backgroundImage: `url(${headerIamge.childImageSharp.fluid.src})`,
+          backgroundSize: `cover`,
+        },
+      }}
+    >
       <SEO
         title={title}
         config={{
@@ -65,6 +74,17 @@ export const query = graphql`
       fields {
         slug
         templateTag
+      }
+    }
+
+    headerIamge: file(relativePath: { eq: "network-logo.png" }) {
+      childImageSharp {
+        fluid(fit: COVER, pngQuality: 100) {
+          src
+          presentationHeight
+          presentationWidth
+          originalName
+        }
       }
     }
   }

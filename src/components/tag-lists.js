@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Link } from "gatsby";
-import { tagToPath } from "../utils/paths";
+
+function tagToPath(tag) {
+  return `/tags/${tag}`;
+}
 
 export default function TagsList({ tags, ...otherProps }) {
   if (!tags || tags.length === 0) {

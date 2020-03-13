@@ -4,7 +4,6 @@ import { Link, graphql } from "gatsby";
 import Layout from "../components/layout";
 import Image from "../components/image";
 import SEO from "../components/seo";
-import Nav from "../components/nav";
 
 const IndexPage = ({ data }) => (
   <Layout>
@@ -29,30 +28,12 @@ const IndexPage = ({ data }) => (
           TODO: 使用remark-table，重写以前的那堆table
         </a>
       </div>
-      <Nav>
-        {data.allTemplates.nodes.map(i => {
-          if (i.name === "default") return null;
-          return (
-            <Link key={i.name} to={i.location}>
-              {i.name}
-              &nbsp;&nbsp;&nbsp;&nbsp;
-            </Link>
-          );
-        })}
-        <Link to="/tags">Go to find Tags</Link>
-      </Nav>
     </div>
   </Layout>
 );
 
 export const query = graphql`
   {
-    allTemplates {
-      nodes {
-        name
-        location
-      }
-    }
     site {
       siteMetadata {
         title
