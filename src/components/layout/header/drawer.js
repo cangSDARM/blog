@@ -1,5 +1,5 @@
 import React from "react";
-import { useStaticQuery, Link } from "gatsby";
+import { useStaticQuery, Link, graphql } from "gatsby";
 import PropType from "prop-types";
 import { withStyles } from "@material-ui/core";
 import {

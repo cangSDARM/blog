@@ -5,6 +5,7 @@ import SEO from "../components/seo";
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import TagsList from "../components/tag-lists";
+import Indexing from "../components/indexing";
 import styles from "../components/graphics/main.module.css";
 import {
   Tab,
@@ -33,7 +34,7 @@ const shotCodes = {
 };
 
 export default function Template({ data }) {
-  const { mdx } = data;
+  const { mdx, allMdx } = data;
   const { frontmatter, body, fields, exports } = mdx;
   CommentList(exports.QuoteList);
   ModelList(exports.ImgList);
@@ -72,6 +73,7 @@ export default function Template({ data }) {
             {frontmatter.title}
           </a>
         </h1>
+        <Indexing slug={fields.slug} data={allMdx} />
         <TagsList tags={frontmatter.tags} className={styles.taglistsStyle} />
         <MDXProvider components={shotCodes}>
           <MDXRenderer>{body}</MDXRenderer>
@@ -99,6 +101,23 @@ export const query = graphql`
       exports {
         QuoteList
         ImgList
+      }
+    }
+
+    allMdx(
+      sort: { fields: [frontmatter___index, fileAbsolutePath], order: ASC }
+      filter: { frontmatter: { tags: { in: ["graphics"] } } }
+    ) {
+      edges {
+        node {
+          fields {
+            slug
+          }
+          frontmatter {
+            title
+            index
+          }
+        }
       }
     }
   }

@@ -2,7 +2,7 @@ import React from "react";
 import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import Nav from "../components/nav";
+import Indexing from "../components/indexing";
 
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
@@ -18,7 +18,7 @@ const shotCodes = {
 
 export default function Template({ data }) {
   const resizeWeight = 0.5625;
-  const { mdx, headerIamge } = data;
+  const { mdx, headerIamge, allMdx } = data;
   const { frontmatter, body, fields } = mdx;
   let title =
     fields.slug === `/${fields.templateTag}`
@@ -27,7 +27,6 @@ export default function Template({ data }) {
   return (
     <Layout
       header={{
-        //FIXME: header的图像表示有问题。参看haskell的header处理
         style: {
           backgroundImage: `url(${headerIamge.childImageSharp.fluid.src})`,
           backgroundSize: `cover`,
@@ -52,13 +51,12 @@ export default function Template({ data }) {
         }}
       >
         <h1>{frontmatter.title}</h1>
-        {/* <small>{frontmatter.date}</small> */}
+        <Indexing slug={fields.slug} data={allMdx} />
         {/* <TagsList tags={post.frontmatter.tags} /> */}
         <MDXProvider components={shotCodes}>
           <MDXRenderer>{body}</MDXRenderer>
         </MDXProvider>
       </div>
-      <Nav tag={fields.templateTag} slug={fields.slug} />
     </Layout>
   );
 }
@@ -74,6 +72,23 @@ export const query = graphql`
       fields {
         slug
         templateTag
+      }
+    }
+
+    allMdx(
+      sort: { fields: [frontmatter___index, fileAbsolutePath], order: ASC }
+      filter: { frontmatter: { tags: { in: ["network"] } } }
+    ) {
+      edges {
+        node {
+          fields {
+            slug
+          }
+          frontmatter {
+            title
+            index
+          }
+        }
       }
     }
 
