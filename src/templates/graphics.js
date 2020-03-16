@@ -73,7 +73,11 @@ export default function Template({ data }) {
             {frontmatter.title}
           </a>
         </h1>
-        <Indexing slug={fields.slug} data={allMdx} />
+        <Indexing
+          slug={fields.slug}
+          data={allMdx?.edges}
+          className={styles.indexingStyle}
+        />
         <TagsList tags={frontmatter.tags} className={styles.taglistsStyle} />
         <MDXProvider components={shotCodes}>
           <MDXRenderer>{body}</MDXRenderer>
@@ -89,8 +93,6 @@ export const query = graphql`
     mdx(fields: { slug: { eq: $slug } }) {
       body
       frontmatter {
-        date
-        #date(formatString: "MMMM DD, YYYY", locale: "zh-CN")
         title
         tags
       }

@@ -3,6 +3,7 @@ import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import Indexing from "../components/indexing";
+import TagsList from "../components/tag-lists";
 
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
@@ -17,7 +18,6 @@ const shotCodes = {
 };
 
 export default function Template({ data }) {
-  const resizeWeight = 0.5625;
   const { mdx, headerIamge, allMdx } = data;
   const { frontmatter, body, fields } = mdx;
   let title =
@@ -51,7 +51,8 @@ export default function Template({ data }) {
         }}
       >
         <h1>{frontmatter.title}</h1>
-        <Indexing slug={fields.slug} data={allMdx} />
+        <Indexing slug={fields.slug} data={allMdx?.edges} />
+        <TagsList tags={frontmatter.tags} />
         {/* <TagsList tags={post.frontmatter.tags} /> */}
         <MDXProvider components={shotCodes}>
           <MDXRenderer>{body}</MDXRenderer>
@@ -66,7 +67,7 @@ export const query = graphql`
     mdx(fields: { slug: { eq: $slug } }) {
       body
       frontmatter {
-        date
+        tags
         title
       }
       fields {

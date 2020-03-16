@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Link } from "gatsby";
+import { navigate } from "gatsby";
+import { Chip, Avatar, Paper } from "@material-ui/core";
 
 function tagToPath(tag) {
   return `/tags/${tag}`;
@@ -11,15 +12,20 @@ export default function TagsList({ tags, ...otherProps }) {
   }
 
   return (
-    <ul {...otherProps}>
+    <ul {...otherProps} style={{ margin: "1rem 0" }}>
       {tags.map(
         tag =>
           tag !== "index" && (
-            <li key={tag}>
-              <Link key={tag} to={tagToPath(tag)}>
-                {tag}
-              </Link>
-            </li>
+            <Chip
+              color="primary"
+              avatar={<Avatar>{tag[0]}</Avatar>}
+              label={tag}
+              onClick={function(e) {
+                e.preventDefault();
+                navigate(tagToPath(tag));
+              }}
+              key={tag}
+            />
           )
       )}
     </ul>

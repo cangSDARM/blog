@@ -1,5 +1,6 @@
 import { Link } from "gatsby";
 import React from "react";
+import PropType from "prop-types";
 
 function findIndex(data, slug) {
   let element;
@@ -11,6 +12,16 @@ function findIndex(data, slug) {
       }
     }
   return -1;
+}
+
+/**
+ * Skip elements without integer index
+ * @param {Array} data
+ */
+function jumpNonNavigable(data) {
+  return Array.from(data).filter(
+    element => element?.node?.frontmatter?.index?.toString().indexOf(".") < 0
+  );
 }
 
 function getPrevious(data, index) {
@@ -37,42 +48,40 @@ function ensureExist(
   return element;
 }
 
-const Wilder = ({ space }) => {
-  space = space || 1;
-  return (
-    <span style={{ textDecoration: "line-through" }}>
-      {`\x0b`.repeat(space)}
-    </span>
-  );
-};
-export default ({ slug, data }) => {
-  if (data.edges) data = data.edges?.node;
-  let index = findIndex(data, slug);
+const Indexing = ({ slug, data, ...otherProps }) => {
+  data = jumpNonNavigable(data);
+  const index = findIndex(data, slug);
   const previous = ensureExist(getPrevious(data, index));
   const next = ensureExist(getNext(data, index));
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      <Link to={previous.fields.slug} name="previous">
-        {`<`}
-        <Wilder space={20} />
-        {previous.frontmatter.title}
-        {` `}
-        <Wilder space={40} />
-      </Link>
-      <Link to={next?.fields?.slug} name="previous">
-        <Wilder space={40} />
-        {` `}
-        {next?.frontmatter?.title}
-        <Wilder space={20} />
-        {`>`}
-      </Link>
-    </div>
+    index > -1 && (
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+        {...otherProps}
+      >
+        <Link to={previous.fields.slug} name="previous">
+          {`<-`}
+          {previous.frontmatter.title}
+          {`-`}
+        </Link>
+        <Link to={next?.fields?.slug} name="previous">
+          {`-`}
+          {next?.frontmatter?.title}
+          {` ->`}
+        </Link>
+      </div>
+    )
   );
 };
+
+Indexing.PropType = {
+  data: PropType.array,
+  slug: PropType.string,
+};
+
+export default Indexing;

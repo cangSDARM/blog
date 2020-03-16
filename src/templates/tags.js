@@ -81,7 +81,10 @@ export const pageQuery = graphql`
   query($tag: String) {
     allMdx(
       limit: 2000
-      sort: { fields: [frontmatter___date, fileAbsolutePath], order: ASC }
+      sort: {
+        fields: [frontmatter___index, frontmatter___date, fileAbsolutePath]
+        order: ASC
+      }
       filter: { frontmatter: { tags: { in: [$tag] } } }
     ) {
       totalCount
