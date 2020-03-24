@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "gatsby";
+import { Link as GLink } from "gatsby";
+import { Location } from "@reach/router";
 import { displayExpantion, displayComment } from "./utils";
 import Img from "../image";
 import styles from "./style.module.css";
+import { Typography, Link as MLink } from "@material-ui/core";
 
 let QueryList = [];
 let ImgList = [];
@@ -15,14 +17,27 @@ export const ModelList = list => {
   ImgList = list;
 };
 
-export const Naviagtion = ({ from, to }) => {
-  return (
-    <hr
-      onClick={() => {
-        console.log(from, to);
-      }}
-    />
-  );
+export const Naviagtion = ({ desc, to }) => {
+  const Link = ({ location }) => {
+    let path = location.pathname;
+    to = to.toString().trim();
+    if (to === "./") {
+      if (path.endsWith("/")) {
+        path = path.substr(0, path.length - 1);
+      }
+      path = path.substr(0, path.lastIndexOf("/"));
+    } else if (to.startsWith("./")) {
+      to = to.replace("./", "");
+      path = path.concat(to);
+    }
+    return (
+      <MLink underline="none" color="textPrimary" component={GLink} to={path}>
+        {desc}
+      </MLink>
+    );
+  };
+
+  return <Location>{locationProps => <Link {...locationProps} />}</Location>;
 };
 
 export const Tab = ({ children, expan }) => {

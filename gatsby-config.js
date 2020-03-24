@@ -16,7 +16,6 @@ module.exports = {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 1200,
-              sizeByPixelDensity: true,
               disableBgImage: true,
               wrapperStyle: fluidResult =>
                 `margin: 5px 10px; border: 0px solid transparent; display: block; position: relative;`,
@@ -43,6 +42,10 @@ module.exports = {
               ],
             },
           },
+          {
+            resolve: `gatsby-remark-grid-tables`,
+            options: {}
+          }
         ],
         remarkPlugins: [require("remark-grid-tables")],
       },
@@ -82,14 +85,6 @@ module.exports = {
     {
       resolve: `gatsby-plugin-material-ui`,
       options: {
-        theme: {
-          // material-ui theme
-          palette: {
-            primary: {
-              main: "#BA3D3B", // or whatever colors you need
-            },
-          },
-        },
       },
     },
   ],

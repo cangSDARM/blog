@@ -48,6 +48,15 @@ function ensureExist(
   return element;
 }
 
+function maxLength(text, maximum = 10) {
+  let res = text.substr(0, maximum);
+  if (text.length > maximum) {
+    res += "...";
+    res += text.substr(Math.max(res.length + 6, text.length - maximum));
+  }
+  return res;
+}
+
 const Indexing = ({ slug, data, ...otherProps }) => {
   data = jumpNonNavigable(data);
   const index = findIndex(data, slug);
@@ -66,12 +75,12 @@ const Indexing = ({ slug, data, ...otherProps }) => {
       >
         <Link to={previous.fields.slug} name="previous">
           {`<-`}
-          {previous.frontmatter.title}
+          {maxLength(previous.frontmatter.title)}
           {`-`}
         </Link>
         <Link to={next?.fields?.slug} name="previous">
           {`-`}
-          {next?.frontmatter?.title}
+          {maxLength(next?.frontmatter?.title)}
           {` ->`}
         </Link>
       </div>
