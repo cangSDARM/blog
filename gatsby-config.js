@@ -40,12 +40,19 @@ module.exports = {
                   },
                 },
               ],
+              // Customize the prompt used in shell output
+              // Values below are default
+              prompt: {
+                user: "root",
+                host: "localhost",
+                global: false,
+              },
             },
           },
           {
             resolve: `gatsby-remark-grid-tables`,
-            options: {}
-          }
+            options: {},
+          },
         ],
         remarkPlugins: [require("remark-grid-tables")],
       },
@@ -84,8 +91,7 @@ module.exports = {
     // `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-material-ui`,
-      options: {
-      },
+      options: {},
     },
   ],
 };

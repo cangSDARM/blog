@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const _ = require("loadsh");
+const { trimEnd } = require("loadsh");
 
 /**
  * Set this if you want cat this specifical file of any templates in URL.
@@ -54,7 +54,10 @@ function passSets(el) {
         //没配置
         !passSets(el) &&
           fs.mkdir(newPath, e => {
-            e && console.warn("exisit config", e);
+            e &&
+              console.warn(
+                `exisit config [Error: ${e.code}: file already exists, ${e.syscall} ${e.path}]`
+              );
             templateConfig[el] = {
               slug: `/${el}`,
               template: `src/templates/${ele}`,
@@ -210,7 +213,7 @@ exports.templateContextInject = function(edges) {
   let pagePath = "";
   edges.forEach(({ node }) => {
     // make sure it's ended by `/`
-    pagePath = _.trimEnd(node.fields.slug, "/");
+    pagePath = trimEnd(node.fields.slug, "/");
     pagePath = pagePath + "/";
 
     pagesContext[pagePath] = {
