@@ -3,7 +3,6 @@ title: "Graphics Programming(一) —— 渲染流水线"
 tags: ["graphics", "index"]
 index: 1
 ---
-import React from "react";
 
 export const QuoteList = [
   '"数据总线"是用于在多个设备间传输数据的通道. "端口"是用于在两个设备间传输数据的通道, 总线和端口将功能模块粘结在一起',
@@ -90,24 +89,17 @@ export const QuoteList = [
     <Quote id="#5">--></Quote>
     Project space屏幕坐标系
     
-    <table><tbody>
-    <tr>
-        <th>Object space</th>
-        <td>模型建立时得到的坐标. 与其它物体没有任何参照关系</td>
-    </tr>
-    <tr>
-        <th>World space</th>
-        <td>以一个固定的坐标原点经行参照确定物体位置</td>
-    </tr>
-    <tr>
-        <th>View space</th>
-        <td>以Camera为原点, 组成的正交坐标系</td>
-    </tr>
-    <tr>
-        <th>Project space</th>
-        <td>屏幕坐标系</td>
-    </tr>
-    </tbody></table>
+    <Table>{
+        [{
+            cells: ["Object space", "模型建立时得到的坐标. 与其它物体没有任何参照关系"], component: ['th']
+        }, {
+            cells: ["World space", "以一个固定的坐标原点经行参照确定物体位置"], component: ['th']
+        }, {
+            cells: ["View space", "以Camera为原点, 组成的正交坐标系"], component: ['th']
+        }, {
+            cells: ["Project space", "屏幕坐标系"], component: ['th']
+        }]
+    }</Table>
 </Tab>
 
 </Tab>
@@ -144,16 +136,13 @@ export const QuoteList = [
     来决定片元的可见性问题
     <Tab expan>
     模板测试 --> 深度测试
-    <table><tbody>
-        <tr>
-        <th>模板测试</th>
-        <td>通常用于限制渲染的区域. 也可以用来渲染阴影, 轮廓渲染等</td>
-        </tr>
-        <tr>
-        <th>深度测试</th>
-        <td>通常用于视野深度计算</td>
-        </tr>
-    </tbody></table>
+        <Table>{
+            [{
+                cells: ["模板测试", "通常用于限制渲染的区域. 也可以用来渲染阴影, 轮廓渲染等"], component: ['th']
+            }, {
+                cells: ["深度测试", "通常用于视野深度计算"], component: ['th']
+            }]
+        }</Table>
     </Tab>
     之后需要经行混合(Blend)操作,
     决定此次操作和前一次操作的关系(实现不透明(全覆盖)或半透明(局部覆盖))

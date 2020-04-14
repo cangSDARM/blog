@@ -17,36 +17,19 @@ export const QuoteList = [
         用shader的动画效果一般是将时间变量加入计算. 以便当时间变化时画面也随之变化
         <br/>
         unity所有的内置时间变量都是float4类型
-        <table><tbody>
-            <tr>
-                <th colspan="3" style="text-align: center;">unity内置的时间变量</th>
-            </tr>
-            <tr>
-                <th>名称</th>
-                <th>t的含义</th>
-                <th>描述</th>
-            </tr>
-            <tr>
-                <td>_Time</td>
-                <td>自该场景加载开始所经过的时间</td>
-                <td>(t/20, t, 2t, 3t)</td>
-            </tr>
-            <tr>
-                <td>_SinTime</td>
-                <td>时间的正弦值</td>
-                <td>(t/8, t/4, t/2, t)</td>
-            </tr>
-            <tr>
-                <td>_CosTime</td>
-                <td>时间的余弦值</td>
-                <td>(t/8, t/4, t/2, t)</td>
-            </tr>
-            <tr>
-                <td>unity_DeltaTime</td>
-                <td>时间的增量</td>
-                <td>(t, 1/t, smooth(t), 1/smooth(t))</td>
-            </tr>
-        </tbody></table>
+        <Table title="unity内置的时间变量">{
+            [{
+                cells: ["名称", "t的含义", "描述"], component: ['th', 'th', 'th']
+            }, {
+                cells: ["_Time", "自该场景加载开始所经过的时间", "(t/20, t, 2t, 3t)"]
+            }, {
+                cells: ["_SinTime", "时间的正弦值", "(t/8, t/4, t/2, t)"]
+            }, {
+                cells: ["_CosTime", "时间的余弦值", "(t/8, t/4, t/2, t)"]
+            }, {
+                cells: ["unity_DeltaTime", "时间的增量", "(t, 1/t, smooth(t), 1/smooth(t))"]
+            }]
+        }</Table>
     </Tab>
 </Tab><p></p>
 

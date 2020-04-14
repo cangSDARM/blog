@@ -17,17 +17,13 @@ const IndexPage = ({ data }) => (
         <Image image="gatsby-astronaut.png" />
       </div>
       <span style={{ color: `#c3fa00`, background: `#3700fa` }}>
-        TODO-List:{" "}
+        {"TODO".toUpperCase()}-List:{" "}
       </span>
-      <div style={{ margin: `1rem 0 1rem 2rem` }}>
-        <a href="https://ssshooter.com/2018-12-10-gatsby-blog-2/">
-          TODO: 使用 Gatsby.js 搭建静态博客-2 实现分页
-        </a>
-        <br />
-        <a href="https://github.com/zestedesavoir/zmarkdown/tree/master/packages/remark-grid-tables#readme">
-          TODO: 使用remark-table，重写以前的那堆table
-        </a>
-      </div>
+      <div style={{ margin: `1rem 0 1rem 2rem` }}></div>
+      <span style={{ color: `#ff4c2c`, background: `#33fa1a` }}>
+        {"processing".toUpperCase()}-List:{" "}
+      </span>
+      <div style={{ margin: `1rem 0 1rem 2rem` }}></div>
     </div>
   </Layout>
 );

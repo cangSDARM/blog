@@ -56,24 +56,17 @@ export const QuoteList = [
     </Tab>
     <Expansion>shader分类</Expansion>:
     <Tab expan>
-        <table>
-            <tr>
-                <th>Standard Surface Shader</th>
-                <td>包含了标准光照模型(基于物理的渲染)的表面着色器模板</td>
-            </tr>
-            <tr>
-                <th>Unlit Shader</th>
-                <td>不包含光照(但有雾效)的基本顶点/片元着色器</td>
-            </tr>
-            <tr>
-                <th>Image Effect Shader</th>
-                <td>包含各种屏幕后期处理效果的基本模板</td>
-            </tr>
-            <tr>
-                <th><Quote id="#4">Compute Shader</Quote></th>
-                <td>包含利用GPU的并行性来经行与常规流水线无关的计算</td>
-            </tr>
-        </table>
+        <Table>{
+            [{
+                cells: ["Standard Surface Shader", "包含了标准光照模型(基于物理的渲染)的表面着色器模板"], component: ['th']
+            }, {
+                cells: ["Unlit Shader", "不包含光照(但有雾效)的基本顶点/片元着色器"], component: ['th']
+            }, {
+                cells: ["Image Effect Shader", "包含各种屏幕后期处理效果的基本模板"], component: ['th']
+            }, {
+                cells: [<Quote id="#4">Compute Shader</Quote>, "包含利用GPU的并行性来经行与常规流水线无关的计算"], component: ['th']
+            }]
+        }</Table>
     </Tab>
     <Expansion>shader导入面版</Expansion>:
     <Tab expan>

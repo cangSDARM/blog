@@ -49,12 +49,8 @@ module.exports = {
               },
             },
           },
-          {
-            resolve: `gatsby-remark-grid-tables`,
-            options: {},
-          },
         ],
-        remarkPlugins: [require("remark-grid-tables")],
+        remarkPlugins: [],
       },
     },
     //https://www.gatsbyjs.org/packages/gatsby-plugin-templated-files/ 有bug

@@ -18,7 +18,7 @@
   cursor: default;
   overflow: auto;
 }
-.hide{
+.hide {
   display: none;
 }
 .aphorism {
@@ -35,7 +35,7 @@
 .Tab {
   margin-left: 3.5%;
 }
-.Tab + p {
+.Tab[vicinage] + * {
   margin-left: 3.5%;
 }
 /*---------Expansion Style---------*/

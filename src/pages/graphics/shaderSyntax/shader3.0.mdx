@@ -14,26 +14,19 @@ export const QuoteList = [
 
 ---------------------------本质上是将其转换为顶点片元着色器运行, 是对顶点片元着色器的封装---------------------------
 
-<Tab>
-SubShader&#123;
-    <Tab>
-        //表面着色器被定义在SubShdaer块(而非Pass块)
-        <br/>
-        <br/>
-        CGPROGRAM
-        <br/>
-        #pragma surface surf Lambert
-        <br/>
-        struct Input&#123;
-        <br/>
-        &#125;;
-        <br/>
-        <br/>
-        void surf(Input IN, inout SurfaceOutput o)&#123;
-        <br/>
-        &#125;
-        <br/>
-        ENDCG
-    </Tab>
-&#125;
-</Tab>
+<Tab vicinage/>
+
+```glsl
+SubShader{
+    //表面着色器被定义在SubShdaer块(而非Pass块)
+
+    CGPROGRAM
+    #pragma surface surf Lambert
+    struct Input{
+    };
+
+    void surf(Input IN, inout SurfaceOutput o){
+    }
+    ENDCG
+}
+```

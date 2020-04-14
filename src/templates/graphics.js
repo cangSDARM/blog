@@ -7,6 +7,7 @@ import { MDXRenderer } from "gatsby-plugin-mdx";
 import TagsList from "../components/tag-lists";
 import Indexing from "../components/indexing";
 import styles from "../components/graphics/main.module.css";
+import { TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import {
   Tab,
@@ -18,6 +19,7 @@ import {
   Aphorism,
   CommentList,
   ModelList,
+  Table,
 } from "../components/graphics/mdx";
 
 const shotCodes = {
@@ -28,6 +30,11 @@ const shotCodes = {
   Model,
   Expansion,
   Aphorism,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
   hr: props => <hr className={styles.hrStyle} {...props} />,
   a: props => <a className={styles.aStyle} {...props}></a>,
   th: props => <th className={styles.thStyle} {...props}></th>,

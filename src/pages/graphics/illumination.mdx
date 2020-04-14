@@ -91,31 +91,19 @@ export const ImgList = [
         渲染路径(Rendering Path): 决定光照如何运用到shader中
         <br/>
         不同渲染路径, shader可以访问的内置变量及函数也不同
-        <table><tbody>
-            <tr>
-                <th colspan="2" style="text-align: center">LightMode的渲染路径选项</th>
-            </tr>
-            <tr>
-                <td>Always</td>
-                <td>该Pass总会被渲染, 但不计算任何光照</td>
-            </tr>
-            <tr>
-                <td>ForwardBase</td>
-                <td>前向渲染. (计算环境光, 关键平行光, 逐顶点/SH光源和Lightmaps)</td>
-            </tr>
-            <tr>
-                <td>ForwardAdd</td>
-                <td>前向渲染. (计算额外的逐像素光源, 每个Pass对应一个光源)</td>
-            </tr>
-            <tr>
-                <td>Deferred</td>
-                <td>延迟渲染. (会渲染G-buffer)</td>
-            </tr>
-            <tr>
-                <td>ShadowCaster</td>
-                <td>把物体的深度信息渲染到阴影映射纹理(shadowmap)或深度纹理中</td>
-            </tr>
-        </tbody></table>
+            <Table title="LightMode的渲染路径选项">{
+                [{
+                    cells: ["Always", "该Pass总会被渲染, 但不计算任何光照"]
+                }, {
+                    cells: ["ForwardBase", "前向渲染. (计算环境光, 关键平行光, 逐顶点/SH光源和Lightmaps)"]
+                }, {
+                    cells: ["ForwardAdd", "前向渲染. (计算额外的逐像素光源, 每个Pass对应一个光源)"]
+                }, {
+                    cells: ["Deferred", "延迟渲染. (会渲染G-buffer)"]
+                }, {
+                    cells: ["ShadowCaster", "把物体的深度信息渲染到阴影映射纹理(shadowmap)或深度纹理中"]
+                }]
+            }</Table>
         <Expansion>前向渲染(Forward)</Expansion>
         <Tab expan>
             该路径指明: 对每个逐像素光源来说, 其中受影响的每个图元, 必需经过"深度缓冲区"和"颜色缓冲区"

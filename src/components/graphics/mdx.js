@@ -1,10 +1,13 @@
 import React, { Fragment, useState } from "react";
-import { Link as GLink } from "gatsby";
 import { Location } from "@reach/router";
+import { Typography, Link as MLink } from "@material-ui/core";
+import { TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
+
 import { displayExpantion, displayComment } from "./utils";
+import { Table as STable } from "./styled";
 import Img from "../image";
 import styles from "./style.module.css";
-import { Typography, Link as MLink } from "@material-ui/core";
+export * from "./naviagtion";
 
 let QueryList = [];
 let ImgList = [];
@@ -17,34 +20,51 @@ export const ModelList = list => {
   ImgList = list;
 };
 
-export const Naviagtion = ({ desc, to }) => {
-  const Link = ({ location }) => {
-    let path = location.pathname;
-    to = to.toString().trim();
-    if (to === "./") {
-      if (path.endsWith("/")) {
-        path = path.substr(0, path.length - 1);
-      }
-      path = path.substr(0, path.lastIndexOf("/"));
-    } else if (to.startsWith("./")) {
-      to = to.replace("./", "");
-      path = path.concat(to);
-    }
-    return (
-      <MLink underline="none" color="textPrimary" component={GLink} to={path}>
-        {desc}
-      </MLink>
-    );
-  };
-
-  return <Location>{locationProps => <Link {...locationProps} />}</Location>;
+export const Table = ({ children, title, ...otherProps }) => {
+  const colSpan = Array.from(children[0]?.cells)?.length ?? 2;
+  return (
+    <STable size="small" {...otherProps}>
+      {title && (
+        <TableHead>
+          <TableRow>
+            <TableCell
+              align="center"
+              colSpan={colSpan}
+              style={{ fontSize: 20 }}
+            >
+              {title}
+            </TableCell>
+          </TableRow>
+        </TableHead>
+      )}
+      <TableBody>
+        {children.map((row, key) => (
+          <TableRow key={key} style={row.style}>
+            {row.cells.map((cell, ckey) => {
+              const props = row.props ? row.props[ckey] : {};
+              return (
+                <TableCell
+                  {...props}
+                  component={row.component ? row.component[ckey] : undefined}
+                  key={ckey}
+                  style={row.cellStyle}
+                >
+                  {cell}
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableBody>
+    </STable>
+  );
 };
 
-export const Tab = ({ children, expan }) => {
+export const Tab = ({ children, expan, vicinage }) => {
   let classes = [styles.Tab];
   if (expan) classes.push(styles.hidden);
   classes = classes.join(" ");
-  return children ? (
+  let RES = children ? (
     <Fragment>
       <div className={classes}>{children}</div>
       {expan && <br />}
@@ -52,6 +72,10 @@ export const Tab = ({ children, expan }) => {
   ) : (
     <div className={classes}></div>
   );
+
+  RES = vicinage ? <div className={styles.Tab} vicinage="true" /> : RES;
+
+  return RES;
 };
 
 export const Expansion = ({ children }) => {

@@ -61,6 +61,7 @@ tr {
   color: #293134;
   margin-left: 45%;
   animation: CommentAnima 1.5s;
+  z-index: 999;
 }
 
 @keyframes CommentAnima {
