@@ -4,7 +4,7 @@ import {
   Button as MIconButton,
   Typography as MTypography,
   SvgIcon as MSvg,
-  Drawer,
+  Drawer as MDrawer,
   List,
   ListItem,
   ListItemText,
@@ -13,8 +13,13 @@ import {
   ListSubheader,
   Divider,
 } from "@material-ui/core";
-import { styled } from "@material-ui/styles";
+import { styled, withStyles } from "@material-ui/styles";
 
+const Drawer = withStyles({
+  paper: {
+    backgroundColor: "#fff"
+  }
+})(MDrawer);
 const AppBar = styled(MAppBar)({
   userSelect: "none",
   background: "rebeccapurple",

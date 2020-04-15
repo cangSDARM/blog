@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const { trimEnd } = require("loadsh");
+const { trimEnd } = require("lodash");
 
 /**
  * Set this if you want cat this specifical file of any templates in URL.
@@ -39,7 +39,7 @@ function passSets(el) {
   return templateConfig[el] ? true : false;
 }
 
-(function() {
+(function () {
   const templates = path.resolve("src/templates");
   const paths = path.resolve("src/pages");
 
@@ -72,7 +72,7 @@ function passSets(el) {
 /**
  * For gen templates node in graphql
  */
-exports.templateNodeInject = function({
+exports.templateNodeInject = function ({
   createNode,
   createNodeId,
   createContentDigest,
@@ -155,7 +155,7 @@ function parseAbsPath(absPath) {
  * @param {Object} node the node object
  * @param {Function} createNodeField use this to inject
  */
-exports.templateFieldInject = function(_slug, node, createNodeField) {
+exports.templateFieldInject = function (_slug, node, createNodeField) {
   const name = parseAbsPath(node.fileAbsolutePath);
   let breakFlag = false;
   let createConfig = {
@@ -183,7 +183,7 @@ let pagesContext = {};
 /**
  * Create page. due to: [Issues](https://github.com/gatsbyjs/gatsby/issues/19689)
  */
-exports.templateComponentInject = function({ page, createPage, deletePage }) {
+exports.templateComponentInject = function ({ page, createPage, deletePage }) {
   const pagePath = page.path;
   const slug = slugDir.exec(pagePath)[1];
   // console.log(pagePath, slug);
@@ -209,7 +209,7 @@ exports.templateComponentInject = function({ page, createPage, deletePage }) {
  * @param {Object} edges gatsby gen automatic
  * @param {Function} createPage use this to create each page
  */
-exports.templateContextInject = function(edges) {
+exports.templateContextInject = function (edges) {
   let pagePath = "";
   edges.forEach(({ node }) => {
     // make sure it's ended by `/`

@@ -1,0 +1,28 @@
+.arcivePost {
+  cursor: default;
+  user-select: none;
+}
+
+.references {
+  position: fixed;
+  left: calc(50vw + 4em + (690px) / 2);
+  height: 0;
+  margin: auto;
+  top: 120px;
+}
+.references > div {
+  display: flex;
+  height: 52;
+  -webkit-box-align: center;
+  align-items: center;
+  justify-content: center;
+  -webkit-box-pack: center;
+  margin-left: 16;
+}
+.references nav {
+  display: flex;
+  flex-flow: column;
+  margin-left: 0.2em;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+}

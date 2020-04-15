@@ -13,6 +13,13 @@ import Header from "./header";
 import Footer from "./footer";
 import "./layout.css";
 import "katex/dist/katex.min.css";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    type: "dark",
+  },
+});
 
 const Layout = ({ children, ...otherProps }) => {
   const data = useStaticQuery(graphql`
@@ -43,7 +50,9 @@ const Layout = ({ children, ...otherProps }) => {
         }}
         {...contentProps}
       >
-        <main {...mainProps}>{children}</main>
+        <ThemeProvider theme={theme}>
+          <main {...mainProps}>{children}</main>
+        </ThemeProvider>
         <Footer {...footerProps} />
       </div>
     </>

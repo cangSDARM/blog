@@ -8,10 +8,8 @@ import TagsList from "../components/tag-lists";
 import Indexing from "../components/indexing";
 import styles from "../components/graphics/main.module.css";
 import { TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import {
   Tab,
-  Naviagtion,
   Anchor,
   Quote,
   Model,
@@ -21,6 +19,7 @@ import {
   ModelList,
   Table,
 } from "../components/graphics/mdx";
+import Naviagtion from '../components/naviagtion';
 
 const shotCodes = {
   Tab,
@@ -40,12 +39,6 @@ const shotCodes = {
   th: props => <th className={styles.thStyle} {...props}></th>,
   td: props => <th className={styles.tdStyle} {...props}></th>,
 };
-
-const theme = createMuiTheme({
-  palette: {
-    type: "dark",
-  },
-});
 
 export default function Template({ data }) {
   const { mdx, allMdx } = data;
@@ -77,29 +70,27 @@ export default function Template({ data }) {
               : `%s | GraphicsLearnning`,
         }}
       ></SEO>
-      <ThemeProvider theme={theme}>
-        <div className={styles.graphicsPost}>
-          <h1>
-            <a
-              href="#"
-              title={`${frontmatter.date}`}
-              className={styles.titleStyle}
-            >
-              {frontmatter.title}
-            </a>
-          </h1>
-          <Indexing
-            slug={fields.slug}
-            data={allMdx?.edges}
-            className={styles.indexingStyle}
-          />
-          <TagsList tags={frontmatter.tags} className={styles.taglistsStyle} />
-          <MDXProvider components={shotCodes}>
-            <MDXRenderer>{body}</MDXRenderer>
-          </MDXProvider>
-          <div id="Comment" className={styles.Comment}></div>
-        </div>
-      </ThemeProvider>
+      <div className={styles.graphicsPost}>
+        <h1>
+          <a
+            href="#"
+            title={`${frontmatter.date}`}
+            className={styles.titleStyle}
+          >
+            {frontmatter.title}
+          </a>
+        </h1>
+        <Indexing
+          slug={fields.slug}
+          data={allMdx?.edges}
+          className={styles.indexingStyle}
+        />
+        <TagsList tags={frontmatter.tags} className={styles.taglistsStyle} />
+        <MDXProvider components={shotCodes}>
+          <MDXRenderer>{body}</MDXRenderer>
+        </MDXProvider>
+        <div id="Comment" className={styles.Comment}></div>
+      </div>
     </Layout>
   );
 }

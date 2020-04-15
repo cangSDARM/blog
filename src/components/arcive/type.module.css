@@ -1,0 +1,66 @@
+.ZhiHu_Zhuanlan{
+  width: 690px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  color: #1a1a1a;
+  font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+  line-height: 1.6;
+  word-wrap: break-word;
+  font-size: 16px;
+}
+
+.ZhiHu_Zhuanlan h2 {
+  clear: left;
+  margin-top: 2.3333em;
+  margin-bottom: 1.16667em;
+  font-size: 1.2em;
+  line-height: 1.5;
+  font-weight: 600;
+}
+.ZhiHu_Zhuanlan ol, .ZhiHu_Zhuanlan ul {
+  display: table;
+  margin: 1.4em 0;
+}
+.ZhiHu_Zhuanlan ol {
+  counter-reset: ol;
+}
+.ZhiHu_Zhuanlan ol>li {
+  display: table-row;
+  list-style: none;
+}
+.ZhiHu_Zhuanlan ol>li::before{
+  display: table-cell;
+  text-align: right;
+  counter-increment: ol;
+  content: counter(ol) ". ";
+  white-space: pre;
+}
+.ZhiHu_Zhuanlan a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px solid grey;
+}
+.ZhiHu_Zhuanlan p {
+  margin: 1.4em 0;
+}
+.ZhiHu_Zhuanlan blockquote {
+  padding-left: 1em;
+  margin: 1em 0;
+  color: #646464;
+  border-left: 3px solid #d3d3d3;
+}
+.ZhiHu_Zhuanlan :not(pre) > code[class*="language-"]{
+  margin: 0 2px;
+  padding: 3px 4px;
+  border-radius: 3px;
+  font-family: Menlo,Monaco,Consolas,Andale Mono,lucida console,Courier New,monospace;
+  font-size: .9em;
+  background-color: #eae8e8;
+  text-shadow: none;
+  color: rgb(26, 26, 26);
+}
+.ZhiHu_Zhuanlan *[class="gatsby-resp-image-wrapper"]{
+  margin: 0 auto !important;
+}

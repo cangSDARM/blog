@@ -1,13 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { Location } from "@reach/router";
-import { Typography, Link as MLink } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 
 import { displayExpantion, displayComment } from "./utils";
 import { Table as STable } from "./styled";
 import Img from "../image";
 import styles from "./style.module.css";
-export * from "./naviagtion";
 
 let QueryList = [];
 let ImgList = [];
@@ -70,8 +69,8 @@ export const Tab = ({ children, expan, vicinage }) => {
       {expan && <br />}
     </Fragment>
   ) : (
-    <div className={classes}></div>
-  );
+      <div className={classes}></div>
+    );
 
   RES = vicinage ? <div className={styles.Tab} vicinage="true" /> : RES;
 
@@ -108,7 +107,7 @@ export const Aphorism = ({ children }) => {
 export const Model = ({ about, children }) => {
   const [curr, setState] = useState(false);
   const path = ImgList[about.replace("@", "") - 1];
-  const Image = function() {
+  const Image = function () {
     return (
       <Img
         title="缩小"
@@ -126,7 +125,7 @@ export const Model = ({ about, children }) => {
   return (
     <div
       className={styles.model}
-      onClick={function() {
+      onClick={function () {
         setState(true);
       }}
     >
@@ -134,7 +133,7 @@ export const Model = ({ about, children }) => {
       {curr && (
         <div
           id={`model${about}`}
-          onClick={function(e) {
+          onClick={function (e) {
             e.stopPropagation();
             setState(false);
           }}

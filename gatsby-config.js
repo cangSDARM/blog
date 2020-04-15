@@ -17,7 +17,7 @@ module.exports = {
             options: {
               maxWidth: 1200,
               disableBgImage: true,
-              wrapperStyle: fluidResult =>
+              wrapperStyle: (fluidResult) =>
                 `margin: 5px 10px; border: 0px solid transparent; display: block; position: relative;`,
             },
           },
@@ -26,6 +26,13 @@ module.exports = {
             options: {
               // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
               strict: `ignore`,
+            },
+          },
+          {
+            resolve: `gatsby-remark-autolink-headers`,
+            options: {
+              maintainCase: true,
+              isIconAfterHeader: true,
             },
           },
           {

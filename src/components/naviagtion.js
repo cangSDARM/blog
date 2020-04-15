@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link as GLink } from "gatsby";
 import { Location } from "@reach/router";
 import { Link as MLink } from "@material-ui/core";
@@ -36,7 +37,7 @@ class SameLevel {
   }
 
   setProperties(props) {
-    Object.keys(props).forEach(key => {
+    Object.keys(props).forEach((key) => {
       this[key] = props[key];
     });
 
@@ -44,7 +45,7 @@ class SameLevel {
   }
 }
 
-export const Naviagtion = ({ desc, to }) => {
+const Naviagtion = ({ desc, to, external }) => {
   const Link = ({ location }) => {
     const sameLevel = new SameLevel(location.pathname, to.toString().trim());
     const { path } = sameLevel.check();
@@ -56,5 +57,27 @@ export const Naviagtion = ({ desc, to }) => {
     );
   };
 
-  return <Location>{locationProps => <Link {...locationProps} />}</Location>;
+  // console.log(to);
+
+  return !external ? (
+    <Location>{(locationProps) => <Link {...locationProps} />}</Location>
+  ) : (
+    <MLink underline="none" color="textPrimary" href={to}>
+      {desc}
+    </MLink>
+  );
 };
+
+Naviagtion.defaultProps = {
+  desc: "",
+  to: "",
+  external: false,
+};
+
+Naviagtion.PropType = {
+  desc: PropTypes.string,
+  to: PropTypes.string.isRequired,
+  external: PropTypes.bool,
+};
+
+export default Naviagtion;
