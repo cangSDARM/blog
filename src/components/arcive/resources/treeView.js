@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { Avatar, SvgIcon } from "@material-ui/core";
-import { TreeItem, TreeView } from "@material-ui/lab";
-import PropTypes from "prop-types";
-import { navigate, withPrefix } from "gatsby";
 import { useLocation } from "@reach/router";
-import Navgation from "../naviagtion";
-import mainstyles from "./main.module.css";
-import rightAnchor from "./rightAnchor";
+import { SvgIcon } from "@material-ui/core";
+import { TreeItem, TreeView as MTreeView } from "@material-ui/lab";
+import { navigate, withPrefix } from "gatsby";
+import rightAnchor from "../rightAnchor";
 
-const Resources = ({ avatar, reference, headings }) => {
-  let [refTitle, refLink] = reference.split("|");
-
+const indexing = "目录";
+const TreeView = ({ headings }) => {
   const [expanded, setExpanded] = useState([]);
   const [selected, setSelected] = useState([]);
   const location = useLocation();
@@ -26,6 +22,7 @@ const Resources = ({ avatar, reference, headings }) => {
       .replaceOprator()
       .replaceWhiteSpace()
       .splitId().anchor;
+    if (anchor === indexing) return;
     navigate(`${location.pathname}#${anchor}`);
   };
 
@@ -44,24 +41,14 @@ const Resources = ({ avatar, reference, headings }) => {
   );
 
   return (
-    <div className={mainstyles.references}>
-      <div>
-        <Avatar src={avatar}>{refTitle}</Avatar>
-        <nav>
-          <span style={{ color: "#8590a6", fontSize: 12 }}>
-            首发于{` `}
-            {refLink.split("https://").pop().split(".com").shift()}
-          </span>
-          <Navgation to={refLink} desc={refTitle} external />
-        </nav>
-      </div>
-      <TreeView
+    headings.length > 0 && (
+      <MTreeView
         style={{
           height: 240,
           flexGrow: 1,
           maxWidth: 400,
         }}
-        defaultExpanded={["0目录"]}
+        defaultExpanded={[`0${indexing}`]}
         expanded={expanded}
         selected={selected}
         onNodeToggle={handleToggle}
@@ -85,26 +72,14 @@ const Resources = ({ avatar, reference, headings }) => {
       >
         {renderTree(
           {
-            value: "目录",
+            value: indexing,
             children: headings,
           },
           0
         )}
-      </TreeView>
-    </div>
+      </MTreeView>
+    )
   );
 };
 
-Resources.PropType = {
-  avatar: PropTypes.string.isRequired,
-  reference: PropTypes.string.isRequired,
-  headings: PropTypes.arrayOf(PropTypes.string),
-};
-
-Resources.defaultProps = {
-  avatar: "",
-  reference: "",
-  headings: [],
-};
-
-export default Resources;
+export default TreeView;

@@ -218,9 +218,17 @@ body {
   font-feature-settings: "kern", "liga", "clig", "calt";
 }
 main {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+main details summary {
+  cursor: pointer;
+  display: inline-block;
+}
+main *:focus {
+  outline: 0;
 }
 img {
   max-width: 100%;

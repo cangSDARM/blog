@@ -36,13 +36,16 @@ export default function Template({ data }) {
         <h1>{frontmatter.title}</h1>
         <Resources
           avatar={frontmatter?.avatar}
-          reference={frontmatter?.reference}
+          reference={frontmatter?.reference || undefined}
           headings={headings}
         />
-        <MDXProvider components={arcivedMdx}>
-          <MDXRenderer>{body}</MDXRenderer>
-        </MDXProvider>
+        <article>
+          <MDXProvider components={arcivedMdx}>
+            <MDXRenderer>{body}</MDXRenderer>
+          </MDXProvider>
+        </article>
       </div>
+      <div className="empty"></div>
     </Layout>
   );
 }
