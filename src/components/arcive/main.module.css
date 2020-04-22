@@ -2,6 +2,11 @@
   cursor: default;
   user-select: none;
 }
+.arcivePost figcaption {
+  font-size: 1em;
+  display: inherit;
+  visibility: inherit;
+}
 
 .references {
   position: fixed;

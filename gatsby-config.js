@@ -19,6 +19,7 @@ module.exports = {
               disableBgImage: true,
               wrapperStyle: (fluidResult) =>
                 `margin: 5px 10px; border: 0px solid transparent; display: block; position: relative;`,
+              showCaptions: true,
             },
           },
           {

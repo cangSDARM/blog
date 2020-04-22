@@ -11,6 +11,7 @@
   line-height: 1.6;
   word-wrap: break-word;
   font-size: 16px;
+  counter-reset: sup;
 }
 .ZhiHu_Zhuanlan h2 {
   clear: left;
@@ -19,6 +20,14 @@
   font-size: 1.2em;
   line-height: 1.5;
   font-weight: 600;
+}
+.ZhiHu_Zhuanlan h3 {
+  clear: left;
+  margin-bottom: 1em;
+  font-size: 1em;
+  line-height: 1.2;
+  font-weight: 600;
+  text-decoration: underline;
 }
 .ZhiHu_Zhuanlan ol,
 .ZhiHu_Zhuanlan ul {
@@ -67,6 +76,34 @@
 }
 .ZhiHu_Zhuanlan *[class="gatsby-resp-image-wrapper"] {
   margin: 0 auto !important;
+}
+.ZhiHu_Zhuanlan *[class="gatsby-resp-image-wrapper"] + figcaption {
+  margin-top: 0.66667em;
+  padding: 0 1em;
+  font-size: 0.9em;
+  line-height: 1.5;
+  text-align: center;
+  color: #999;
+}
+.ZhiHu_Zhuanlan sup::before {
+  margin: 0 3px;
+  display: inline-block;
+  transform: translateY(2px);
+  font-weight: 500;
+  font-style: italic;
+  counter-increment: sup;
+  content: "[" counter(sup) "]";
+  font-style: normal;
+}
+.ZhiHu_Zhuanlan strong {
+  font-weight: 600; /* if not set, it will break somehow*/
+}
+.ZhiHu_Zhuanlan hr {
+  margin: 4em auto;
+  width: 240px;
+  max-width: 100%;
+  border: none;
+  border-top: 1px solid #d3d3d3;
 }
 /* 知乎专栏 */
 
@@ -176,15 +213,18 @@
   margin-bottom: 20px;
   border: none;
 }
-.Bilibili > article > blockquote {
+.Bilibili > article > blockquote,
+.Bilibili > article figcaption {
   color: #999;
   font-size: 14px;
   line-height: 1.5;
   text-align: center;
   display: inline-block;
   width: 100%;
-  padding: 0 5%;
+}
+.Bilibili > article > blockquote {
   margin-bottom: 20px;
+  padding: 0 5%;
 }
 .Bilibili > article > h2 {
   text-align: center;
@@ -206,14 +246,18 @@
   border: none;
   position: absolute;
   top: 0;
-  transform: translate(-35%, 0);
+  left: 50%;
+  transform: translateX(-50%);
 }
-.Bilibili > article > p > p > span[class="gatsby-resp-image-wrapper"] {
+.Bilibili > article > aside {
+  margin-bottom: 20px;
+  display: block;
+}
+.Bilibili > article > aside > p span[class="gatsby-resp-image-wrapper"] {
   width: 214px;
   background-color: transparent;
   display: inline-block;
   border: none;
-  margin-bottom: 20px;
   position: relative;
   font-size: 0;
 }

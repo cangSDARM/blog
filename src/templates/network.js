@@ -11,10 +11,11 @@ import { MDXRenderer } from "gatsby-plugin-mdx";
 import styles from "../components/network/style.module.css";
 
 const shotCodes = {
-  h3: props => <h3 style={{ margin: `20px 0 10px` }} {...props} />,
-  h2: props => <h2 className={styles.ch2} {...props} />,
+  h3: (props) => <h3 style={{ margin: `20px 0 10px` }} {...props} />,
   // p: props => <p className={styles.cp} {...props} />,
-  blockquote: props => <blockquote className={styles.cblockquote} {...props} />,
+  blockquote: (props) => (
+    <blockquote className={styles.cblockquote} {...props} />
+  ),
 };
 
 export default function Template({ data }) {
@@ -43,7 +44,7 @@ export default function Template({ data }) {
         }}
       ></SEO>
       <div
-        className="net-post"
+        className={styles.netPost}
         style={{
           maxWidth: `960px`,
           fontFamily: `YaHei, Helvetica, arial, sans-serif`,

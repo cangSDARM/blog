@@ -6,6 +6,11 @@ html {
 :root {
   background-color: #f5f5f5;
 }
+figcaption {
+  font-size: 0;
+  display: none;
+  visibility: hidden;
+}
 body,
 html,
 form,
@@ -18,7 +23,6 @@ img {
 article,
 aside,
 details,
-figcaption,
 figure,
 header,
 main,
