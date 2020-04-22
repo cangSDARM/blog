@@ -6,6 +6,7 @@ const Type = {
   ZhiHu_Zhuanlan: "zhuanlan.zhihu.com",
   JianShu: "www.jianshu.com",
   Bilibili: "www.bilibili.com",
+  DouBan: "movie.douban.com",
 };
 
 function styleConcat(...typeStyle) {
@@ -21,6 +22,8 @@ export const useType = (typo) => {
       return styleConcat(styles.JianShu);
     case Type.Bilibili:
       return styleConcat(styles.Bilibili);
+    case Type.DouBan:
+      return styleConcat(styles.Douban);
     default:
       return styleConcat();
   }
