@@ -196,7 +196,7 @@
   position: absolute;
   top: 0;
 }
-.Bilibili > article > span[class="header-info"] {
+.Bilibili > article > span[class="meta"] {
   color: #9b9b9b;
   font-size: 12px;
   font-weight: 400;
