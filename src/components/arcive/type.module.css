@@ -292,6 +292,9 @@
   padding: 0 0 15px 0;
   line-height: 1.1;
 }
+.Douban h4, .Douban h3 {
+  margin: 1em 0;
+}
 .Douban article {
   color: #111;
   margin-top: 10px;
@@ -345,5 +348,9 @@
 }
 .Douban nav > a {
   color: #666699;
+}
+.Douban figcaption {
+  text-align: center;
+  margin-bottom: 1.5em;
 }
 /* 豆瓣 */
