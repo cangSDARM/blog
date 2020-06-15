@@ -20,7 +20,7 @@ function findIndex(data, slug) {
  */
 function jumpNonNavigable(data) {
   return Array.from(data).filter(
-    element => element?.node?.frontmatter?.index?.toString().indexOf(".") < 0
+    (element) => element?.node?.frontmatter?.index?.toString().indexOf(".") < 0
   );
 }
 

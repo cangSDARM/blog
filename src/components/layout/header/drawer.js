@@ -51,8 +51,8 @@ function SkipIndexTag({ tag, children, count }) {
       <>
         <ListItem
           component="div"
-          onClick={event => event.stopPropagation()}
-          onFocus={event => event.stopPropagation()}
+          onClick={(event) => event.stopPropagation()}
+          onFocus={(event) => event.stopPropagation()}
         >
           <ListItemIcon>
             <Avatar>{count}</Avatar>
@@ -83,7 +83,7 @@ const Drawer = ({ open, toggle }) => {
     <SDrawer open={open} onClose={toggle(false)}>
       <List component="nav" aria-label="drawer">
         <ListSubheader>All tags</ListSubheader>
-        {tagsGroup?.group.map(i => {
+        {tagsGroup?.group.map((i) => {
           return (
             <SkipIndexTag
               tag={i}

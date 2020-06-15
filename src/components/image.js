@@ -32,7 +32,7 @@ const Image = ({ path, ...otherProps }) => {
     }
   `);
   const image = data.images.edges.find(
-    image => image.node.relativePath === path
+    (image) => image.node.relativePath === path
   );
   return <Img fluid={image.node.childImageSharp.fluid} {...otherProps} />;
 };

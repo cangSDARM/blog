@@ -1,7 +1,7 @@
 ---
 date: "2018-01-23"
 title: "Hello Math"
-tags: ['math', 'index']
+tags: ["math", "index"]
 excerpt: "新年新Math"
 ---
 

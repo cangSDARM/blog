@@ -73,7 +73,7 @@ const SEO = ({ description, lang, meta, title, config }) => {
       ].concat(meta)}
     />
   );
-}
+};
 
 SEO.defaultProps = {
   lang: `en`,

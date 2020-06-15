@@ -4,10 +4,7 @@ import LazyHighlight from "./lazy-highlight";
 
 const getParams = (name = ``) => {
   const [start, params = ``] = name.split(`:`);
-  const [lang, fparams = ``] = start
-    .split(`language-`)
-    .pop()
-    .split(`{`);
+  const [lang, fparams = ``] = start.split(`language-`).pop().split(`{`);
   const paramsMerge = `{\"${fparams}\":${params.split(`}`).shift()}}`;
   try {
     return [lang].concat(JSON.parse(paramsMerge));

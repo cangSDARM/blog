@@ -8,7 +8,7 @@ const Header = ({ siteTitle, ...otherProps }) => {
   const { children, wrapper, ...props } = otherProps;
   const [opend, setOpen] = useState(false);
 
-  const toggleDrawer = open => event => {
+  const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")

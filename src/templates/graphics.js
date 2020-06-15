@@ -19,7 +19,7 @@ import {
   ModelList,
   Table,
 } from "../components/graphics/mdx";
-import Naviagtion from '../components/naviagtion';
+import Naviagtion from "../components/naviagtion";
 
 const shotCodes = {
   Tab,
@@ -34,10 +34,10 @@ const shotCodes = {
   TableHead,
   TableRow,
   TableCell,
-  hr: props => <hr className={styles.hrStyle} {...props} />,
-  a: props => <a className={styles.aStyle} {...props}></a>,
-  th: props => <th className={styles.thStyle} {...props}></th>,
-  td: props => <th className={styles.tdStyle} {...props}></th>,
+  hr: (props) => <hr className={styles.hrStyle} {...props} />,
+  a: (props) => <a className={styles.aStyle} {...props}></a>,
+  th: (props) => <th className={styles.thStyle} {...props}></th>,
+  td: (props) => <th className={styles.tdStyle} {...props}></th>,
 };
 
 export default function Template({ data }) {

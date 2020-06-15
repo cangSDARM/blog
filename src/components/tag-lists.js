@@ -14,13 +14,13 @@ export default function TagsList({ tags, ...otherProps }) {
   return (
     <ul {...otherProps} style={{ margin: "1rem 0" }}>
       {tags.map(
-        tag =>
+        (tag) =>
           tag !== "index" && (
             <Chip
               color="primary"
               avatar={<Avatar>{tag[0]}</Avatar>}
               label={tag}
-              onClick={function(e) {
+              onClick={function (e) {
                 e.preventDefault();
                 navigate(tagToPath(tag));
               }}

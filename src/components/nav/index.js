@@ -19,8 +19,8 @@ export const Nav = ({ tag, slug }) => {
     }
   `);
   const pages = data.tags.nodes
-    .filter(page => page.frontmatter.tags.includes(tag))
-    .map(item => ({ title: item.frontmatter.title, slug: item.fields.slug }));
+    .filter((page) => page.frontmatter.tags.includes(tag))
+    .map((item) => ({ title: item.frontmatter.title, slug: item.fields.slug }));
 
   return (
     <section
@@ -33,7 +33,7 @@ export const Nav = ({ tag, slug }) => {
       }}
     >
       <nav className="nav-map" style={{ listStyle: `none` }}>
-        {pages.map(item => (
+        {pages.map((item) => (
           <li
             key={item.title}
             style={

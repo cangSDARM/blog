@@ -11,11 +11,11 @@ import styles from "./style.module.css";
 let QueryList = [];
 let ImgList = [];
 
-export const CommentList = list => {
+export const CommentList = (list) => {
   QueryList = list;
 };
 
-export const ModelList = list => {
+export const ModelList = (list) => {
   ImgList = list;
 };
 
@@ -69,8 +69,8 @@ export const Tab = ({ children, expan, vicinage }) => {
       {expan && <br />}
     </Fragment>
   ) : (
-      <div className={classes}></div>
-    );
+    <div className={classes}></div>
+  );
 
   RES = vicinage ? <div className={styles.Tab} vicinage="true" /> : RES;
 
@@ -81,7 +81,7 @@ export const Expansion = ({ children }) => {
   return (
     <div
       className={styles.Expansion}
-      onClick={e => {
+      onClick={(e) => {
         displayExpantion(e.currentTarget, styles);
       }}
     >
@@ -151,7 +151,7 @@ export const Quote = ({ id, children }) => {
     <span
       className={styles.Quote}
       id={id}
-      onMouseOver={e => {
+      onMouseOver={(e) => {
         if (QueryList[id.replace("#", "") - 1])
           displayComment.onOver(QueryList[id.replace("#", "") - 1]);
         else
@@ -159,7 +159,7 @@ export const Quote = ({ id, children }) => {
             `Warn: no such Quote be found in ${QueryList} at ${id}`
           );
       }}
-      onMouseOut={e => displayComment.onOut()}
+      onMouseOut={(e) => displayComment.onOut()}
     >
       {children}
     </span>

@@ -17,8 +17,8 @@ import { styled, withStyles } from "@material-ui/styles";
 
 const Drawer = withStyles({
   paper: {
-    backgroundColor: "#fff"
-  }
+    backgroundColor: "#fff",
+  },
 })(MDrawer);
 const AppBar = styled(MAppBar)({
   userSelect: "none",

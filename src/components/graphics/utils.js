@@ -1,4 +1,4 @@
-export const displayExpantion = function(self, styles) {
+export const displayExpantion = function (self, styles) {
   let div = self.nextElementSibling;
   if (div) {
     while (true) {
@@ -15,12 +15,12 @@ export const displayExpantion = function(self, styles) {
 
 export const displayComment = {
   Comment: () => document.getElementById("Comment"),
-  onOver: function(comment) {
+  onOver: function (comment) {
     let div = this.Comment();
     div.style.display = "block";
     div.innerHTML = comment;
   },
-  onOut: function() {
+  onOut: function () {
     let div = this.Comment();
     div.style.display = "none";
   },

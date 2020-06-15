@@ -46,14 +46,14 @@ function passSets(el) {
   fs.readdir(templates, (err, files) => {
     err && console.error("fs error", err);
     // console.log(files);
-    files.forEach(ele => {
+    files.forEach((ele) => {
       if (!ele.match(ignore)) {
         const el = ele.replace(/\.\S*/g, "");
         const newPath = path.join(paths, el);
 
         //没配置
         !passSets(el) &&
-          fs.mkdir(newPath, e => {
+          fs.mkdir(newPath, (e) => {
             e &&
               console.warn(
                 `exisit config [Error: ${e.code}: file already exists, ${e.syscall} ${e.path}]`
@@ -121,7 +121,7 @@ function createNodeFields(createNodeField, node, config) {
  */
 function markName(name, ext) {
   let trust = false;
-  exts.forEach(i => {
+  exts.forEach((i) => {
     if (!trust && ext.endsWith(i)) trust = true;
   });
   if (!trust) {

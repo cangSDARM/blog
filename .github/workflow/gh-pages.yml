@@ -1,0 +1,40 @@
+name: deploy gh-pages
+
+on: 
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+  
+  push: 
+    branches: master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Install and Build 🔧
+        uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
+      
+      - name: Cache dependencies 🍪
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      - run: npm run format
+      - run: npm run build
+
+      - name: Deploy 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./public
