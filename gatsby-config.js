@@ -1,5 +1,5 @@
 module.exports = {
-  pathPrefix: "/",
+  pathPrefix: "/blog",
   siteMetadata: {
     title: `Allen Lee@Blog`,
     description: `This barebones starter ships with the main Gatsby configuration files you might need.`,
