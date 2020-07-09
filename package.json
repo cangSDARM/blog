@@ -44,10 +44,10 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf ./public",
-    "build": "gatsby build",
-    "develop": "rimraf ./public && gatsby develop",
+    "prestart": "rimraf ./public",
+    "build": "gatsby build --prefix-paths",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "start": "npm run develop",
+    "start": "gatsby develop",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
