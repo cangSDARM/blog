@@ -4,6 +4,12 @@ import { Link, graphql } from "gatsby";
 import Layout from "../components/layout";
 import Image from "../components/image";
 import SEO from "../components/seo";
+import puns from "../raw/pun";
+
+const lists = {
+  TODO: [],
+  PROCESSING: [],
+};
 
 const IndexPage = ({ data }) => (
   <Layout>
@@ -12,18 +18,52 @@ const IndexPage = ({ data }) => (
       config={{ titleTemplate: `%s` }}
     />
     <div style={{ margin: `0 auto`, width: `980px` }}>
-      <h1>Hi people</h1>
-      <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-        <Image image="gatsby-astronaut.png" />
+      <div
+        style={{ margin: `0 auto`, maxWidth: `300px`, marginBottom: `1.45rem` }}
+      >
+        <Image path="gatsby-icon" />
       </div>
-      <span style={{ color: `#c3fa00`, background: `#3700fa` }}>
-        {"TODO".toUpperCase()}-List:{" "}
-      </span>
-      <div style={{ margin: `1rem 0 1rem 2rem` }}></div>
-      <span style={{ color: `#ff4c2c`, background: `#33fa1a` }}>
-        {"processing".toUpperCase()}-List:{" "}
-      </span>
-      <div style={{ margin: `1rem 0 1rem 2rem` }}></div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {Object.keys(lists).map((key) => {
+          return (
+            lists[key].length > 0 && (
+              <span
+                style={{
+                  color: `rgba(0,0,0,.75)`,
+                  fontWeight: 700,
+                  margin: `1rem 0`,
+                }}
+                key={key}
+              >
+                {`${key.toUpperCase()} List:`}
+              </span>
+            )
+          );
+        })}
+      </div>
+      <div
+        style={{
+          margin: "1em .5em 0 0",
+          padding: ".5em",
+          paddingLeft: "1em",
+          backgroundColor: "#f1f1f1",
+        }}
+      >
+        {puns.map((pun) => {
+          const key = pun.substring(0, 15);
+          return (
+            <blockquote
+              style={{
+                color: "rgba(0,0,0,.5)",
+                margin: "4px 0",
+              }}
+              key={key}
+            >
+              {pun}
+            </blockquote>
+          );
+        })}
+      </div>
     </div>
   </Layout>
 );

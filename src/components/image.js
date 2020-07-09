@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
  * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-const Image = ({ path, ...otherProps }) => {
+const Image = ({ path, ext, ...otherProps }) => {
   const data = useStaticQuery(graphql`
     query {
       images: allFile(filter: { sourceInstanceName: { eq: "images" } }) {
@@ -32,17 +32,20 @@ const Image = ({ path, ...otherProps }) => {
     }
   `);
   const image = data.images.edges.find(
-    (image) => image.node.relativePath === path
+    (image) => image.node.relativePath === `${path}.${ext}`
   );
+
   return <Img fluid={image.node.childImageSharp.fluid} {...otherProps} />;
 };
 
 Image.defaultProps = {
-  path: "gatsby-astronaut.png",
+  path: "gatsby-astronaut",
+  ext: "png",
 };
 
 Image.prototype = {
   path: PropTypes.string.isRequired,
+  ext: PropTypes.string,
 };
 
 export default Image;
