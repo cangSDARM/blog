@@ -212,7 +212,7 @@ html {
 body {
   overflow: hidden;
   color: hsla(0, 0%, 0%, 0.8);
-  font-family: georgia, serif;
+  font-family: "Fira Mono", georgia, serif;
   font-weight: normal;
   tab-size: 4;
   word-wrap: break-word;

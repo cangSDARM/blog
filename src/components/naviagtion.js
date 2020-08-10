@@ -45,7 +45,7 @@ class SameLevel {
   }
 }
 
-const Naviagtion = ({ desc, to, external }) => {
+const Navigation = ({ desc, to, external }) => {
   const Link = ({ location }) => {
     const sameLevel = new SameLevel(location.pathname, to.toString().trim());
     const { path } = sameLevel.check();
@@ -68,16 +68,16 @@ const Naviagtion = ({ desc, to, external }) => {
   );
 };
 
-Naviagtion.defaultProps = {
+Navigation.defaultProps = {
   desc: "",
   to: "",
   external: false,
 };
 
-Naviagtion.PropType = {
+Navigation.PropType = {
   desc: PropTypes.string,
   to: PropTypes.string.isRequired,
   external: PropTypes.bool,
 };
 
-export default Naviagtion;
+export default Navigation;

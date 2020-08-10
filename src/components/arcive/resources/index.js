@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Avatar } from "@material-ui/core";
-import Navgation from "../../naviagtion";
+import Navigation from "../../naviagtion";
 import mainstyles from "../main.module.css";
 import TreeView from "./treeView";
 
@@ -18,7 +18,7 @@ const Resources = ({ avatar, reference, headings }) => {
               首发于{` `}
               {refLink.split("https://").pop().split(".com").shift()}
             </span>
-            <Navgation to={refLink} desc={refTitle} external />
+            <Navigation to={refLink} desc={refTitle} external />
           </nav>
         </div>
         <TreeView headings={headings} />

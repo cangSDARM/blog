@@ -35,9 +35,9 @@ const shotCodes = {
   TableRow,
   TableCell,
   hr: (props) => <hr className={styles.hrStyle} {...props} />,
-  a: (props) => <a className={styles.aStyle} {...props}></a>,
-  th: (props) => <th className={styles.thStyle} {...props}></th>,
-  td: (props) => <th className={styles.tdStyle} {...props}></th>,
+  a: (props) => <a className={styles.aStyle} {...props}/>,
+  th: (props) => <th className={styles.thStyle} {...props}/>,
+  td: (props) => <th className={styles.tdStyle} {...props}/>,
 };
 
 export default function Template({ data }) {
@@ -47,7 +47,7 @@ export default function Template({ data }) {
   ModelList(exports.ImgList);
   let title =
     fields.slug === `/${fields.templateTag}`
-      ? "GraphicsLearnning"
+      ? "GraphicsLearning"
       : frontmatter.title;
   return (
     <Layout
@@ -67,9 +67,9 @@ export default function Template({ data }) {
           titleTemplate:
             fields.slug === `/${fields.templateTag}`
               ? `%s`
-              : `%s | GraphicsLearnning`,
+              : `%s | GraphicsLearning`,
         }}
-      ></SEO>
+      />
       <div className={styles.graphicsPost}>
         <h1>
           <a
@@ -89,7 +89,7 @@ export default function Template({ data }) {
         <MDXProvider components={shotCodes}>
           <MDXRenderer>{body}</MDXRenderer>
         </MDXProvider>
-        <div id="Comment" className={styles.Comment}></div>
+        <div id="Comment" className={styles.Comment}/>
       </div>
     </Layout>
   );
