@@ -44,7 +44,7 @@ const Layout = ({ children, ...otherProps }) => {
         style={{
           margin: `0 auto`,
           paddingTop: 0,
-          height: `calc(100vh - 96px)`,
+          height: `calc(100vh - 86px)`,
           overflowY: `auto`,
           overflowX: `hidden`,
         }}

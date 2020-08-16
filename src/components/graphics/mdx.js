@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from "react";
 import { Location } from "@reach/router";
-import { Typography } from "@material-ui/core";
+import { Modal } from "@material-ui/core";
 import { TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 
-import { displayExpantion, displayComment } from "./utils";
+import { displayExpansion, displayComment } from "./utils";
 import { Table as STable } from "./styled";
 import Img from "../image";
 import styles from "./style.module.css";
@@ -66,13 +66,13 @@ export const Tab = ({ children, expan, vicinage }) => {
   let RES = children ? (
     <Fragment>
       <div className={classes}>{children}</div>
-      {expan && <br />}
+      {expan && <br/>}
     </Fragment>
   ) : (
-    <div className={classes}></div>
+    <div className={classes}/>
   );
 
-  RES = vicinage ? <div className={styles.Tab} vicinage="true" /> : RES;
+  RES = vicinage ? <div className={styles.Tab} vicinage="true"/> : RES;
 
   return RES;
 };
@@ -82,7 +82,7 @@ export const Expansion = ({ children }) => {
     <div
       className={styles.Expansion}
       onClick={(e) => {
-        displayExpantion(e.currentTarget, styles);
+        displayExpansion(e.currentTarget, styles);
       }}
     >
       {children}
@@ -107,11 +107,12 @@ export const Aphorism = ({ children }) => {
 export const Model = ({ about, children }) => {
   const [curr, setState] = useState(false);
   const path = ImgList[about.replace("@", "") - 1];
-  const Image = function () {
+  const Image = function() {
     return (
       <Img
         title="缩小"
         path={`graphics/${path}`}
+        ext={"png"}
         imgStyle={{
           objectFit: "none",
         }}
@@ -125,22 +126,23 @@ export const Model = ({ about, children }) => {
   return (
     <div
       className={styles.model}
-      onClick={function () {
+      onClick={function() {
         setState(true);
       }}
     >
       {children}
       {curr && (
-        <div
+        <Modal
+          open={curr}
           id={`model${about}`}
-          onClick={function (e) {
+          onClick={function(e) {
             e.stopPropagation();
             setState(false);
           }}
           className={`${styles.FullScreen}`}
         >
-          <Image />
-        </div>
+          <Image/>
+        </Modal>
       )}
     </div>
   );
@@ -156,7 +158,7 @@ export const Quote = ({ id, children }) => {
           displayComment.onOver(QueryList[id.replace("#", "") - 1]);
         else
           displayComment.onOver(
-            `Warn: no such Quote be found in ${QueryList} at ${id}`
+            `Warn: no such Quote be found in ${QueryList} at ${id}`,
           );
       }}
       onMouseOut={(e) => displayComment.onOut()}

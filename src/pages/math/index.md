@@ -9,6 +9,10 @@ excerpt: "新年新Math"
 
 $x^2 + y_1 = \pi$ inline mode
 
+### Scale Matrix
 $$
-f(x,y,z) = 3y^2z \left( 3+\frac{7x+5}{1+y^2} \right)
+{x'\brack y'} = \begin{bmatrix}
+   s_{x} & 0 \\
+   0 & s_{y}
+\end{bmatrix}{x\brack y}
 $$

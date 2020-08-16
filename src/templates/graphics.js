@@ -19,11 +19,11 @@ import {
   ModelList,
   Table,
 } from "../components/graphics/mdx";
-import Naviagtion from "../components/naviagtion";
+import Navigation from "../components/naviagtion";
 
 const shotCodes = {
   Tab,
-  Naviagtion,
+  Navigation,
   Anchor,
   Quote,
   Model,

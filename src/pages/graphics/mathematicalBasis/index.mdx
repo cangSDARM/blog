@@ -21,22 +21,36 @@ export const QuoteList = [
     "即满足从右手坐标系, 依照从右往左的矩阵计算顺序, 映射到Z∈[-ω, ω]的CVV中. 若对于DirectX([0, ω]之间), 需要进一步更改",
     "注意与透视投影的区别! 正交投影的ω值没有被矩阵改变, 而透视投影的ω值被矩阵改为了-Z(原来的Z)",
     "在unity中, 这一步是底层完成的. 我们只需要处理到Clip space即可",
-    "这里的五个空间只是基础流水线上必须经过的五个空间. 实际上还有很多(例如切线空间)"
+    "这里的五个空间只是基础流水线上必须经过的五个空间. 实际上还有很多(例如切线空间)",
+    "如果 ω 不为1, 则需要normalized为1, 变成一个点, 否则这个矩阵是无意义的",
+    "顾名思义, 矩阵的逆会将矩阵的操作逆过来. Inverse of transform M in both a matrix and geometric sense",
+    "注意, 旋转矩阵并不涉及四元数. 四元数(及万向锁)的目的是做旋转插值"
 ];
 
 export const ImgList = [
-    "图形学矩阵和变换.png",
-    "基础变换矩阵.png",
-    "旋转矩阵.png",
-    "子空间到父空间的坐标变换.png",
-    "正交投影和透视投影.png",
-    "透视摄像机.png",
-    "透视投影变换.png",
-    "透视矩阵变换后的XYZW.png",
-    "正交摄像机.png",
-    "正交投影变换.png",
-    "正交矩阵变换后的XYZW.png",
-    "转化为屏幕坐标的简化公式.png"
+    "图形学矩阵和变换",
+    "基础变换矩阵",
+    "旋转矩阵",
+    "子空间到父空间的坐标变换",
+    "正交投影和透视投影",
+    "透视摄像机",
+    "透视投影变换",
+    "透视矩阵变换后的XYZW",
+    "正交摄像机",
+    "正交投影变换",
+    "正交矩阵变换后的XYZW",
+    "转化为屏幕坐标的简化公式",
+    "scale-matrix",
+    "reflection-matrix",
+    "shear-matrix",
+    "rotation-matrix",
+    "homogenous-coordinates",
+    "affine-transformation",
+    "decomposing-transforms",
+    "rodrigues-formula",
+    "define-camera",
+    "define-view",
+    "view-matrix"
 ];
 
 <Aphorism>正因为它的复杂和难度, 才使得其结果如此的美</Aphorism>
@@ -149,7 +163,7 @@ export const ImgList = [
             <br/>
             乘法转置: (AB)′ = B′A′
         </Tab>
-        矩阵的逆满足:
+        <Quote id="#19">矩阵的逆</Quote>满足:
         <Tab>
             逆的逆: inv(inv(A)) = A
             <br/>
@@ -185,7 +199,9 @@ export const ImgList = [
             <br/>
             沿坐标轴缩放的矩阵: t矩阵为0矩阵, M矩阵 = (<Quote id="#8">[λ₁, λ₂, λ₃]′</Quote> * 单位矩阵), 一般不是正交矩阵
             <br/>
-            旋转矩阵: <Model about="@3">需要选定旋转轴</Model>. 是正交矩阵, 且其同类型矩阵相加减也是正交的
+            <Quote id="#20">旋转矩阵</Quote>: <Model about="@3">需要选定旋转轴</Model>. 是正交矩阵, 且其同类型矩阵相加减也是正交的
+            <br/>
+            三维空间中, 一个向量绕旋转轴旋转给定角度后得到的新向量的计算公式: <Model about="@20">罗德里格斯公式</Model>
         </Tab>
     </Tab>
 </Tab>
@@ -196,7 +212,8 @@ export const ImgList = [
     <Tab expan>
         满足 f(x)+f(y) = f(x+y) 且 λf(x) = f(λx) 的变换称为线性变换(linear transform)
         <br/>
-        用于: 缩放(scale), 旋转(rotation), 错切(shear), 镜像(mirroring), 反射(reflection), 正交投影(orthographic)等
+        用于: 缩放(scale), 旋转(rotation), 错切(shear), 镜像(mirroring), 反射(reflection), 正交投影(orthographic)等<br/>
+        对应矩阵(二维坐标): <Model about="@13">缩放矩阵</Model>, <Model about="@16">旋转矩阵</Model>, <Model about="@15">错切矩阵</Model>, <Model about="@14">镜像矩阵</Model>
     </Tab>
     <Expansion>平移变换</Expansion>:
     <Tab expan>
@@ -208,14 +225,14 @@ export const ImgList = [
     <Tab expan>
         将 平移变换 和 线性变换相合并, 称为仿射变换(affine transform)
         <br/>
-        仿射变换在三维空间下无法实现, 因此将矢量扩充到"<Expansion><Quote id="#6">四维齐次坐标空间</Quote></Expansion>"(homogeneous space)
+        仿射变换在同维空间下<Model about="@18">无法表示为一个矩阵</Model>, 因此将矢量扩充到"<Expansion><Quote id="#6">+1维的齐次坐标空间</Quote></Expansion>"(Homogeneous Coordinate Space)
         <Tab expan>
-            对于"点", 转换方式是将 ω 设置为1
-            <br/>
-            对于"矢量", 转换方式是将 ω 设置为0
+            对于"点", 转换方式是将 ω 置为1<br/>
+            对于"矢量", 转换方式是将 ω 置为0<br/>
+            <Quote id="#18">置 0/1 </Quote>的目的是: <Model about="@17">保证转换后依然是点或向量</Model><br/>
         </Tab>
     </Tab>
-    <Expansion >坐标空间的变换</Expansion>:
+    <Expansion>坐标空间的变换</Expansion>:
     <Tab expan>
         <Quote id="#10">每个坐标空间都有一个父坐标空间</Quote>, 对坐标空间的变换就是在父空间和子空间之间变换
         <br/>
@@ -244,9 +261,10 @@ export const ImgList = [
         </Tab>
         World space -> View space:
         <Tab>
-            直接正向调整计算较为复杂, 可以反向构造.
-            <br/>
-            View -> World: SRT, 再用矩阵([0, 0, -1, 0])乘以其结果来转换坐标系的旋向性即为View space
+            1. <Model about="@21">定义相机</Model><br/>
+            2. <Model about="@22">确定下一步的默认位置</Model><br/>
+            3. <Model about="@23">根据位置变换所有物体</Model>(Inverse SRT-matrix)<br/>
+            4. 用矩阵([0, 0, -1, 0])乘以其第3步结果, 转换坐标系的旋向性即为View space
         </Tab>
         View space -> Clip space: Clip space即规范立方体CVV
         <Tab>
@@ -287,11 +305,13 @@ export const ImgList = [
     <Tab expan>
         矢量放在矩阵的右侧, 且矢量转换为列矩阵. 如: CBAv == (C(B(Av))), 即先对v使用A进行变换, 再使用B, 最后使用C
         <br/>
-        矩阵运算的阅读顺序是"从右到左"
+        矩阵运算的顺序是"从右到左"
         <br/>
         依照先缩放, 后旋转, 最后平移的顺序操作. 代码中顺序是<Quote id="#12"> TRS </Quote>
         <br/>
         如果有多个轴参与旋转, 则顺序是: ZXYv<Quote id="#9">(也是代码中矩阵的顺序)</Quote>, 即先对Z轴旋转, 再对X轴旋转, 最后对Y轴
+        <br/>
+        <Model about="@19">复合变换的分解</Model>
     </Tab>
     <Expansion>法线变换</Expansion>:
     <Tab expan>
