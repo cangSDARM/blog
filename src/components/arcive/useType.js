@@ -7,6 +7,7 @@ const Type = {
   JianShu: "www.jianshu.com",
   Bilibili: "www.bilibili.com",
   DouBan: "movie.douban.com",
+  TieBa: "tieba.baidu.com"
 };
 
 function styleConcat(...typeStyle) {
@@ -24,6 +25,8 @@ export const useType = (typo) => {
       return styleConcat(styles.Bilibili);
     case Type.DouBan:
       return styleConcat(styles.Douban);
+    case Type.TieBa:
+      return styleConcat(styles.TieBa);
     default:
       return styleConcat();
   }

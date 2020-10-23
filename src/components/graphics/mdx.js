@@ -8,6 +8,8 @@ import { Table as STable } from "./styled";
 import Img from "../image";
 import styles from "./style.module.css";
 
+//TODO: fix aria-role issue, currencly i dont know the right role
+
 let QueryList = [];
 let ImgList = [];
 
@@ -66,13 +68,13 @@ export const Tab = ({ children, expan, vicinage }) => {
   let RES = children ? (
     <Fragment>
       <div className={classes}>{children}</div>
-      {expan && <br/>}
+      {expan && <br />}
     </Fragment>
   ) : (
-    <div className={classes}/>
+    <div className={classes} />
   );
 
-  RES = vicinage ? <div className={styles.Tab} vicinage="true"/> : RES;
+  RES = vicinage ? <div className={styles.Tab} vicinage="true" /> : RES;
 
   return RES;
 };
@@ -80,6 +82,7 @@ export const Tab = ({ children, expan, vicinage }) => {
 export const Expansion = ({ children }) => {
   return (
     <div
+      role="expansion"
       className={styles.Expansion}
       onClick={(e) => {
         displayExpansion(e.currentTarget, styles);
@@ -107,7 +110,7 @@ export const Aphorism = ({ children }) => {
 export const Model = ({ about, children }) => {
   const [curr, setState] = useState(false);
   const path = ImgList[about.replace("@", "") - 1];
-  const Image = function() {
+  const Image = function () {
     return (
       <Img
         title="缩小"
@@ -126,7 +129,7 @@ export const Model = ({ about, children }) => {
   return (
     <div
       className={styles.model}
-      onClick={function() {
+      onClick={function () {
         setState(true);
       }}
     >
@@ -135,13 +138,13 @@ export const Model = ({ about, children }) => {
         <Modal
           open={curr}
           id={`model${about}`}
-          onClick={function(e) {
+          onClick={function (e) {
             e.stopPropagation();
             setState(false);
           }}
           className={`${styles.FullScreen}`}
         >
-          <Image/>
+          <Image />
         </Modal>
       )}
     </div>
@@ -149,19 +152,25 @@ export const Model = ({ about, children }) => {
 };
 
 export const Quote = ({ id, children }) => {
+  const focus = () => {
+    if (QueryList[id.replace("#", "") - 1])
+      displayComment.onOver(QueryList[id.replace("#", "") - 1]);
+    else
+      displayComment.onOver(
+        `Warn: no such Quote be found in ${QueryList} at ${id}`
+      );
+  };
+
+  const blur = () => displayComment.onOut();
+
   return (
     <span
       className={styles.Quote}
       id={id}
-      onMouseOver={(e) => {
-        if (QueryList[id.replace("#", "") - 1])
-          displayComment.onOver(QueryList[id.replace("#", "") - 1]);
-        else
-          displayComment.onOver(
-            `Warn: no such Quote be found in ${QueryList} at ${id}`,
-          );
-      }}
-      onMouseOut={(e) => displayComment.onOut()}
+      onMouseOver={focus}
+      onFocus={focus}
+      onMouseOut={blur}
+      onBlur={blur}
     >
       {children}
     </span>

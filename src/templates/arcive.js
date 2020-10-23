@@ -20,7 +20,7 @@ export default function Template({ data }) {
     fields.slug === `/${fields.templateTag}`
       ? "ArcivedArticle"
       : frontmatter.title;
-  let className = useType(frontmatter.type);
+  const className = useType(frontmatter.type);
   return (
     <Layout>
       <SEO
