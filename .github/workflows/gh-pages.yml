@@ -3,11 +3,10 @@ name: deploy gh-pages
 on: 
   pull_request:
     types: [closed]
-    branches:
-      - master
+    branches: [master]
   
   push: 
-    branches: master
+    branches: [master]
 
 jobs:
   build-and-deploy:
