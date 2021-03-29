@@ -1,4 +1,4 @@
-import styles from "./type.module.css";
+import {zhihu, jianshu, bilibili, douban, tieba, weibo} from './styles';
 import mainstyle from "./main.module.css";
 
 const Type = {
@@ -18,17 +18,17 @@ function styleConcat(...typeStyle) {
 export const useType = (typo) => {
   switch (typo) {
     case Type.ZhiHu_Zhuanlan:
-      return styleConcat(styles.ZhiHu_Zhuanlan);
+      return styleConcat(zhihu);
     case Type.JianShu:
-      return styleConcat(styles.JianShu);
+      return styleConcat(jianshu);
     case Type.Bilibili:
-      return styleConcat(styles.Bilibili);
+      return styleConcat(bilibili);
     case Type.DouBan:
-      return styleConcat(styles.Douban);
+      return styleConcat(douban);
     case Type.TieBa:
-      return styleConcat(styles.TieBa);
+      return styleConcat(tieba);
     case Type.Weibo:
-      return styleConcat(styles.Weibo);
+      return styleConcat(weibo);
     default:
       return styleConcat();
   }

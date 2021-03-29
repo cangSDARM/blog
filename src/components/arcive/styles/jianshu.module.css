@@ -1,0 +1,44 @@
+/* 简书 */
+.JianShu {
+  margin-top: 5px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-feature-settings: "tnum";
+  font-variant: tabular-nums;
+  line-height: 1.42857;
+  padding: 24px;
+  margin-bottom: 10px;
+  min-height: calc(100vh - 66px);
+  flex-shrink: 0;
+  width: 730px;
+  font-weight: 400;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.JianShu h1 {
+  font-size: 30px;
+  font-weight: 700;
+  word-break: break-word;
+  color: #404040;
+  text-rendering: optimizelegibility;
+}
+.JianShu article {
+  font-weight: 400;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.JianShu article p {
+  margin-bottom: 20px;
+  word-break: break-word;
+  margin-top: 0;
+}
+.JianShu a {
+  color: inherit;
+}
+/* 简书 */
