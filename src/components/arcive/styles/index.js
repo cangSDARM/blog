@@ -4,3 +4,4 @@ export { Bilibili as bilibili } from "./bilibili.module.css";
 export { Douban as douban } from "./douban.module.css";
 export { TieBa as tieba } from "./tieba.module.css";
 export { Weibo as weibo } from "./weibo.module.css";
+export { Godot as godot } from "./godot.module.css";

@@ -35,9 +35,9 @@ const shotCodes = {
   TableRow,
   TableCell,
   hr: (props) => <hr className={styles.hrStyle} {...props} />,
-  a: (props) => <a className={styles.aStyle} {...props}/>,
-  th: (props) => <th className={styles.thStyle} {...props}/>,
-  td: (props) => <th className={styles.tdStyle} {...props}/>,
+  a: (props) => <a className={styles.aStyle} {...props} />,
+  th: (props) => <th className={styles.thStyle} {...props} />,
+  td: (props) => <th className={styles.tdStyle} {...props} />,
 };
 
 export default function Template({ data }) {
@@ -89,7 +89,7 @@ export default function Template({ data }) {
         <MDXProvider components={shotCodes}>
           <MDXRenderer>{body}</MDXRenderer>
         </MDXProvider>
-        <div id="Comment" className={styles.Comment}/>
+        <div id="Comment" className={styles.Comment} />
       </div>
     </Layout>
   );

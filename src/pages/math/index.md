@@ -10,6 +10,7 @@ excerpt: "新年新Math"
 $x^2 + y_1 = \pi$ inline mode
 
 ### Scale Matrix
+
 $$
 {x'\brack y'} = \begin{bmatrix}
    s_{x} & 0 \\

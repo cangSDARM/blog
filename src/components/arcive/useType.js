@@ -1,4 +1,12 @@
-import { zhihu, jianshu, bilibili, douban, tieba, weibo } from "./styles";
+import {
+  zhihu,
+  jianshu,
+  bilibili,
+  douban,
+  tieba,
+  weibo,
+  godot,
+} from "./styles";
 import mainstyle from "./main.module.css";
 
 const Type = {
@@ -8,6 +16,7 @@ const Type = {
   DouBan: "movie.douban.com",
   TieBa: "tieba.baidu.com",
   Weibo: "weibo.com",
+  Godot: "docs.godotengine.org",
 };
 
 function styleConcat(...typeStyle) {
@@ -29,6 +38,8 @@ export const useType = (typo) => {
       return styleConcat(tieba);
     case Type.Weibo:
       return styleConcat(weibo);
+    case Type.Godot:
+      return styleConcat(godot);
     default:
       return styleConcat();
   }

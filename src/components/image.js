@@ -34,8 +34,13 @@ const Image = ({ path, ext, ...otherProps }) => {
   const image = data.images.edges.find(
     (image) => image.node.relativePath === `${path}.${ext}`
   );
-  return image?.node?.childImageSharp?.fluid ? <Img fluid={image?.node?.childImageSharp?.fluid}  {...otherProps} />
-  : <div>Not Found this image at {path}.{ext}</div>;
+  return image?.node?.childImageSharp?.fluid ? (
+    <Img fluid={image?.node?.childImageSharp?.fluid} {...otherProps} />
+  ) : (
+    <div>
+      Not Found this image at {path}.{ext}
+    </div>
+  );
 };
 
 Image.defaultProps = {

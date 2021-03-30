@@ -1,0 +1,185 @@
+/* Godot docs */
+.Godot {
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  color: #404040 !important;
+  background-color: #fcfcfc;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  line-height: 1.6;
+  word-wrap: break-word;
+  font-size: 16px;
+  padding: 1.618em 3.236em;
+  counter-reset: sup;
+}
+.Godot h1 {
+  font-size: 175%;
+  font-weight: 500;
+  margin-block-end: 0.83em;
+  display: none;
+}
+.Godot h1[id="Encrypting-save-games"] {
+  display: block;
+}
+.Godot h2 {
+  clear: left;
+  font-size: 150%;
+  font-weight: 500;
+  margin-block-end: 0.83em;
+}
+.Godot p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 25px;
+  margin-bottom: 24px;
+}
+.Godot a {
+  color: #2980b9;
+}
+.Godot ul,
+.Godot ol,
+.Godot dl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+}
+.Godot div[class="navgator"] ul li {
+  display: inline-block;
+  list-style: none;
+  padding: 5px;
+  color: #2980b9;
+}
+.Godot div[class="navgator"] ul > :nth-child(3) {
+  color: #404040;
+}
+.Godot div[class="navgator"] ul > :last-child {
+  float: right;
+}
+.Godot hr {
+  border-color: #e1e4e5;
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #e1e4e5;
+  margin: 24px 0;
+  padding: 0;
+}
+.Godot div[class="sphinx-tabs"] {
+  margin-bottom: 2em;
+  position: relative;
+}
+.Godot div[class="sphinx-tabs"] > :first-child {
+  display: inline-block;
+}
+.Godot input {
+  display: none;
+}
+.Godot div[class="sphinx-tabs"] > :first-child label {
+  display: inline-block;
+  background: none #fff;
+  color: #2980b9;
+  font-weight: 700;
+  margin-bottom: -1px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0.28571429rem 0.28571429rem 0 0 !important;
+  background-color: transparent;
+  border: 1px solid #a0b3bf;
+  padding: 0.92857143em 1.42857143em;
+  pointer-events: all;
+  cursor: pointer;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+}
+.Godot div[class="sphinx-tabs"] > :not(:first-child) {
+  display: none;
+}
+.Godot input[id="gd"]:checked ~ * label[for="gd"],
+.Godot input[id="cs"]:checked ~ * label[for="cs"] {
+  background-color: #fff;
+  border: 1px solid #a0b3bf;
+  border-left: 1px solid #a0b3bf !important;
+  border-right: 1px solid #a0b3bf !important;
+  border-top: 1px solid #a0b3bf !important;
+  border-bottom: 1px solid transparent;
+  --select: 1;
+}
+.Godot input[id="gd"]:checked ~ div[class="sphinx-tabs"] > :nth-child(2) {
+  display: block;
+}
+.Godot input[id="cs"]:checked ~ div[class="sphinx-tabs"] > :nth-child(3) {
+  display: block;
+}
+.Godot pre[class*="language-"] {
+  background: #f5ffe1;
+  margin: 1px 0 24px 0;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", Courier, monospace;
+  padding: 12px;
+}
+.Godot pre > code[class*="language-"] {
+  color: #404040;
+  line-height: 1.5;
+  font-size: 14px;
+  text-shadow: none;
+}
+.Godot :not(pre) > code[class*="language-"] {
+  background-color: #fff;
+  border: 1px solid #e1e4e5;
+  font-size: 14px;
+  text-shadow: none;
+  padding: 2px 5px;
+  color: #d04c60;
+}
+.Godot *[class="gatsby-highlight"] {
+  background: #fff;
+  box-shadow: none;
+  border: 1px solid #a0b3bf;
+  box-shadow: none;
+  border-radius: 0 0 0.28571429rem 0.28571429rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.4em;
+  max-width: calc(100% - (-1px * 2));
+}
+.Godot *[class="token keyword"] {
+  color: #007020;
+}
+.Godot *[class="token operator"],
+.Godot *[class="token punctuation"],
+.Godot *[class="token constructor-invocation class-name"],
+.Godot *[class="token function"] {
+  color: #404040;
+}
+.Godot *[class="token string"] {
+  color: #4070a0;
+}
+.Godot blockquote {
+  background-color: #e7f2fa;
+  color: #404040;
+  padding: 12px;
+  line-height: 24px;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+.Godot blockquote::before {
+  content: "⭕ Note";
+  background-color: #6ab0de;
+  color: #fff;
+  display: block;
+  font-weight: bold;
+  margin: -12px;
+  padding: 6px 12px;
+  font-size: inherit;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.Godot blockquote > p {
+  margin: 0;
+}
+/* Godot docs */

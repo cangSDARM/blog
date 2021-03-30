@@ -1,11 +1,11 @@
 name: deploy gh-pages
 
-on: 
+on:
   pull_request:
     types: [closed]
     branches: [master]
-  
-  push: 
+
+  push:
     branches: [master]
 
 jobs:
@@ -18,11 +18,11 @@ jobs:
       - name: Install and Build 🔧
         uses: actions/setup-node@v1
         with:
-          node-version: '13.x'
+          node-version: "13.x"
 
       - name: Install dependencies 📁
         run: npm install
-        
+
       - name: Cache dependencies 🍪
         uses: actions/cache@v1
         with:
@@ -30,8 +30,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      
-      - run: npm run format
+
       - run: npm run build
 
       - name: Deploy 🚀
