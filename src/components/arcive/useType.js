@@ -1,4 +1,4 @@
-import {zhihu, jianshu, bilibili, douban, tieba, weibo} from './styles';
+import { zhihu, jianshu, bilibili, douban, tieba, weibo } from "./styles";
 import mainstyle from "./main.module.css";
 
 const Type = {
@@ -7,7 +7,7 @@ const Type = {
   Bilibili: "www.bilibili.com",
   DouBan: "movie.douban.com",
   TieBa: "tieba.baidu.com",
-  Weibo: "weibo.com"
+  Weibo: "weibo.com",
 };
 
 function styleConcat(...typeStyle) {
