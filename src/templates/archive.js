@@ -3,13 +3,13 @@ import { graphql } from "gatsby";
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { Paper } from "@material-ui/core";
-import styles from "../components/arcive/main.module.css";
-import { useType } from "../components/arcive/useType";
+import styles from "../components/archive/main.module.css";
+import { useType } from "../components/archive/useType";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import Resources from "../components/arcive/resources";
+import Resources from "../components/archive/resources";
 
-const arcivedMdx = {
+const archivedMdx = {
   Paper,
 };
 
@@ -18,7 +18,7 @@ export default function Template({ data }) {
   const { frontmatter, body, fields, headings } = mdx;
   let title =
     fields.slug === `/${fields.templateTag}`
-      ? "ArcivedArticle"
+      ? "ArchivedArticle"
       : frontmatter.title;
   const className = useType(frontmatter.type);
   return (
@@ -29,7 +29,7 @@ export default function Template({ data }) {
           titleTemplate:
             fields.slug === `/${fields.templateTag}`
               ? `%s`
-              : `%s | ArcivedArticle`,
+              : `%s | ArchivedArticle`,
         }}
       ></SEO>
       <div className={className}>
@@ -40,7 +40,7 @@ export default function Template({ data }) {
           headings={headings}
         />
         <article>
-          <MDXProvider components={arcivedMdx}>
+          <MDXProvider components={archivedMdx}>
             <MDXRenderer>{body}</MDXRenderer>
           </MDXProvider>
         </article>

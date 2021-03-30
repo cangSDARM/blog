@@ -1,13 +1,13 @@
 ---
 title: "DSL Practice Guide"
-tags: ["arcive"]
+tags: ["archive"]
 type: "zhuanlan.zhihu.com"
 avatar: "https://pic1.zhimg.com/v2-1e8e1df38bdab7cc86d308de9064ee3e_is.jpg"
 reference: "云音乐前端技术团队专栏（郑海波）|https://zhuanlan.zhihu.com/p/107947462"
 index: 2
 ---
 
-![header](../../images/arcive/v2cb09d892ec78f48e58b918c0b8d4ca23_1200x500.jpg " ")
+![header](../../images/archive/v2cb09d892ec78f48e58b918c0b8d4ca23_1200x500.jpg " ")
 ## 前言
 近几年，前端社区中 DSL 这个词开始频繁出镜，这和环境的变化有很大关系：
 
@@ -96,7 +96,7 @@ mustache 的例子：
 > **syntactic noise** is syntax within a programming language that makes the programming language more difficult to read and understand for humans.
 
 最后我们来看下内部 DSL 以及外部 DSL 与一般通用语言 GPPL 的关系：
-![Pixlr_20191217155208460.jpg](../../images/arcive/GPPL和内部DSL、外部DSL.jpg " ")
+![Pixlr_20191217155208460.jpg](../../images/archive/GPPL和内部DSL、外部DSL.jpg " ")
 
 ## 内部 DSL
 结合 JavaScript 构建内部 DSL 其实有一些可套用的风格可循。
@@ -288,7 +288,7 @@ div '#container',
 嵌套函数并不是万金油，它天然不适合流程、时间等顺序敏感的场景。
 
 例如，如果将风格 2 的级联管道修改为嵌套函数：
-![嵌套函数在流程抽象的应用范例](../../images/arcive/嵌套函数在流程抽象的应用范例.jpg "嵌套函数在流程抽象的应用范例")
+![嵌套函数在流程抽象的应用范例](../../images/archive/嵌套函数在流程抽象的应用范例.jpg "嵌套函数在流程抽象的应用范例")
 
 执行逻辑与阅读顺序显然不一致，并且会加重书写负担(同时要关心开闭逻辑)，极大影响读写流畅度。
 
@@ -429,7 +429,7 @@ tea.should.have.property('flavors').with.lengthOf(3);
 
 #### 总结
 本文并未囊括所有内部 DSL 实现风格(比如也有些基于 Decorator 装饰器的玩法)，且所列风格都不是银弹，都有其适用场景，它们之间存在互补效应。
-![所列举的内部DSL构建风格对比简表](../../images/arcive/所列举的内部DSL构建风格对比简表.jpg)
+![所列举的内部DSL构建风格对比简表](../../images/archive/所列举的内部DSL构建风格对比简表.jpg)
 
 通过上面的一些惯用风格的介绍，我们建立了对前端内部 DSL 的一些了解，以下再针对「Why」的问题做下深入讨论：
 
