@@ -1,13 +1,13 @@
+import * as mainstyle from "./main.module.css";
 import {
-  zhihu,
-  jianshu,
   bilibili,
   douban,
+  godot,
+  jianshu,
   tieba,
   weibo,
-  godot,
+  zhihu,
 } from "./styles";
-import mainstyle from "./main.module.css";
 
 const Type = {
   ZhiHu_Zhuanlan: "zhuanlan.zhihu.com",

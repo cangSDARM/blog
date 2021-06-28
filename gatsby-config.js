@@ -76,13 +76,22 @@ module.exports = {
         path: `${__dirname}/src/pages`,
       },
     },
+    `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        defaults: {
+          quality: 80,
+          placeholder: `blurred`,
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `allen-blog`,
+        short_name: `blog`,
         start_url: `/`,
         background_color: `#663399`,
         theme_color: `#663399`,
@@ -95,7 +104,11 @@ module.exports = {
     // `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-material-ui`,
-      options: {},
+      options: {
+        stylesProvider: {
+          injectFirst: true,
+        },
+      },
     },
   ],
 };

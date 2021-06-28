@@ -1,13 +1,12 @@
-import React from "react";
-import { graphql } from "gatsby";
-import { MDXProvider } from "@mdx-js/react";
-import { MDXRenderer } from "gatsby-plugin-mdx";
 import { Paper } from "@material-ui/core";
-import styles from "../components/archive/main.module.css";
+import { MDXProvider } from "@mdx-js/react";
+import { graphql } from "gatsby";
+import { MDXRenderer } from "gatsby-plugin-mdx";
+import React from "react";
+import Resources from "../components/archive/resources";
 import { useType } from "../components/archive/useType";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import Resources from "../components/archive/resources";
 
 const archivedMdx = {
   Paper,
@@ -51,7 +50,7 @@ export default function Template({ data }) {
 }
 
 export const query = graphql`
-  query($slug: String!) {
+  query ($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
       body
       frontmatter {

@@ -1,7 +1,7 @@
-import React from "react";
 import { graphql, useStaticQuery } from "gatsby";
-import Img from "gatsby-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import PropTypes from "prop-types";
+import React from "react";
 
 /*
  * This component is built using `gatsby-image` to automatically serve optimized
@@ -22,9 +22,7 @@ const Image = ({ path, ext, ...otherProps }) => {
           node {
             relativePath
             childImageSharp {
-              fluid(maxWidth: 1000) {
-                ...GatsbyImageSharpFluid
-              }
+              gatsbyImageData(formats: [AUTO, WEBP, AVIF])
             }
           }
         }
@@ -34,8 +32,8 @@ const Image = ({ path, ext, ...otherProps }) => {
   const image = data.images.edges.find(
     (image) => image.node.relativePath === `${path}.${ext}`
   );
-  return image?.node?.childImageSharp?.fluid ? (
-    <Img fluid={image?.node?.childImageSharp?.fluid} {...otherProps} />
+  return image?.node ? (
+    <GatsbyImage image={getImage(image?.node)} {...otherProps} alt={path} />
   ) : (
     <div>
       Not Found this image at {path}.{ext}

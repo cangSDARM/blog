@@ -1,25 +1,25 @@
-import React from "react";
-import { graphql } from "gatsby";
-import Layout from "../components/layout";
-import SEO from "../components/seo";
+import { TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
 import { MDXProvider } from "@mdx-js/react";
+import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
-import TagsList from "../components/tag-lists";
-import Indexing from "../components/indexing";
-import styles from "../components/graphics/main.module.css";
-import { TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
+import React from "react";
+import * as styles from "../components/graphics/main.module.css";
 import {
-  Tab,
   Anchor,
-  Quote,
-  Model,
-  Expansion,
   Aphorism,
   CommentList,
+  Expansion,
+  Model,
   ModelList,
+  Quote,
+  Tab,
   Table,
 } from "../components/graphics/mdx";
+import Indexing from "../components/indexing";
+import Layout from "../components/layout";
 import Navigation from "../components/naviagtion";
+import SEO from "../components/seo";
+import TagsList from "../components/tag-lists";
 
 const shotCodes = {
   Tab,
@@ -96,7 +96,7 @@ export default function Template({ data }) {
 }
 
 export const query = graphql`
-  query($slug: String!) {
+  query ($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
       body
       frontmatter {

@@ -78,7 +78,7 @@ Tags.propTypes = {
 export default Tags;
 
 export const pageQuery = graphql`
-  query($tag: String) {
+  query ($tag: String) {
     allMdx(
       limit: 2000
       sort: {

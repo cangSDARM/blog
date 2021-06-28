@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { Avatar } from "@material-ui/core";
+import PropTypes from "prop-types";
+import React from "react";
 import Navigation from "../../naviagtion";
-import mainstyles from "../main.module.css";
+import * as mainstyles from "../main.module.css";
 import TreeView from "./treeView";
 
 const Resources = ({ avatar, reference, headings }) => {

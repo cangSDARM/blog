@@ -1,12 +1,14 @@
-import React from "react";
 import { graphql, Link } from "gatsby";
+import { GatsbyImage, getImage, getSrc } from "gatsby-plugin-image";
+import { MDXRenderer } from "gatsby-plugin-mdx";
+import React from "react";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import { MDXRenderer } from "gatsby-plugin-mdx";
 import TagsList from "../components/tag-lists";
 
 function HaskellHeader(fluid) {
-  const resizeWeight = 0.5625;
+  const image = getImage(fluid);
+
   return (
     <Link to="/tags/haskell">
       <div
@@ -17,13 +19,13 @@ function HaskellHeader(fluid) {
           flexDirection: `column`,
         }}
       >
-        <img
-          alt={fluid.originalName.replace(".png", "")}
-          src={fluid.src}
+        <GatsbyImage
+          alt={""}
+          image={image}
           style={{
             fontSize: `45px`,
-            width: `${fluid.presentationWidth * resizeWeight}px`,
-            height: `${fluid.presentationHeight * resizeWeight}px`,
+            // width: `${fluid.presentationWidth * resizeWeight}px`,
+            // height: `${fluid.presentationHeight * resizeWeight}px`,
             filter: `hue-rotate(180deg) invert(1)`,
           }}
         />
@@ -44,10 +46,10 @@ export default function Template({ data }) {
     <Layout
       header={{
         style: {
-          backgroundImage: `url(${headerIamge.childImageSharp.fluid.src})`,
+          backgroundImage: `url(${getSrc(headerIamge.childImageSharp)})`,
           backgroundSize: `cover`,
         },
-        children: HaskellHeader(logoIamge.childImageSharp.fluid),
+        children: HaskellHeader(logoIamge.childImageSharp),
       }}
     >
       <SEO
@@ -70,7 +72,7 @@ export default function Template({ data }) {
 }
 
 export const query = graphql`
-  query($slug: String!) {
+  query ($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
       body
       frontmatter {
@@ -86,20 +88,13 @@ export const query = graphql`
 
     headerIamge: file(relativePath: { eq: "haskell-header.png" }) {
       childImageSharp {
-        fluid(fit: COVER, pngQuality: 100) {
-          src
-        }
+        gatsbyImageData(formats: [AUTO, WEBP], quality: 100)
       }
     }
 
     logoIamge: file(relativePath: { eq: "haskell-logo.png" }) {
       childImageSharp {
-        fluid(fit: COVER, pngQuality: 100) {
-          src
-          presentationHeight
-          presentationWidth
-          originalName
-        }
+        gatsbyImageData(formats: [AUTO, WEBP], quality: 100, height: 56)
       }
     }
   }

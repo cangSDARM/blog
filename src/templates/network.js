@@ -1,14 +1,13 @@
-import React from "react";
-import { graphql } from "gatsby";
-import Layout from "../components/layout";
-import SEO from "../components/seo";
-import Indexing from "../components/indexing";
-import TagsList from "../components/tag-lists";
-
 import { MDXProvider } from "@mdx-js/react";
+import { graphql } from "gatsby";
+import { getSrc } from "gatsby-plugin-image";
 import { MDXRenderer } from "gatsby-plugin-mdx";
-
-import styles from "../components/network/style.module.css";
+import React from "react";
+import Indexing from "../components/indexing";
+import Layout from "../components/layout";
+import * as styles from "../components/network/style.module.css";
+import SEO from "../components/seo";
+import TagsList from "../components/tag-lists";
 
 const shotCodes = {
   h3: (props) => <h3 style={{ margin: `20px 0 10px` }} {...props} />,
@@ -29,7 +28,7 @@ export default function Template({ data }) {
     <Layout
       header={{
         style: {
-          backgroundImage: `url(${headerIamge.childImageSharp.fluid.src})`,
+          backgroundImage: `url(${getSrc(headerIamge.childImageSharp)})`,
           backgroundSize: `cover`,
         },
       }}
@@ -64,7 +63,7 @@ export default function Template({ data }) {
 }
 
 export const query = graphql`
-  query($slug: String!) {
+  query ($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
       body
       frontmatter {
@@ -96,12 +95,7 @@ export const query = graphql`
 
     headerIamge: file(relativePath: { eq: "network-logo.png" }) {
       childImageSharp {
-        fluid(fit: COVER, pngQuality: 100) {
-          src
-          presentationHeight
-          presentationWidth
-          originalName
-        }
+        gatsbyImageData(formats: [AUTO, WEBP], quality: 100)
       }
     }
   }

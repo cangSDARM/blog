@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useLocation } from "@reach/router";
 import { SvgIcon } from "@material-ui/core";
 import { TreeItem, TreeView as MTreeView } from "@material-ui/lab";
-import { navigate, withPrefix } from "gatsby";
+import { useLocation } from "@reach/router";
+import { navigate } from "gatsby";
+import React, { useState } from "react";
 import rightAnchor from "../rightAnchor";
 
 const indexing = "目录";

@@ -1,12 +1,15 @@
+import {
+  Modal,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@material-ui/core";
 import React, { Fragment, useState } from "react";
-import { Location } from "@reach/router";
-import { Modal } from "@material-ui/core";
-import { TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
-
-import { displayExpansion, displayComment } from "./utils";
-import { Table as STable } from "./styled";
 import Img from "../image";
-import styles from "./style.module.css";
+import * as styles from "./style.module.css";
+import { Table as STable } from "./styled";
+import { displayComment, displayExpansion } from "./utils";
 
 //TODO: fix aria-role issue, currencly i dont know the right role
 
