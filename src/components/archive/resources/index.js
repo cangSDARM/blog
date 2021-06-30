@@ -16,7 +16,11 @@ const Resources = ({ avatar, reference, headings }) => {
           <nav>
             <span style={{ color: "#8590a6", fontSize: 12 }}>
               首发于{` `}
-              {refLink.split("https://").pop().split(".com").shift()}
+              {refLink
+                .split("https://")
+                .pop()
+                .split(/\.(com|org|cn|io).*/iu)
+                .shift()}
             </span>
             <Navigation to={refLink} desc={refTitle} external />
           </nav>

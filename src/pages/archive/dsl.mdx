@@ -8,7 +8,9 @@ index: 2
 ---
 
 ![header](../../images/archive/v2cb09d892ec78f48e58b918c0b8d4ca23_1200x500.jpg " ")
+
 ## 前言
+
 近几年，前端社区中 DSL 这个词开始频繁出镜，这和环境的变化有很大关系：
 
 1. React、Vue、Angular 等现代框架的表现层设计往往和 DSL 有较强的关联，透过这些优秀作品我们可以得到一些实践指引。
@@ -26,6 +28,7 @@ index: 2
 - 第三部分：外部 DSL + 前端 DSL 实践总结
 
 ## DSL 初识
+
 > 和很多计算机领域的概念一样，DSL 其实也算是先有实践再有定义。
 
 DSL 即「Domain Specific Language」，中文一般译为「领域特定语言」，在[《领域特定语言》](https://book.douban.com/subject/21964984/)这本书中它有了一个定义：
@@ -40,12 +43,12 @@ DSL 即「Domain Specific Language」，中文一般译为「领域特定语言�
 
 而在一些专有领域的任务处理上其实不需要那么多语言特性，DSL 就是在这种矛盾中产生的破局方案，它是为了解决特定任务的语言工具，比如文档编写有 markdown，字符串匹配有 RegExp，任务控制有 make、gradle，数据查找有 SQL，Web 样式编码有 CSS 等等。它的本质其实和我们很多软件工程问题的解决思路一样，**通过限定问题域边界，从而锁定复杂度，提高编程效率**。
 
-先来个简单的例子，比如表示*2周前的时间*：
+先来个简单的例子，比如表示*2 周前的时间*：
 
 **解法一**
 
 ```js
-new Date(Date.now() - 1000 * 60 * 60 * 24 * 7 * 2)
+new Date(Date.now() - 1000 * 60 * 60 * 24 * 7 * 2);
 ```
 
 **解法二**
@@ -70,6 +73,7 @@ new Date(Date.now() - 1000 * 60 * 60 * 24 * 7 * 2)
 > 其实从错误类型上我们就可以看到它们是有本质不同的。
 
 #### 外部 DSL
+
 解法二称之为**外部 DSL**，它是一种**独立的编程语言**，需要从解析器开始实现自己的编译工具，实现成本较高。但它的语法的灵活性更高，更容易达到用户的表现力需求。
 
 外部 DSL 的直接对应就是 GPPL，由于受限语法特性更少，一般不要求图灵完备，所以它实现难度会低于 GPPL。
@@ -82,14 +86,15 @@ mustache 的例子：
 ```html
 <h2>Names</h2>
 {{#names}}
-  <strong>{{name}}</strong>
+<strong>{{name}}</strong>
 {{/names}}
 ```
 
 #### 内部 DSL
+
 解法三我们称之为 **内部 DSL（Embedded DSL or Internal DSL）**，是建立在其它宿主语言之上（GPPL）的特殊 DSL，它与宿主语言共享编译与调试工具等基础设施，学习成本更低，也更容易被集成。他在语法上与宿主语言同源，但在运行时上需要做额外的封装。
 
-> 你也可以将内部DSL视为针对特定任务的特殊接口封装风格，比如 jQuery 就可以认为是针对 DOM 操作的一种内部 DSL。
+> 你也可以将内部 DSL 视为针对特定任务的特殊接口封装风格，比如 jQuery 就可以认为是针对 DOM 操作的一种内部 DSL。
 
 内部 DSL 的语法灵活度和语法噪音（syntactic noise）往往取决于宿主语言的选择，本篇的例子我们会围绕 JavaScript 来展开。
 
@@ -99,33 +104,31 @@ mustache 的例子：
 ![Pixlr_20191217155208460.jpg](../../images/archive/GPPL和内部DSL、外部DSL.jpg " ")
 
 ## 内部 DSL
+
 结合 JavaScript 构建内部 DSL 其实有一些可套用的风格可循。
 
 #### 风格 1：级联方法
+
 级联方法是内部 DSL 的最常用模式，我们先以原生 DOM 操作作为反面案例：
 
 ```js
-const userPanel = document.querySelector('#user_panel');
+const userPanel = document.querySelector("#user_panel");
 
-userPanel.addEventListener('click', hidePanel);
+userPanel.addEventListener("click", hidePanel);
 
 slideDown(userPanel); //假设这是一个已实现的动画封装
 
-const followButtons = userPanel.querySelectorAll('button');
+const followButtons = userPanel.querySelectorAll("button");
 
-followButtons.forEach(node => {
-  node.innerHTML = 'follow';
+followButtons.forEach((node) => {
+  node.innerHTML = "follow";
 });
 ```
 
 相信大家很难一眼看出做了什么，但假如我们使用远古框架 jQuery 来实现等价效果：
 
 ```js
-$('#user_panel')
-  .click(hidePanel)
-  .slideDown()
-  .find('button')
-  .html('follow');
+$("#user_panel").click(hidePanel).slideDown().find("button").html("follow");
 ```
 
 就很容易理解其中的含义：
@@ -139,17 +142,19 @@ $('#user_panel')
 级联方法等链式调用风格的核心在于**调用不再设计特定返回值，而是直接返回下一个上下文（通常是自身）**，从而实现级联调用。
 
 #### 风格 2：级联管道
+
 级联管道只是一种级联方法的特殊应用，代表案例就是 gulp：
 
 > [gulp](https://gulpjs.com/) 是一种类似 make 构建任务管理工具，它将文件抽象为一种叫 [Vinyl](https://github.com/gulpjs/vinyl)(Virtual file format) 的类型，抽象文件使用 pipe 方法依次通过 transformer 从而完成任务。
 
 ```js
-gulp.src('./scss/**/*.scss')
+gulp
+  .src("./scss/**/*.scss")
   .pipe(plumber())
   .pipe(sass())
-  .pipe(rename({ suffix: '.min' }))
+  .pipe(rename({ suffix: ".min" }))
   .pipe(postcss())
-  .pipe(dest('./css'))
+  .pipe(dest("./css"));
 ```
 
 其设计哲学是衍生自 Unix 命令行中的管道，上例可以直接类比以下命令：
@@ -162,15 +167,15 @@ cat './scss/**/*.scss' | plumber | sass | rename --suffix '.min' | postcss | des
 
 ```js
 cha()
-  .in('glob', require('task-glob'))
-  .in('combine', require('task-combine'))
-  .in('replace', require('task-replace'))
-  .glob('./scss/**/*.scss')
+  .in("glob", require("task-glob"))
+  .in("combine", require("task-combine"))
+  .in("replace", require("task-replace"))
+  .glob("./scss/**/*.scss")
   .plumber()
   .sass()
-  .rename({ suffix: '.min' })
+  .rename({ suffix: ".min" })
   .postcss()
-  .dest('./css')
+  .dest("./css");
 ```
 
 由于减少了多个 `pipe`，代码显然是有减少的，但流畅度上并没有更大的提升。
@@ -178,6 +183,7 @@ cha()
 其次 `chajs` 的风格要求这些扩展方法都注册到实例中，这就平添了集成成本，这些集成代码也会影响到 DSL 的流畅度。相比之下，`gulp` 将扩展统一抽象为一种外部 `transformer`，显然设计的更加优雅。
 
 #### 风格 3：级联属性
+
 级联方法如文章开篇的 `(2).weeks().ago()`，其实还不够简洁，存在明显的语法噪音，`(2).weeks.ago`显然是个更好的方式，我们可以通过属性静态代理来实现，核心就是 `Object.defineProperty()`，它可以劫持属性的 `setter` 与 `getter`：
 
 ```js
@@ -201,11 +207,11 @@ class Duration {
     return new Date(Date.now() + this.toNumber());
   }
 }
-Object.keys(UNIT_TO_NUM).forEach(unit => {
+Object.keys(UNIT_TO_NUM).forEach((unit) => {
   Object.defineProperty(Number.prototype, unit, {
     get() {
       return new Duration(this, unit);
-    }
+    },
   });
 });
 
@@ -217,21 +223,28 @@ Object.keys(UNIT_TO_NUM).forEach(unit => {
 在 DSL 风格中，无论是级联方法、级联管道还是级联属性，本质都是链式调用风格，链式调用的核心是上下文传递，所以**每一次调用的返回实体是否符合用户的心智**是 DSL 设计是否成功的重要依据。
 
 #### 风格 4：嵌套函数
+
 开发中也存在一些层级抽象的场景，比如 DOM 树的生成，纯粹命令式使用 DOM API 来构建的写法略显晦涩，很难一眼看出最终的 HTML 结构，那如何构建内部 DSL 来流畅解决这种层级抽象呢？
 
 有人就尝试用类似链式调用的方式去实现，比如 [concat.js](https://github.com/hoho/concat.js)：
 
 ```js
 builder(document.body)
-  .div('#container')
-    .h1().text('This is hyperscript').end()
-    .ul({title})
-      .li()
-        .a({href:'abc.com'}).text('One list item').end()
-      .end()
-      .li().text('Another list item').end()
-    .end()
+  .div("#container")
+  .h1()
+  .text("This is hyperscript")
   .end()
+  .ul({ title })
+  .li()
+  .a({ href: "abc.com" })
+  .text("One list item")
+  .end()
+  .end()
+  .li()
+  .text("Another list item")
+  .end()
+  .end()
+  .end();
 ```
 
 这似乎比命令式的写法好了不少，但构建这种 DSL 存在不少问题：
@@ -293,6 +306,7 @@ div '#container',
 执行逻辑与阅读顺序显然不一致，并且会加重书写负担(同时要关心开闭逻辑)，极大影响读写流畅度。
 
 #### 风格 5：对象字面量
+
 业界很多 DSL 都类似于配置文件，例如 [JSON](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)、[YAML](https://yaml.org/) 等外部 DSL，它们在嵌套数据展现中有很强的表达力。
 
 而 JavaScript 也有一个适合在此场景构建 DSL 的特性，那就是字面量对象，实际上，JSON（全称 JavaScript Object Notation）正是衍生自它的这个特性，成为了一种标准数据交换格式。
@@ -325,7 +339,7 @@ div id: 'container', title: 'This is a tip'
 显然比用词更少的下例可读性更佳：
 
 ```js
-div('container', 'This is a tip')
+div("container", "This is a tip");
 ```
 
 > 构造 DSL 并非越简洁越好，提高流畅度才是关键。
@@ -333,37 +347,39 @@ div('container', 'This is a tip')
 对象字面量的结构性较强，一般只用来做配置等数据抽象的场景，不适合用在过程抽象的场景。
 
 #### 风格 6：动态代理
+
 之前所列举内部 DSL 的构造方式有一个典型缺陷就是它们都是静态定义的属性或方法，没有动态性。
 
-如上节 **[风格4: 嵌套函数]** 中的提到 concat.js，它的所有类似 div、p 等方法都是[静态具名定义的](https://github.com/hoho/concat.js/blob/master/concat.js#L22)。而实际上因为 [custom elements](https://developer.mozilla.org/zh-CN/docs/Web/Web_Components/Using_custom_elements) 特性的存在，这种静态穷举的方式显然是有坑的，更别说 html 标准本身也在不断增加新标签。
+如上节 **[风格 4: 嵌套函数]** 中的提到 concat.js，它的所有类似 div、p 等方法都是[静态具名定义的](https://github.com/hoho/concat.js/blob/master/concat.js#L22)。而实际上因为 [custom elements](https://developer.mozilla.org/zh-CN/docs/Web/Web_Components/Using_custom_elements) 特性的存在，这种静态穷举的方式显然是有坑的，更别说 html 标准本身也在不断增加新标签。
 
-而在外部 DSL，这个问题是不存在的。那么内部 DSL要怎么实现呢？若内部 DSL 要实现这种特性，就强依赖宿主语言的元编程能力了。 Ruby 作为典型宿主语言经常会用来证明其强大元编程能力的特性就是 [method_missing](https://www.leighhalliday.com/ruby-metaprogramming-method-missing)，这个方法可以动态接收所有未定义的方法，最直接功能就是动态命名方法（或元方法），这样就可以解决上面提到的内部 DSL 都是具名静态定义的问题。
+而在外部 DSL，这个问题是不存在的。那么内部 DSL 要怎么实现呢？若内部 DSL 要实现这种特性，就强依赖宿主语言的元编程能力了。 Ruby 作为典型宿主语言经常会用来证明其强大元编程能力的特性就是 [method_missing](https://www.leighhalliday.com/ruby-metaprogramming-method-missing)，这个方法可以动态接收所有未定义的方法，最直接功能就是动态命名方法（或元方法），这样就可以解决上面提到的内部 DSL 都是具名静态定义的问题。
 
 值得庆幸的是在 JavaScript 中也有了一个更强大的语言特性，就是 [Proxy](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)，它可以代理属性获取，从而解决上文的穷举问题。
 
 ```js
 // 用于演示，非完整代码
-function tag(tagName){
-    return {tag: tagName}
+function tag(tagName) {
+  return { tag: tagName };
 }
 
 const builder = new Proxy(tag, {
-  get (target, property) {
-    return tag.bind(null, property)
-  }
-})
+  get(target, property) {
+    return tag.bind(null, property);
+  },
+});
 
-builder.h1() // {tag: 'h1'}
-builder.tag_not_defined()  // {tag: 'tag_not_defined'}
+builder.h1(); // {tag: 'h1'}
+builder.tag_not_defined(); // {tag: 'tag_not_defined'}
 ```
 
 Proxy 使得 JavaScript 具备了极强的元编程能力，它除了可以轻松[模拟出 Ruby 中的 method_missing 特性](https://www.cnblogs.com/htoooth/p/11367829.html)外，也可以有很多[其它动态代理能力](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84_traps_%E5%88%97%E8%A1%A8%E7%A4%BA%E4%BE%8B)，这些都是实现内部 DSL 的重要工具。
 
 #### 风格 7：Lambda 表达式
+
 市面上有大量的查询库使用链式风格，它们非常接近 SQL 本身的写法，比如：
 
 ```js
-const users = User.select('name') 
+const users = User.select('name')
   .where('id==1');
   .where('age > 1');
   .sortBy('create_time')
@@ -380,7 +396,7 @@ const users = User.select('name')
   .sortBy('create_time')
 ```
 
-这种应用案例其实早就存在了，比如基于C#的[LINQ(Language-Integrated Query)](https://docs.microsoft.com/en-us/dotnet/csharp/linq/)，这也是最常活跃在内部 DSL 技术圈的典型案例。
+这种应用案例其实早就存在了，比如基于 C#的[LINQ(Language-Integrated Query)](https://docs.microsoft.com/en-us/dotnet/csharp/linq/)，这也是最常活跃在内部 DSL 技术圈的典型案例。
 
 ```csharp
 var result = products
@@ -393,6 +409,7 @@ var result = products
 Lambda 表达式本质上是一种直观易读且**延迟执行**的逻辑表达能力，从而避免额外的解析工作，不过它强依托宿主的语言特性支持(匿名函数 + 箭头表示)，并且也会引入一定的语法噪音。
 
 #### 风格 8：自然语言抽象
+
 自然语言抽象即以更贴近自然语言的方式去设计 DSL 的语法，它行得通的基本逻辑是领域专家基本都是和你我一样的自然人，更容易接受自然语言的语法。
 
 自然语言抽象的本质是一些语法糖，和一般 GPPL 的语法糖不一样， DSL 的语法糖并不一定是最简洁的，反而会加入一些「冗余」的非功能性语法词汇。
@@ -400,40 +417,42 @@ Lambda 表达式本质上是一种直观易读且**延迟执行**的逻辑表达
 通过自然语言抽象，内部 DSL 的优势在单元测试场景中被发挥的淋漓尽致，比如如果我们裸用类似 [assert](http://nodejs.cn/api/assert.html#assert_assert_value_message) 的断言方法，单元测试用例可能是这样的：
 
 ```js
-var foo = '43';
+var foo = "43";
 
-assert(typeof foo === 'number', 'expect foo to be a number');
+assert(typeof foo === "number", "expect foo to be a number");
 assert(
   tea.flavors && tea.flavors.length === 3,
-  'c should have property flavors with length of 3'
-)
+  "c should have property flavors with length of 3"
+);
 ```
 
 有几个显著待优化的问题：
 
 1. 命令式的断言语句阅读不直观；
-2. 为了 report 的可读性，需要传入额外的提示语（如expect foo to be a number）。
+2. 为了 report 的可读性，需要传入额外的提示语（如 expect foo to be a number）。
 
 如果这个 case 基于 chai 来书写的话，可读性会立马上一个台阶：
 
 ```js
-var foo = '43'
+var foo = "43";
 
 // AssertionError: '43' should be a 'number'.
-foo.should.be.a('number');
+foo.should.be.a("number");
 
-tea.should.have.property('flavors').with.lengthOf(3);
+tea.should.have.property("flavors").with.lengthOf(3);
 ```
 
 可以发现测试用例变得更加易读易写了，而且当断言失败，也会自动根据链式调用产生的状态，自动拼装出更友好的错误信息。
 
 #### 总结
+
 本文并未囊括所有内部 DSL 实现风格(比如也有些基于 Decorator 装饰器的玩法)，且所列风格都不是银弹，都有其适用场景，它们之间存在互补效应。
 ![所列举的内部DSL构建风格对比简表](../../images/archive/所列举的内部DSL构建风格对比简表.jpg)
 
 通过上面的一些惯用风格的介绍，我们建立了对前端内部 DSL 的一些了解，以下再针对「Why」的问题做下深入讨论：
 
 ##### JS, why?
+
 从风格案例可以看到，**宿主语言直接决定了内部 DSL 的「语法」优化的上限**。正如 ROR 之于 Ruby、Gradle 之于 Groovy，典型的前期选择大于后天努力。而前端开发最趁手的语言 JavaScript 其实在构建内部 DSL 时具备了很大的优势：
 
 - 借鉴 Java 语言的数据类型和内存管理，抽象度高。
@@ -445,6 +464,7 @@ tea.should.have.property('flavors').with.lengthOf(3);
 但要注意的是，JavaScript 存在的天然缺陷就是它那衍生自 C 的语法，导致噪音较强，使用一些变种语言（如 CoffeeScript）可以扭转一些这种劣势。
 
 ##### 库（接口）还是内部 DSL
+
 外部 DSL 的边界问题往往是 DSL 与 GPPL 的区别，这个在社区中的争议并不算很大。而关于内部 DSL 的讨论，特别是与库（接口）的差异问题就一直都没消停过，确实存在模糊的部分。
 
 实际上 DSL 也有个别名叫**流畅接口**，所以它本身也属于接口封装或库封装的一种模式，目标是极限表达力。但它相较于传统接口封装，有几个显著设计差异点：
@@ -463,10 +483,12 @@ tea.should.have.property('flavors').with.lengthOf(3);
 > **Programming is a process of designing DSL for your own application.**
 
 #### 内部 DSL 实践的一些坑
+
 除了由于依赖于宿主语言，导致功能性缺失和额外的语法噪音之外，内部 DSL 也存在其它不可忽视的问题。
 
 ##### 不友好的异常
-在 **[风格3: 级联属性]** 的案例中，其实我们没有定义 `minutes` 这个单位, 如果错误的使用`(5).minutes.later`，将得到以下错误提示：
+
+在 **[风格 3: 级联属性]** 的案例中，其实我们没有定义 `minutes` 这个单位, 如果错误的使用`(5).minutes.later`，将得到以下错误提示：
 
 ```shell
 Uncaught TypeError: Cannot read property 'later' of undefined
@@ -478,26 +500,27 @@ Uncaught TypeError: Cannot read property 'later' of undefined
 Uncaught SyntaxError: Unexpected unit minutes
 ```
 
-这是由于异常处理机制也遵循宿主语言，在库封装层面做 DSL 抽象依然无法逃脱这个限制，这也是外部 DSL 的优势所在，不过基于 **[风格6：动态代理]** 提到的 Proxy，我们仍能做一些微不足道的小优化：
+这是由于异常处理机制也遵循宿主语言，在库封装层面做 DSL 抽象依然无法逃脱这个限制，这也是外部 DSL 的优势所在，不过基于 **[风格 6：动态代理]** 提到的 Proxy，我们仍能做一些微不足道的小优化：
 
 ```js
-const UNITS = ['days','weeks','hours'];
+const UNITS = ["days", "weeks", "hours"];
 
 const five = new Proxy(new Number(5), {
-  get (target, property) {
-    if(UNITS.indexOf(property) === -1){
-        throw TypeError(`Invalid unit [${property}] after ${target}`)
-    }else{
-       // blablabla
+  get(target, property) {
+    if (UNITS.indexOf(property) === -1) {
+      throw TypeError(`Invalid unit [${property}] after ${target}`);
+    } else {
+      // blablabla
     }
-  }
-})
+  },
+});
 
 //输入 five.minutes 将得到更加友好的错误提示：
 //Uncaught TypeError: invalid units [minutes] after 5
 ```
 
 ##### 容易忽视冰山之下的设计
+
 内部 DSL 的设计要点在于表现层是否流畅，而缺乏对底层领域模型的抽象封装要求。而这很可能导致 DSL 的「核」是缺乏有效设计的。在实践 DSL 时，我们在领域模型这层仍然要遵循最佳编程实践，比如本文 `(2).weeks.later` 背后的 `Duration` 等领域模型实体。
 
 作者曾为内部一个历史悠久的庞大前端框架扩展了一个类似 jQuery 的流畅 API 的接口，去掉注释仅仅花费了[不到 500 行的代码](https://github.com/genify/nej/blob/master/src/util/chain/NodeList.js)，这个绝大部分归功于框架底层的深厚设计功底和一致性，而非上层的 DSL 语法糖包装。
@@ -510,20 +533,22 @@ const five = new Proxy(new Number(5), {
 这部分建议在外部 DSL 的设计工作中也同样重要。
 
 ##### 编辑器支持
+
 有些内部 DSL 依赖排版来达到最佳表现，绝大部分语言（包括外部 DSL）的自动格式化引擎都是基于语法树解析来实现的，但内部 DSL 就没那么幸运了，由于它在实际语法层面并没有定义，所以经常会发生在编辑器使用「Format Document」后前功尽弃的情况，这类现象在基于缩进的语言中会比较少。
 
 特殊的代码高亮就更难了，即使是自动补全，也需要一些额外的工作才能被支持。
 
 ##### 小结
+
 常规编程解决思路下表达更多的是「How」即如何实现的细节，牵扯进的表达式、语句和数据结构等编程元素会影响到领域工作者对本源问题的理解。而 DSL 的秘诀在于它强调表达是「What」，将原本的命令式编程转化为极致的声明式表述，使得 DSL 具备强大的自解释性（self-explanatory），从而提高编程效率，甚至可以赋能给没有编程经验的用户。
 
 进一步阅读以下书籍或资料可以帮助你进一步学习：
 
 - [《领域特定语言》](https://book.douban.com/subject/21964984/) - Martin Fowler
 - [《领域专用语言实战》](https://book.douban.com/subject/25741352/) - Debasish Ghosh
-- [javascript诞生记](http://www.ruanyifeng.com/blog/2011/06/birth_of_javascript.html) - 阮一峰
+- [javascript 诞生记](http://www.ruanyifeng.com/blog/2011/06/birth_of_javascript.html) - 阮一峰
 - [Declarative programming is it a real thing?](https://blog.hellojs.org/declarative-programming-is-it-a-real-thing-e59fe5e893fd)
 - [谈谈 DSL 以及 DSL 的应用（以 CocoaPods 为例）](https://draveness.me/dsl/)
-- [用流畅接口构造内部DSL](https://www.cnblogs.com/weidagang2046/archive/2011/10/30/2229293.html)
+- [用流畅接口构造内部 DSL](https://www.cnblogs.com/weidagang2046/archive/2011/10/30/2229293.html)
 
 ## 外部 DSL + 前端 DSL 实践总结
