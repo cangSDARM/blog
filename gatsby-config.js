@@ -31,10 +31,7 @@ module.exports = {
           },
           {
             resolve: `gatsby-remark-autolink-headers`,
-            options: {
-              maintainCase: true,
-              isIconAfterHeader: true,
-            },
+            options: { isIconAfterHeader: true },
           },
           {
             resolve: `gatsby-remark-prismjs`,

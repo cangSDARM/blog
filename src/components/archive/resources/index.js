@@ -5,7 +5,7 @@ import Navigation from "../../naviagtion";
 import * as mainstyles from "../main.module.css";
 import TreeView from "./treeView";
 
-const Resources = ({ avatar, reference, headings, toc }) => {
+const Resources = ({ avatar, reference, toc }) => {
   let [refTitle, refLink] = reference.split("|");
 
   return (

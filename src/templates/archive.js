@@ -2,6 +2,7 @@ import { Paper } from "@material-ui/core";
 import { MDXProvider } from "@mdx-js/react";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
+import _ from "lodash";
 import React from "react";
 import Resources from "../components/archive/resources";
 import { useType } from "../components/archive/useType";
@@ -12,14 +13,28 @@ const archivedMdx = {
   Paper,
 };
 
+function deepFlatten(toc = {}) {
+  return _.flatten(
+    toc?.items?.map((i) => {
+      const lgtm = [];
+      lgtm.push(_.omit(i, ["items"]));
+
+      if (i.items) lgtm.push(...deepFlatten(i));
+
+      return lgtm;
+    })
+  );
+}
+
 export default function Template({ data }) {
   const { mdx } = data;
-  const { frontmatter, body, fields, headings, tableOfContents } = mdx;
+  const { frontmatter, body, fields, tableOfContents, headings } = mdx;
   let title =
     fields.slug === `/${fields.templateTag}`
       ? "ArchivedArticle"
       : frontmatter.title;
   const className = useType(frontmatter.type);
+
   return (
     <Layout>
       <SEO
@@ -36,8 +51,13 @@ export default function Template({ data }) {
         <Resources
           avatar={frontmatter?.avatar}
           reference={frontmatter?.reference || undefined}
-          headings={headings}
-          toc={tableOfContents}
+          toc={{
+            items: _.pullAllBy(
+              deepFlatten(tableOfContents),
+              headings.map((i) => ({ title: i.value })),
+              "title"
+            ),
+          }}
         />
         <article>
           <MDXProvider components={archivedMdx}>
@@ -60,14 +80,13 @@ export const query = graphql`
         avatar
         reference
       }
-      tableOfContents
+      tableOfContents(maxDepth: 2)
+      headings(depth: h1) {
+        value
+      }
       fields {
         slug
         templateTag
-      }
-      headings(depth: h2) {
-        value
-        depth
       }
     }
   }

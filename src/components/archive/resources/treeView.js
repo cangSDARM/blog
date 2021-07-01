@@ -5,7 +5,7 @@ import useScrollSpy from "./scrollspy";
 
 const useTreeStyles = makeStyles((theme) => ({
   root: {
-    margin: "1.4em 0",
+    margin: "1.4em 0 !important",
     display: "table",
   },
   label: {
@@ -17,20 +17,24 @@ const useTreeStyles = makeStyles((theme) => ({
   labelItem: {
     width: "100%",
     borderBottom: "none !important",
-    color: "inherit",
+    color: "rgb(26,26,26) !important",
     textDecoration: "none",
     cursor: "pointer",
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: 1,
+    overflow: "hidden",
   },
 }));
 
 const indexing = "目录";
 const TreeView = ({ toc }) => {
-  const [expanded, setExpanded] = useState([]);
-  const [selected, setSelected] = useState([]);
-
-  let spyUrl = toc.map((post) => ({
+  const spyUrl = toc.map((post) => ({
     hash: post["url"].substring(1),
   }));
+
+  const [expanded, setExpanded] = useState(["#"]);
+  const [selected, setSelected] = useState([]);
 
   const active = useScrollSpy({
     items: spyUrl,
@@ -38,9 +42,9 @@ const TreeView = ({ toc }) => {
   });
 
   useEffect(() => {
-    if (active == null) setSelected(toc[0].url);
+    if (active == null) setSelected(toc[0]?.url);
     else setSelected(`#${active}`);
-  }, [active]);
+  }, [active, toc]);
 
   const classes = useTreeStyles();
 
@@ -67,8 +71,8 @@ const TreeView = ({ toc }) => {
       }
       onClick={(e) => handleSelect(e, nodes, index)}
     >
-      {Array.isArray(nodes.children)
-        ? nodes.children.map((node, index) => {
+      {Array.isArray(nodes.items)
+        ? nodes.items.map((node, index) => {
             return renderTree(node, index);
           })
         : null}
@@ -84,7 +88,6 @@ const TreeView = ({ toc }) => {
           flexGrow: 1,
           maxWidth: 400,
         }}
-        defaultExpanded={[indexing]}
         expanded={expanded}
         selected={selected}
         onNodeToggle={handleToggle}
@@ -109,7 +112,7 @@ const TreeView = ({ toc }) => {
           {
             title: indexing,
             url: "#",
-            children: toc,
+            items: toc,
           },
           0
         )}

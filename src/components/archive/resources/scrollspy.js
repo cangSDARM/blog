@@ -23,7 +23,7 @@ const useThrottledOnScroll = (callback, delay, target) => {
       target.removeEventListener("scroll", throttledCallback);
       throttledCallback.cancel();
     };
-  }, [throttledCallback]);
+  }, [throttledCallback, target]);
 };
 
 const getTarget = (target = window) =>
@@ -36,10 +36,14 @@ const noop = () => {};
 
 const useScrollSpy = ({ items = [], target = window } = {}) => {
   const itemsWithNodeRef = useRef([]);
-  const trueTarget = getTarget(target);
+  const trueTarget = useRef(window);
   useEffect(() => {
     itemsWithNodeRef.current = getItemsClient(items);
   }, [items]);
+
+  useEffect(() => {
+    trueTarget.current = getTarget(target);
+  }, [target]);
 
   const [activeState, setActiveState] = useState(null);
 
@@ -47,7 +51,7 @@ const useScrollSpy = ({ items = [], target = window } = {}) => {
     let active;
     for (let i = itemsWithNodeRef.current.length - 1; i >= 0; i -= 1) {
       // No hash if we're near the top of the page
-      if (trueTarget.scrollTop < 200) {
+      if (trueTarget.current.scrollTop < 200) {
         active = { hash: null };
         break;
       }
@@ -64,7 +68,8 @@ const useScrollSpy = ({ items = [], target = window } = {}) => {
 
       if (
         item.node &&
-        item.node.offsetTop < trueTarget.scrollTop + trueTarget.clientHeight / 8
+        item.node.offsetTop <
+          trueTarget.current.scrollTop + trueTarget.current.clientHeight / 8
       ) {
         active = item;
         break;
@@ -79,14 +84,14 @@ const useScrollSpy = ({ items = [], target = window } = {}) => {
   useThrottledOnScroll(
     items.length > 0 ? findActiveIndex : null,
     166,
-    trueTarget
+    trueTarget.current
   );
 
   return activeState;
 };
 
 const getItemsClient = (items) =>
-  items.map(({ hash, ...others }) => ({
+  items.map(({ hash }) => ({
     hash,
     node: document?.getElementById(hash),
   }));
