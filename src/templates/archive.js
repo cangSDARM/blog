@@ -14,7 +14,7 @@ const archivedMdx = {
 
 export default function Template({ data }) {
   const { mdx } = data;
-  const { frontmatter, body, fields, headings } = mdx;
+  const { frontmatter, body, fields, headings, tableOfContents } = mdx;
   let title =
     fields.slug === `/${fields.templateTag}`
       ? "ArchivedArticle"
@@ -37,6 +37,7 @@ export default function Template({ data }) {
           avatar={frontmatter?.avatar}
           reference={frontmatter?.reference || undefined}
           headings={headings}
+          toc={tableOfContents}
         />
         <article>
           <MDXProvider components={archivedMdx}>
@@ -59,6 +60,7 @@ export const query = graphql`
         avatar
         reference
       }
+      tableOfContents
       fields {
         slug
         templateTag

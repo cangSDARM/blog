@@ -5,7 +5,7 @@ import Navigation from "../../naviagtion";
 import * as mainstyles from "../main.module.css";
 import TreeView from "./treeView";
 
-const Resources = ({ avatar, reference, headings }) => {
+const Resources = ({ avatar, reference, headings, toc }) => {
   let [refTitle, refLink] = reference.split("|");
 
   return (
@@ -25,7 +25,7 @@ const Resources = ({ avatar, reference, headings }) => {
             <Navigation to={refLink} desc={refTitle} external />
           </nav>
         </div>
-        <TreeView headings={headings} />
+        <TreeView toc={toc?.items ?? []} />
       </div>
     )
   );

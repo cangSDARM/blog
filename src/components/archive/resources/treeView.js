@@ -1,36 +1,71 @@
-import { SvgIcon } from "@material-ui/core";
+import { makeStyles, SvgIcon } from "@material-ui/core";
 import { TreeItem, TreeView as MTreeView } from "@material-ui/lab";
-import { useLocation } from "@reach/router";
-import { navigate } from "gatsby";
-import React, { useState } from "react";
-import rightAnchor from "../rightAnchor";
+import React, { useEffect, useState } from "react";
+import useScrollSpy from "./scrollspy";
+
+const useTreeStyles = makeStyles((theme) => ({
+  root: {
+    margin: "1.4em 0",
+    display: "table",
+  },
+  label: {
+    display: "flex",
+  },
+  group: {
+    marginTop: "1ex !important",
+  },
+  labelItem: {
+    width: "100%",
+    borderBottom: "none !important",
+    color: "inherit",
+    textDecoration: "none",
+    cursor: "pointer",
+  },
+}));
 
 const indexing = "目录";
-const TreeView = ({ headings }) => {
+const TreeView = ({ toc }) => {
   const [expanded, setExpanded] = useState([]);
   const [selected, setSelected] = useState([]);
-  const location = useLocation();
+
+  let spyUrl = toc.map((post) => ({
+    hash: post["url"].substring(1),
+  }));
+
+  const active = useScrollSpy({
+    items: spyUrl,
+    target: "scroll-spy",
+  });
+
+  useEffect(() => {
+    if (active == null) setSelected(toc[0].url);
+    else setSelected(`#${active}`);
+  }, [active]);
+
+  const classes = useTreeStyles();
 
   const handleToggle = (event, nodeIds) => {
     setExpanded(nodeIds);
   };
 
-  const handleSelect = (event, nodeIds) => {
-    setSelected(nodeIds);
-    const anchor = rightAnchor
-      .anchorSet(nodeIds)
-      .replaceOprator()
-      .replaceWhiteSpace()
-      .splitId().anchor;
-    if (anchor === indexing) return;
-    navigate(`${location.pathname}#${anchor}`);
+  const handleSelect = (event, node) => {
+    setSelected(node.url);
   };
 
   const renderTree = (nodes, index) => (
     <TreeItem
-      key={index + nodes.value}
-      nodeId={index + nodes.value}
-      label={nodes.value}
+      key={nodes.url}
+      nodeId={nodes.url}
+      classes={{
+        label: classes.label,
+        group: classes.group,
+      }}
+      label={
+        <a className={classes.labelItem} href={nodes.url}>
+          {nodes.title}
+        </a>
+      }
+      onClick={(e) => handleSelect(e, nodes, index)}
     >
       {Array.isArray(nodes.children)
         ? nodes.children.map((node, index) => {
@@ -41,18 +76,18 @@ const TreeView = ({ headings }) => {
   );
 
   return (
-    headings.length > 0 && (
+    toc.length > 0 && (
       <MTreeView
+        classes={{ root: classes.root }}
         style={{
           height: 240,
           flexGrow: 1,
           maxWidth: 400,
         }}
-        defaultExpanded={[`0${indexing}`]}
+        defaultExpanded={[indexing]}
         expanded={expanded}
         selected={selected}
         onNodeToggle={handleToggle}
-        onNodeSelect={handleSelect}
         defaultCollapseIcon={
           <SvgIcon>
             <path
@@ -72,8 +107,9 @@ const TreeView = ({ headings }) => {
       >
         {renderTree(
           {
-            value: indexing,
-            children: headings,
+            title: indexing,
+            url: "#",
+            children: toc,
           },
           0
         )}
