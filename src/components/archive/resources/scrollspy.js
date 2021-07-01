@@ -36,7 +36,7 @@ const noop = () => {};
 
 const useScrollSpy = ({ items = [], target = window } = {}) => {
   const itemsWithNodeRef = useRef([]);
-  const trueTarget = useRef(window);
+  const trueTarget = useRef(null);
   useEffect(() => {
     itemsWithNodeRef.current = getItemsClient(items);
   }, [items]);
