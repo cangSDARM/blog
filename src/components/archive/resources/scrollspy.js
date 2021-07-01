@@ -29,7 +29,7 @@ const useThrottledOnScroll = (callback, delay, target) => {
 const getTarget = (target = window) =>
   target === null
     ? window
-    : typeof target === "string"
+    : typeof target === "string" && typeof window !== "undefined"
     ? document.getElementById(target)
     : target;
 const noop = () => {};
@@ -88,7 +88,7 @@ const useScrollSpy = ({ items = [], target = window } = {}) => {
 const getItemsClient = (items) =>
   items.map(({ hash, ...others }) => ({
     hash,
-    node: document.getElementById(hash),
+    node: document?.getElementById(hash),
   }));
 
 export default useScrollSpy;
