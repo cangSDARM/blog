@@ -56,7 +56,7 @@ const TreeView = ({ toc }) => {
     setSelected(node.url);
   };
 
-  const renderTree = (nodes, index) => (
+  const renderTree = (nodes) => (
     <TreeItem
       key={nodes.url}
       nodeId={nodes.url}
@@ -69,11 +69,11 @@ const TreeView = ({ toc }) => {
           {nodes.title}
         </a>
       }
-      onClick={(e) => handleSelect(e, nodes, index)}
+      onClick={(e) => handleSelect(e, nodes)}
     >
       {Array.isArray(nodes.items)
-        ? nodes.items.map((node, index) => {
-            return renderTree(node, index);
+        ? nodes.items.map((node) => {
+            return renderTree(node);
           })
         : null}
     </TreeItem>
@@ -108,14 +108,11 @@ const TreeView = ({ toc }) => {
           </SvgIcon>
         }
       >
-        {renderTree(
-          {
-            title: indexing,
-            url: "#",
-            items: toc,
-          },
-          0
-        )}
+        {renderTree({
+          title: indexing,
+          url: "#",
+          items: toc,
+        })}
       </MTreeView>
     )
   );

@@ -6,7 +6,7 @@ import * as mainstyles from "../main.module.css";
 import TreeView from "./treeView";
 
 const Resources = ({ avatar, reference, toc }) => {
-  let [refTitle, refLink] = reference.split("|");
+  const [refTitle, refLink] = reference.split("|");
 
   return (
     reference && (

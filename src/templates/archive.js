@@ -29,7 +29,7 @@ function deepFlatten(toc = {}) {
 export default function Template({ data }) {
   const { mdx } = data;
   const { frontmatter, body, fields, tableOfContents, headings } = mdx;
-  let title =
+  const title =
     fields.slug === `/${fields.templateTag}`
       ? "ArchivedArticle"
       : frontmatter.title;
