@@ -1,5 +1,6 @@
-import { makeStyles, SvgIcon } from "@material-ui/core";
+import { SvgIcon } from "@material-ui/core";
 import { TreeItem, TreeView as MTreeView } from "@material-ui/lab";
+import { makeStyles } from "@material-ui/styles";
 import React, { useEffect, useState } from "react";
 import useScrollSpy from "./scrollspy";
 

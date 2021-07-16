@@ -1,16 +1,15 @@
-import React from "react";
-import { useStaticQuery, Link, graphql } from "gatsby";
+import { withStyles } from "@material-ui/styles";
+import { graphql, Link, useStaticQuery } from "gatsby";
 import PropType from "prop-types";
-import { withStyles } from "@material-ui/core";
+import React from "react";
 import {
+  Avatar,
   Drawer as SDrawer,
   List,
   ListItem as SListItem,
-  Avatar,
   ListItemIcon,
   ListSubheader,
   Typography,
-  SvgIcon,
 } from "./styled";
 
 const Item = ({ classes, children, ...otherProps }) => {
