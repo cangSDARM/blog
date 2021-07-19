@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/styles";
 import { graphql, useStaticQuery } from "gatsby";
 import "katex/dist/katex.min.css";
 import PropTypes from "prop-types";
