@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { graphql, useStaticQuery } from "gatsby";
 import "katex/dist/katex.min.css";
 import PropTypes from "prop-types";
@@ -14,7 +14,7 @@ import Footer from "./footer";
 import Header from "./header";
 import "./layout.css";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     type: "dark",
   },
@@ -37,7 +37,7 @@ const Layout = ({ children, ...otherProps }) => {
   const mainProps = otherProps && otherProps.main;
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
       <div
         id="scroll-spy"
@@ -51,12 +51,10 @@ const Layout = ({ children, ...otherProps }) => {
         }}
         {...contentProps}
       >
-        <ThemeProvider theme={theme}>
-          <main {...mainProps}>{children}</main>
-        </ThemeProvider>
+        <main {...mainProps}>{children}</main>
         <Footer {...footerProps} />
       </div>
-    </>
+    </ThemeProvider>
   );
 };
 
