@@ -36,21 +36,19 @@ const HeadingView = ({ toc }) => {
 
   const [selected, setSelected] = useState([]);
 
-  const active = useScrollSpy({
+  const { actived } = useScrollSpy({
     items: spyUrl,
     target: "scroll-spy",
   });
 
   useEffect(() => {
-    if (active == null) setSelected([toc[0]?.url]);
-    else setSelected([`#${active}`]);
-  }, [active, toc]);
+    if (actived == null) setSelected([toc[0]?.url]);
+    else setSelected([`#${actived}`]);
+  }, [actived, toc]);
 
   const classes = useTreeStyles();
 
-  const handleSelect = (event, node) => {
-    setSelected([node.url]);
-  };
+  const handleSelect = (event, node) => {};
 
   const renderTreeItem = (nodes) => (
     <TreeItem

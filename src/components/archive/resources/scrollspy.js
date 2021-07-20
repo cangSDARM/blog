@@ -46,6 +46,8 @@ const useScrollSpy = ({ items = [], target = window } = {}) => {
   }, [target]);
 
   const [activeState, setActiveState] = useState(null);
+  const [lock, setLock] = useState(false);
+  const [onScroll, setOnScroll] = useState(false);
 
   const findActiveIndex = useCallback(() => {
     let active;
@@ -81,13 +83,25 @@ const useScrollSpy = ({ items = [], target = window } = {}) => {
     }
   }, [activeState]);
 
+  const withLockScroll = () => {
+    if (lock) return;
+
+    setOnScroll(true);
+    findActiveIndex();
+    setOnScroll(false);
+  };
+
   useThrottledOnScroll(
-    items.length > 0 ? findActiveIndex : null,
+    items.length > 0 ? withLockScroll : null,
     166,
     trueTarget.current
   );
 
-  return activeState;
+  return {
+    actived: activeState,
+    requireLock: setLock,
+    onScroll,
+  };
 };
 
 const getItemsClient = (items) =>
