@@ -1,7 +1,7 @@
 import { SvgIcon } from "@material-ui/core";
-import { TreeItem, TreeView as MTreeView } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/styles";
 import React, { useEffect, useState } from "react";
+import TreeView, { TreeItem } from "../../TreeView";
 import useScrollSpy from "./scrollspy";
 
 const useTreeStyles = makeStyles((theme) => ({
@@ -29,12 +29,11 @@ const useTreeStyles = makeStyles((theme) => ({
 }));
 
 const indexing = "目录";
-const TreeView = ({ toc }) => {
+const HeadingView = ({ toc }) => {
   const spyUrl = toc.map((post) => ({
     hash: post["url"].substring(1),
   }));
 
-  const [expanded, setExpanded] = useState(["#"]);
   const [selected, setSelected] = useState([]);
 
   const active = useScrollSpy({
@@ -43,25 +42,21 @@ const TreeView = ({ toc }) => {
   });
 
   useEffect(() => {
-    if (active == null) setSelected(toc[0]?.url);
-    else setSelected(`#${active}`);
+    if (active == null) setSelected([toc[0]?.url]);
+    else setSelected([`#${active}`]);
   }, [active, toc]);
 
   const classes = useTreeStyles();
 
-  const handleToggle = (event, nodeIds) => {
-    setExpanded(nodeIds);
-  };
-
   const handleSelect = (event, node) => {
-    setSelected(node.url);
+    setSelected([node.url]);
   };
 
-  const renderTree = (nodes) => (
+  const renderTreeItem = (nodes) => (
     <TreeItem
       key={nodes.url}
       nodeId={nodes.url}
-      classes={{
+      classesNames={{
         label: classes.label,
         group: classes.group,
       }}
@@ -71,10 +66,12 @@ const TreeView = ({ toc }) => {
         </a>
       }
       onClick={(e) => handleSelect(e, nodes)}
+      expandable={!!nodes.items}
+      defalutExpanded={nodes.url == "#"}
     >
       {Array.isArray(nodes.items)
         ? nodes.items.map((node) => {
-            return renderTree(node);
+            return renderTreeItem(node);
           })
         : null}
     </TreeItem>
@@ -82,17 +79,15 @@ const TreeView = ({ toc }) => {
 
   return (
     toc.length > 0 && (
-      <MTreeView
-        classes={{ root: classes.root }}
+      <TreeView
         style={{
           height: 240,
           flexGrow: 1,
           maxWidth: 400,
         }}
-        expanded={expanded}
+        className={classes.root}
         selected={selected}
-        onNodeToggle={handleToggle}
-        defaultCollapseIcon={
+        collapseIcon={
           <SvgIcon>
             <path
               fill="currentColor"
@@ -100,7 +95,7 @@ const TreeView = ({ toc }) => {
             />
           </SvgIcon>
         }
-        defaultExpandIcon={
+        expandIcon={
           <SvgIcon>
             <path
               fill="currentColor"
@@ -109,14 +104,14 @@ const TreeView = ({ toc }) => {
           </SvgIcon>
         }
       >
-        {renderTree({
+        {renderTreeItem({
           title: indexing,
           url: "#",
           items: toc,
         })}
-      </MTreeView>
+      </TreeView>
     )
   );
 };
 
-export default TreeView;
+export default HeadingView;

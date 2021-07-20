@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Navigation from "../../naviagtion";
 import * as mainstyles from "../main.module.css";
-import TreeView from "./treeView";
+import HeadingView from "./headingView";
 
 const Resources = ({ avatar, reference, toc }) => {
   const [refTitle, refLink] = reference.split("|");
@@ -25,7 +25,7 @@ const Resources = ({ avatar, reference, toc }) => {
             <Navigation to={refLink} desc={refTitle} external />
           </nav>
         </div>
-        <TreeView toc={toc?.items ?? []} />
+        <HeadingView toc={toc?.items ?? []} />
       </div>
     )
   );
