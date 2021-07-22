@@ -1,3 +1,15 @@
+[draggable="true"] {
+  /*
+ To prevent user selecting inside the drag source
+*/
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+[draggable="true"] img {
+  pointer-events: none;
+}
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;

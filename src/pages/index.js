@@ -20,7 +20,7 @@ const IndexPage = ({ data }) => (
       <div
         style={{ margin: `0 auto`, maxWidth: `300px`, marginBottom: `1.45rem` }}
       >
-        <Image path="gatsby-icon" />
+        <Image path="doctor-strange-logo" />
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         {Object.keys(lists).map((key) => {

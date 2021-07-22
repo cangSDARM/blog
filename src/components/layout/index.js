@@ -10,6 +10,7 @@ import { graphql, useStaticQuery } from "gatsby";
 import "katex/dist/katex.min.css";
 import PropTypes from "prop-types";
 import React from "react";
+import Drawer from "./Drawer";
 import Footer from "./footer";
 import Header from "./header";
 import "./layout.css";
@@ -34,7 +35,8 @@ const Layout = ({ children, ...otherProps }) => {
   const headerProps = otherProps && otherProps.header;
   const contentProps = otherProps && otherProps.content;
   const footerProps = otherProps && otherProps.footer;
-  const mainProps = otherProps && otherProps.main;
+  const { style: mainStyle = {}, ...mainProps } =
+    (otherProps && otherProps.main) || {};
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,12 +50,17 @@ const Layout = ({ children, ...otherProps }) => {
           overflowY: `auto`,
           overflowX: `hidden`,
           scrollBehavior: "smooth",
+          display: "flex",
+          flexDirection: "column",
         }}
         {...contentProps}
       >
-        <main {...mainProps}>{children}</main>
+        <main {...mainProps} style={{ ...mainStyle, flexGrow: 1 }}>
+          {children}
+        </main>
         <Footer {...footerProps} />
       </div>
+      <Drawer />
     </ThemeProvider>
   );
 };

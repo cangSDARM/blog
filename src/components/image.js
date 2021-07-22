@@ -42,7 +42,7 @@ const Image = ({ path, ext, ...otherProps }) => {
 };
 
 Image.defaultProps = {
-  path: "gatsby-astronaut",
+  path: "gatsby-icon",
   ext: "png",
 };
 

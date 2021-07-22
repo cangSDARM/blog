@@ -2,7 +2,7 @@ import Anime from "animejs";
 import { useEffect, useRef } from "react";
 
 export default function useAnime() {
-  const animeRef = useRef(null);
+  const animeRef = useRef(Anime);
 
   useEffect(() => {
     if (!animeRef.current) {
