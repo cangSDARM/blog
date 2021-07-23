@@ -39,29 +39,31 @@ const Layout = ({ children, ...otherProps }) => {
     (otherProps && otherProps.main) || {};
 
   return (
-    <ThemeProvider theme={theme}>
-      <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
-      <div
-        id="scroll-spy"
-        style={{
-          margin: `0 auto`,
-          paddingTop: 0,
-          height: `calc(100vh - 86px)`,
-          overflowY: `auto`,
-          overflowX: `hidden`,
-          scrollBehavior: "smooth",
-          display: "flex",
-          flexDirection: "column",
-        }}
-        {...contentProps}
-      >
-        <main {...mainProps} style={{ ...mainStyle, flexGrow: 1 }}>
-          {children}
-        </main>
-        <Footer {...footerProps} />
-      </div>
-      <Drawer />
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme}>
+        <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
+        <div
+          id="scroll-spy"
+          style={{
+            margin: `0 auto`,
+            paddingTop: 0,
+            height: `calc(100vh - 86px)`,
+            overflowY: `auto`,
+            overflowX: `hidden`,
+            scrollBehavior: "smooth",
+            display: "flex",
+            flexDirection: "column",
+          }}
+          {...contentProps}
+        >
+          <main {...mainProps} style={{ ...mainStyle, flexGrow: 1 }}>
+            {children}
+          </main>
+          <Footer {...footerProps} />
+        </div>
+        <Drawer />
+      </ThemeProvider>
+    </>
   );
 };
 

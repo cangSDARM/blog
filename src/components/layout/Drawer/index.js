@@ -9,7 +9,7 @@ import { SkipIndexTag, tagToPath } from "./indexing";
 
 const useDrawerTheme = makeStyles((theme) => ({
   paper: {
-    backgroundColor: "#fff",
+    backgroundColor: "#e8e8e8",
   },
   toggleWrapper: {
     zIndex: 111,
@@ -41,6 +41,10 @@ const useDrawerTheme = makeStyles((theme) => ({
   },
   toggleHidden: {
     left: -40,
+  },
+  allTags: {
+    fontSize: "1.5rem",
+    fontWeight: 600,
   },
 }));
 
@@ -121,7 +125,9 @@ const Drawer = () => {
         onClose={toggleDrawer(false)}
       >
         <List component="nav" aria-label="drawer">
-          <ListSubheader color="primary">All tags</ListSubheader>
+          <ListSubheader color="primary" className={classes.allTags}>
+            All tags
+          </ListSubheader>
           {tagsGroup?.group.map((i) => {
             return (
               <SkipIndexTag
