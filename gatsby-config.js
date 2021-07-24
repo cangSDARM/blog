@@ -6,6 +6,7 @@ module.exports = {
     author: `@allenEyes`,
   },
   plugins: [
+    `gatsby-plugin-typescript`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-mdx`,

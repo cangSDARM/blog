@@ -1,6 +1,10 @@
 import { createContext } from "react";
 
-const TreeViewContext = createContext({
+const TreeViewContext = createContext<{
+  expandedIcon: any;
+  collapseIcon: any;
+  selected: string[];
+}>({
   expandedIcon: null,
   collapseIcon: null,
   selected: [],

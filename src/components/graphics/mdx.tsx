@@ -7,24 +7,31 @@ import {
 } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
 import Img from "../image";
+import clsx from "clsx";
+//@ts-ignore
 import * as styles from "./style.module.css";
 import { Table as STable } from "./styled";
 import { displayComment, displayExpansion } from "./utils";
 
 //TODO: fix aria-role issue, currencly i dont know the right role
 
-let QueryList = [];
-let ImgList = [];
+let QueryList: any[] = [];
+let ImgList: any[] = [];
 
-export const CommentList = (list) => {
+export const CommentList = function <T extends any[]>(list: T) {
   QueryList = list;
 };
 
-export const ModelList = (list) => {
+export const ModelList = function <T extends any[]>(list: T) {
   ImgList = list;
 };
 
-export const Table = ({ children, title, ...otherProps }) => {
+export const Table: React.FC<{ title: string }> = ({
+  children,
+  title,
+  ...otherProps
+}) => {
+  //@ts-ignore
   const colSpan = Array.from(children[0]?.cells)?.length ?? 2;
   return (
     <STable size="small" {...otherProps}>
@@ -42,9 +49,10 @@ export const Table = ({ children, title, ...otherProps }) => {
         </TableHead>
       )}
       <TableBody>
-        {children.map((row, key) => (
+        {/** @ts-ignore */}
+        {children?.map((row, key) => (
           <TableRow key={key} style={row.style}>
-            {row.cells.map((cell, ckey) => {
+            {Array.from(row.cells).map((cell, ckey) => {
               const props = row.props ? row.props[ckey] : {};
               return (
                 <TableCell
@@ -64,25 +72,32 @@ export const Table = ({ children, title, ...otherProps }) => {
   );
 };
 
-export const Tab = ({ children, expan, vicinage }) => {
-  let classes = [styles.Tab];
+export const Tab: React.FC<{ expan: boolean; vicinage: boolean }> = ({
+  children,
+  expan,
+  vicinage,
+}) => {
+  const classes: string[] = [styles.Tab];
   if (expan) classes.push(styles.hidden);
-  classes = classes.join(" ");
+
   let RES = children ? (
     <Fragment>
-      <div className={classes}>{children}</div>
+      <div className={clsx(classes)}>{children}</div>
       {expan && <br />}
     </Fragment>
   ) : (
-    <div className={classes} />
+    <div className={clsx(classes)} />
   );
 
+  {
+    /** @ts-ignore */
+  }
   RES = vicinage ? <div className={styles.Tab} vicinage="true" /> : RES;
 
   return RES;
 };
 
-export const Expansion = ({ children }) => {
+export const Expansion: React.FC<{}> = ({ children }) => {
   return (
     <div
       role="expansion"
@@ -96,7 +111,7 @@ export const Expansion = ({ children }) => {
   );
 };
 
-export const Aphorism = ({ children }) => {
+export const Aphorism: React.FC<{}> = ({ children }) => {
   return (
     <div
       style={{
@@ -110,9 +125,9 @@ export const Aphorism = ({ children }) => {
   );
 };
 
-export const Model = ({ about, children }) => {
+export const Model: React.FC<{ about: string }> = ({ about, children }) => {
   const [curr, setState] = useState(false);
-  const path = ImgList[about.replace("@", "") - 1];
+  const path = ImgList[parseInt(about.replace("@", "")) - 1];
   const Image = function () {
     return (
       <Img
@@ -154,10 +169,10 @@ export const Model = ({ about, children }) => {
   );
 };
 
-export const Quote = ({ id, children }) => {
+export const Quote: React.FC<{ id: string }> = ({ id, children }) => {
   const focus = () => {
-    if (QueryList[id.replace("#", "") - 1])
-      displayComment.onOver(QueryList[id.replace("#", "") - 1]);
+    if (QueryList[parseInt(id.replace("#", "")) - 1])
+      displayComment.onOver(QueryList[parseInt(id.replace("#", "")) - 1]);
     else
       displayComment.onOver(
         `Warn: no such Quote be found in ${QueryList} at ${id}`
@@ -180,12 +195,13 @@ export const Quote = ({ id, children }) => {
   );
 };
 
-export const Anchor = ({ name, children }) => {
+export const Anchor: React.FC<{ name: string }> = ({ name, children }) => {
   if (!name) {
-    name = children.toString();
+    name = children?.toString() || "";
   }
   return (
     <h3>
+      {/** @ts-ignore */}
       <span name={name}>{children}</span>
     </h3>
   );

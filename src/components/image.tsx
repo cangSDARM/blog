@@ -1,6 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
-import PropTypes from "prop-types";
 import React from "react";
 
 /*
@@ -14,7 +13,7 @@ import React from "react";
  * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-const Image = ({ path, ext, ...otherProps }) => {
+const Image = ({ path = "gatsby-icon", ext = "png", ...otherProps }) => {
   const data = useStaticQuery(graphql`
     query {
       images: allFile(filter: { sourceInstanceName: { eq: "images" } }) {
@@ -30,25 +29,15 @@ const Image = ({ path, ext, ...otherProps }) => {
     }
   `);
   const image = data.images.edges.find(
-    (image) => image.node.relativePath === `${path}.${ext}`
+    (image: any) => image.node.relativePath === `${path}.${ext}`
   );
   return image?.node ? (
-    <GatsbyImage image={getImage(image?.node)} {...otherProps} alt={path} />
+    <GatsbyImage image={getImage(image.node)!} {...otherProps} alt={path} />
   ) : (
     <div>
       Not Found this image at {path}.{ext}
     </div>
   );
-};
-
-Image.defaultProps = {
-  path: "gatsby-icon",
-  ext: "png",
-};
-
-Image.prototype = {
-  path: PropTypes.string.isRequired,
-  ext: PropTypes.string,
 };
 
 export default Image;

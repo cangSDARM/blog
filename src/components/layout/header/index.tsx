@@ -1,8 +1,12 @@
-import PropTypes from "prop-types";
 import React from "react";
 import AppBar from "./appbar";
 
-const Header = ({ siteTitle, ...otherProps }) => {
+const Header: React.FC<
+  {
+    siteTitle: string;
+    wrapper?: string;
+  } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+> = ({ siteTitle = "", ...otherProps }) => {
   const { children, wrapper, ...props } = otherProps;
 
   return (
@@ -10,14 +14,6 @@ const Header = ({ siteTitle, ...otherProps }) => {
       {children}
     </AppBar>
   );
-};
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-};
-
-Header.defaultProps = {
-  siteTitle: ``,
 };
 
 export default Header;

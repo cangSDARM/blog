@@ -1,10 +1,9 @@
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import TreeViewContext from "./context";
 
-const useTreeStyles = makeStyles((theme) => ({
+const useTreeStyles = makeStyles((_) => ({
   root: {
     margin: "1.4em 0 !important",
     display: "table",
@@ -28,23 +27,23 @@ const useTreeStyles = makeStyles((theme) => ({
   },
 }));
 
-const TreeView = ({
-  className,
-  collapseIcon,
-  expandIcon,
-  selected,
-  children,
-}) => {
+const TreeView: React.FC<{
+  className: string;
+  collapseIcon: React.ReactNode;
+  expandIcon: React.ReactNode;
+  selected: string[];
+  style: React.HtmlHTMLAttributes<HTMLUListElement>["style"];
+}> = ({ className, collapseIcon, expandIcon, selected, style, children }) => {
   const classes = useTreeStyles();
 
-  const [selectedNodes, setSelectedNodes] = useState([]);
+  const [selectedNodes, setSelectedNodes] = useState<string[]>([]);
 
   useEffect(() => {
     setSelectedNodes(selected);
   }, [selected]);
 
   return (
-    <ul role="tree" className={clsx(classes.root, className)}>
+    <ul role="tree" className={clsx(classes.root, className)} style={style}>
       <TreeViewContext.Provider
         value={{
           expandedIcon: expandIcon,
@@ -56,20 +55,6 @@ const TreeView = ({
       </TreeViewContext.Provider>
     </ul>
   );
-};
-
-TreeView.propTypes = {
-  className: PropTypes.oneOfType(
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
-  ),
-  collapseIcon: PropTypes.element,
-  expandIcon: PropTypes.element,
-  selected: PropTypes.arrayOf(PropTypes.string),
-};
-
-TreeView.defaultProps = {
-  selected: [],
 };
 
 export { default as TreeItem } from "./item";

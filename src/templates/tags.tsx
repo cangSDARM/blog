@@ -1,9 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link, graphql } from "gatsby";
 import Layout from "../components/layout";
 
-const Tags = ({ pageContext, data }) => {
+const Tags: React.FC<{pageContext: any, data: any}> = ({ pageContext, data }) => {
   const { tag } = pageContext;
   const { edges, totalCount } = data.allMdx;
   const tagHeader = `${totalCount} post${
@@ -25,15 +24,15 @@ const Tags = ({ pageContext, data }) => {
             listStyle: `none`,
           }}
         >
-          {edges.map(({ node }) => {
-            const { slug } = node.fields;
-            let depth = slug.match(/\//g) || [];
+          {edges.map(({ node }: any) => {
+            const { slug = '' } = node.fields;
+            const depth = (slug as string).match(/\//g) || [];
             depth.shift();
             depth.shift();
             const { title } = node.frontmatter;
             return (
               <li key={slug}>
-                {depth.map((_, i) => {
+                {depth.map((_:any, i) => {
                   return (
                     <span
                       key={`_${i}`}
@@ -49,30 +48,6 @@ const Tags = ({ pageContext, data }) => {
       </div>
     </Layout>
   );
-};
-
-Tags.propTypes = {
-  pageContext: PropTypes.shape({
-    tag: PropTypes.string.isRequired,
-  }),
-  data: PropTypes.shape({
-    allMarkdownRemark: PropTypes.shape({
-      totalCount: PropTypes.number.isRequired,
-      edges: PropTypes.arrayOf(
-        PropTypes.shape({
-          node: PropTypes.shape({
-            frontmatter: PropTypes.shape({
-              title: PropTypes.string.isRequired,
-              date: PropTypes.string.isRequired,
-            }),
-            fields: PropTypes.shape({
-              slug: PropTypes.string.isRequired,
-            }),
-          }),
-        }).isRequired
-      ),
-    }),
-  }),
 };
 
 export default Tags;

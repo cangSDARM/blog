@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import TreeView, { TreeItem } from "../../TreeView";
 import useScrollSpy from "./scrollspy";
 
-const useTreeStyles = makeStyles((theme) => ({
+const useTreeStyles = makeStyles((_) => ({
   root: {
     margin: "1.4em 0 !important",
     display: "table",
@@ -28,13 +28,18 @@ const useTreeStyles = makeStyles((theme) => ({
   },
 }));
 
+interface HeadingViewProps {
+  toc: { url: string; title?: string }[];
+}
+type ArrayItem<T extends any[]> = T extends (infer S)[] ? S : never;
+
 const indexing = "目录";
-const HeadingView = ({ toc }) => {
+const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
   const spyUrl = toc.map((post) => ({
     hash: post["url"].substring(1),
   }));
 
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<string[]>([]);
 
   const { actived } = useScrollSpy({
     items: spyUrl,
@@ -48,9 +53,8 @@ const HeadingView = ({ toc }) => {
 
   const classes = useTreeStyles();
 
-  const handleSelect = (event, node) => {};
-
-  const renderTreeItem = (nodes) => (
+  type Node = ArrayItem<HeadingViewProps["toc"]> & { items?: Node[] };
+  const renderTreeItem = (nodes: Node) => (
     <TreeItem
       key={nodes.url}
       nodeId={nodes.url}
@@ -63,7 +67,6 @@ const HeadingView = ({ toc }) => {
           {nodes.title}
         </a>
       }
-      onClick={(e) => handleSelect(e, nodes)}
       expandable={!!nodes.items}
       defalutExpanded={nodes.url == "#"}
     >
@@ -75,40 +78,40 @@ const HeadingView = ({ toc }) => {
     </TreeItem>
   );
 
-  return (
-    toc.length > 0 && (
-      <TreeView
-        style={{
-          height: 240,
-          flexGrow: 1,
-          maxWidth: 400,
-        }}
-        className={classes.root}
-        selected={selected}
-        collapseIcon={
-          <SvgIcon>
-            <path
-              fill="currentColor"
-              d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-            />
-          </SvgIcon>
-        }
-        expandIcon={
-          <SvgIcon>
-            <path
-              fill="currentColor"
-              d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
-            />
-          </SvgIcon>
-        }
-      >
-        {renderTreeItem({
-          title: indexing,
-          url: "#",
-          items: toc,
-        })}
-      </TreeView>
-    )
+  return toc.length > 0 ? (
+    <TreeView
+      style={{
+        height: 240,
+        flexGrow: 1,
+        maxWidth: 400,
+      }}
+      className={classes.root}
+      selected={selected}
+      collapseIcon={
+        <SvgIcon>
+          <path
+            fill="currentColor"
+            d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+          />
+        </SvgIcon>
+      }
+      expandIcon={
+        <SvgIcon>
+          <path
+            fill="currentColor"
+            d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+          />
+        </SvgIcon>
+      }
+    >
+      {renderTreeItem({
+        title: indexing,
+        url: "#",
+        items: toc,
+      })}
+    </TreeView>
+  ) : (
+    <></>
   );
 };
 

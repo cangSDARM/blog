@@ -1,16 +1,17 @@
 import { graphql } from "gatsby";
 import React from "react";
+import { FC } from "react";
 import Image from "../components/image";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import puns from "../raw/pun";
 
-const lists = {
+const lists: Record<string, string[]> = {
   TODO: [],
   PROCESSING: [],
 };
 
-const IndexPage = ({ data }) => (
+const IndexPage: FC<{ data: any }> = ({ data }) => (
   <Layout>
     <SEO
       title={data.site.siteMetadata.title}

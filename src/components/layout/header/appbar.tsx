@@ -2,10 +2,9 @@ import { Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import { Link } from "gatsby";
-import PropType from "prop-types";
 import React from "react";
 
-const useAppBarStyle = makeStyles((theme) => ({
+const useAppBarStyle = makeStyles((_) => ({
   root: {
     userSelect: "none",
     background: "rebeccapurple",
@@ -41,7 +40,12 @@ const useAppBarStyle = makeStyles((theme) => ({
   },
 }));
 
-const AppBar = ({ wrapper, children, siteTitle, ...props }) => {
+const AppBar: React.FC<
+  {
+    wrapper?: string;
+    siteTitle: string;
+  } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+> = ({ wrapper, children, siteTitle, ...props }) => {
   const classes = useAppBarStyle();
 
   return (
@@ -56,11 +60,6 @@ const AppBar = ({ wrapper, children, siteTitle, ...props }) => {
       </Toolbar>
     </header>
   );
-};
-
-AppBar.PropType = {
-  wrapper: PropType.string,
-  siteTitle: PropType.string,
 };
 
 export default AppBar;

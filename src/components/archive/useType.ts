@@ -1,3 +1,4 @@
+//@ts-ignore
 import * as mainstyle from "./main.module.css";
 import {
   bilibili,
@@ -7,6 +8,7 @@ import {
   tieba,
   weibo,
   zhihu,
+  //@ts-ignore
 } from "./styles";
 
 const Type = {
@@ -19,12 +21,12 @@ const Type = {
   Godot: "docs.godotengine.org",
 };
 
-function styleConcat(...typeStyle) {
+function styleConcat(...typeStyle: string[]) {
   const arcivePost = [mainstyle.arcivePost];
   return arcivePost.concat(typeStyle).join(` `);
 }
 
-export const useType = (typo) => {
+export const useType = (typo: string) => {
   switch (typo) {
     case Type.ZhiHu_Zhuanlan:
       return styleConcat(zhihu);

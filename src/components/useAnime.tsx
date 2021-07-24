@@ -24,29 +24,29 @@ export default function useAnime() {
  * ```
  * @param {Function} callback 
  */
-export const useAnimationFrame = (callback) => {
+export const useAnimationFrame = (callback: (time: number) => void) => {
   // Use useRef for mutable variables that we want to persist
   // without triggering a re-render on their change
-  const requestRef = useRef();
-  const previousTimeRef = useRef();
+  const requestRef = useRef<number>();
+  const previousTimeRef = useRef<number>();
 
-  const animate = (time) => {
+  const animate = (time: number) => {
     if (previousTimeRef.current != undefined) {
       const deltaTime = time - previousTimeRef.current;
       callback(deltaTime);
     }
     previousTimeRef.current = time;
 
-    if (window && window.requestAnimationFrame)
+    if (window && window.requestAnimationFrame != null)
       requestRef.current = requestAnimationFrame(animate);
   };
 
   useEffect(() => {
-    if (window && window.requestAnimationFrame)
+    if (window && window.requestAnimationFrame != null)
       requestRef.current = requestAnimationFrame(animate);
     return () => {
-      if (window && window.requestAnimationFrame)
-        cancelAnimationFrame(requestRef.current);
+      if (window && window.requestAnimationFrame != null)
+        cancelAnimationFrame(requestRef.current || 0);
     };
   }, []); // Make sure the effect runs only once
 };

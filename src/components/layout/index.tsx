@@ -8,7 +8,6 @@
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { graphql, useStaticQuery } from "gatsby";
 import "katex/dist/katex.min.css";
-import PropTypes from "prop-types";
 import React from "react";
 import Drawer from "./Drawer";
 import Footer from "./footer";
@@ -21,7 +20,12 @@ const theme = createTheme({
   },
 });
 
-const Layout = ({ children, ...otherProps }) => {
+const Layout: React.FC<{
+  header?: object;
+  content?: object;
+  footer?: object;
+  main?: { style: {}; [k: string]: {} };
+}> = ({ children, ...otherProps }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -34,9 +38,11 @@ const Layout = ({ children, ...otherProps }) => {
 
   const headerProps = otherProps && otherProps.header;
   const contentProps = otherProps && otherProps.content;
-  const footerProps = otherProps && otherProps.footer;
-  const { style: mainStyle = {}, ...mainProps } =
-    (otherProps && otherProps.main) || {};
+  const footerProps = (otherProps && otherProps.footer) || {
+    className: "default-footer",
+  };
+  const { style: mainStyle = {}, ...mainProps } = (otherProps &&
+    otherProps.main) || { style: {} };
 
   return (
     <>
@@ -65,20 +71,6 @@ const Layout = ({ children, ...otherProps }) => {
       </ThemeProvider>
     </>
   );
-};
-
-Layout.defaultProps = {
-  footer: {
-    className: "default-footer",
-  },
-};
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-  header: PropTypes.object,
-  footer: PropTypes.object,
-  main: PropTypes.object,
-  content: PropTypes.object,
 };
 
 export default Layout;

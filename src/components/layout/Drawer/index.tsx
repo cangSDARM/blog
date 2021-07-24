@@ -7,7 +7,7 @@ import ImageComponent from "../../image";
 import useAnime from "../../useAnime";
 import { SkipIndexTag, tagToPath } from "./indexing";
 
-const useDrawerTheme = makeStyles((theme) => ({
+const useDrawerTheme = makeStyles((_) => ({
   paper: {
     backgroundColor: "#e8e8e8",
   },
@@ -30,8 +30,6 @@ const useDrawerTheme = makeStyles((theme) => ({
     border: "none",
     backgroundColor: "transparent",
     background: "transparent",
-    border: "none",
-    padding: 0,
     position: "relative",
     left: -8,
   },
@@ -62,9 +60,9 @@ const Drawer = () => {
   `);
   const classes = useDrawerTheme();
   const anime = useAnime();
-  const draggableRef = useRef();
+  const draggableRef: React.LegacyRef<HTMLDivElement> = useRef(null);
 
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -128,7 +126,7 @@ const Drawer = () => {
           <ListSubheader color="primary" className={classes.allTags}>
             All tags
           </ListSubheader>
-          {tagsGroup?.group.map((i) => {
+          {tagsGroup?.group.map((i: any) => {
             return (
               <SkipIndexTag
                 tag={i}

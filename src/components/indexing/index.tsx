@@ -1,8 +1,7 @@
 import { Link } from "gatsby";
 import React from "react";
-import PropType from "prop-types";
 
-function findIndex(data, slug) {
+function findIndex(data: any | undefined, slug: string) {
   let element;
   if (data)
     for (element of data) {
@@ -18,18 +17,18 @@ function findIndex(data, slug) {
  * Skip elements without integer index
  * @param {Array} data
  */
-function jumpNonNavigable(data) {
+function jumpNonNavigable(data: any[]) {
   return Array.from(data).filter(
     (element) => element?.node?.frontmatter?.index?.toString().indexOf(".") < 0
   );
 }
 
-function getPrevious(data, index) {
+function getPrevious(data: any[], index: number) {
   if (data) return data[index - 1]?.node;
   return undefined;
 }
 
-function getNext(data, index) {
+function getNext(data: any[], index: number) {
   if (data) return data[index + 1]?.node;
   return undefined;
 }
@@ -48,7 +47,7 @@ function ensureExist(
   return element;
 }
 
-function maxLength(text, maximum = 10) {
+function maxLength(text: string, maximum = 10) {
   let res = text.substr(0, maximum);
   if (text.length > maximum) {
     res += "...";
@@ -57,40 +56,41 @@ function maxLength(text, maximum = 10) {
   return res;
 }
 
-const Indexing = ({ slug, data, ...otherProps }) => {
+const Indexing: React.FC<{ slug: string; data: any[] }> = ({
+  slug,
+  data,
+  ...otherProps
+}) => {
   data = jumpNonNavigable(data);
   const index = findIndex(data, slug);
   const previous = ensureExist(getPrevious(data, index));
   const next = ensureExist(getNext(data, index));
 
-  return (
-    index > -1 && (
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-        {...otherProps}
-      >
-        <Link to={previous.fields.slug} name="previous">
-          {`<-`}
-          {maxLength(previous.frontmatter.title)}
-          {`-`}
-        </Link>
-        <Link to={next?.fields?.slug} name="previous">
-          {`-`}
-          {maxLength(next?.frontmatter?.title)}
-          {` ->`}
-        </Link>
-      </div>
-    )
+  return index > -1 ? (
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+      {...otherProps}
+    >
+      {/** @ts-ignore */}
+      <Link to={previous.fields.slug} name="previous">
+        {`<-`}
+        {maxLength(previous.frontmatter.title)}
+        {`-`}
+      </Link>
+      {/** @ts-ignore */}
+      <Link to={next?.fields?.slug} name="previous">
+        {`-`}
+        {maxLength(next?.frontmatter?.title)}
+        {` ->`}
+      </Link>
+    </div>
+  ) : (
+    <></>
   );
-};
-
-Indexing.PropType = {
-  data: PropType.array,
-  slug: PropType.string,
 };
 
 export default Indexing;

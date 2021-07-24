@@ -1,7 +1,9 @@
 import React from "react";
 import "./style.css";
 
-const Footer = (props) => {
+const Footer: React.FC<
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+> = (props) => {
   return (
     <footer {...props}>
       <span>

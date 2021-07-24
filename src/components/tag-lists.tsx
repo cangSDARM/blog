@@ -1,12 +1,16 @@
 import * as React from "react";
 import { navigate } from "gatsby";
-import { Chip, Avatar, Paper } from "@material-ui/core";
+import { Chip, Avatar } from "@material-ui/core";
 
-function tagToPath(tag) {
+function tagToPath(tag: string) {
   return `/tags/${tag}`;
 }
 
-export default function TagsList({ tags, ...otherProps }) {
+export interface TagsListProps {
+  tags: string[];
+}
+
+const TagsList: React.FC<TagsListProps> = ({ tags, ...otherProps }) => {
   if (!tags || tags.length === 0) {
     return null;
   }
@@ -30,4 +34,6 @@ export default function TagsList({ tags, ...otherProps }) {
       )}
     </ul>
   );
-}
+};
+
+export default TagsList;

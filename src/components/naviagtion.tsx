@@ -1,13 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link as GLink } from "gatsby";
-import { Location } from "@reach/router";
+import { Location, WindowLocation } from "@reach/router";
 import { Link as MLink } from "@material-ui/core";
+import { FC } from "react";
 
 class SameLevel {
-  path;
-  wantTo;
-  constructor(path, to) {
+  path: string;
+  wantTo: string;
+  constructor(path: string, to: string) {
     this.path = path;
     this.wantTo = to;
   }
@@ -36,17 +36,21 @@ class SameLevel {
     return this.setProperties({ path, wantTo });
   }
 
-  setProperties(props) {
+  setProperties(props: any) {
     Object.keys(props).forEach((key) => {
-      this[key] = props[key];
+      (this as any)[key] = props[key];
     });
 
     return this;
   }
 }
 
-const Navigation = ({ desc, to, external }) => {
-  const Link = ({ location }) => {
+const Navigation: FC<{
+  desc: React.ReactNode | string;
+  to: string;
+  external: boolean;
+}> = ({ desc = "", to = "", external = false }) => {
+  const Link = ({ location }: { location: WindowLocation }) => {
     const sameLevel = new SameLevel(location.pathname, to.toString().trim());
     const { path } = sameLevel.check();
 
@@ -66,18 +70,6 @@ const Navigation = ({ desc, to, external }) => {
       {desc}
     </MLink>
   );
-};
-
-Navigation.defaultProps = {
-  desc: "",
-  to: "",
-  external: false,
-};
-
-Navigation.PropType = {
-  desc: PropTypes.string,
-  to: PropTypes.string.isRequired,
-  external: PropTypes.bool,
 };
 
 export default Navigation;

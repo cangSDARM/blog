@@ -1,9 +1,8 @@
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import PropTypes from "prop-types";
 import React from "react";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_) => ({
   iconContanner: {
     display: "flex",
     justifyContent: "center",
@@ -15,7 +14,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const IconContanner = ({ collapseIcon, expandIcon, expanded, width = 15 }) => {
+const IconContanner: React.FC<{
+  collapseIcon: React.ReactNode | string;
+  expandIcon: React.ReactNode;
+  expanded: boolean;
+  width: number | string;
+}> = ({ collapseIcon, expandIcon, expanded, width = 15 }) => {
   const classes = useStyles();
 
   return (
@@ -23,13 +27,6 @@ const IconContanner = ({ collapseIcon, expandIcon, expanded, width = 15 }) => {
       {expanded ? expandIcon : collapseIcon}
     </span>
   );
-};
-
-IconContanner.propTypes = {
-  collapseIcon: PropTypes.element,
-  expandIcon: PropTypes.element,
-  expanded: PropTypes.bool,
-  width: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
 };
 
 export default IconContanner;

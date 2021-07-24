@@ -2,7 +2,7 @@ import React from "react";
 
 import { graphql, useStaticQuery, Link } from "gatsby";
 
-export const Nav = ({ tag, slug }) => {
+export const Nav: React.FC<{ tag: string; slug: string }> = ({ tag, slug }) => {
   const data = useStaticQuery(graphql`
     query MyQuery {
       tags: allMdx(sort: { fields: frontmatter___date }) {
@@ -19,8 +19,11 @@ export const Nav = ({ tag, slug }) => {
     }
   `);
   const pages = data.tags.nodes
-    .filter((page) => page.frontmatter.tags.includes(tag))
-    .map((item) => ({ title: item.frontmatter.title, slug: item.fields.slug }));
+    .filter((page: any) => page.frontmatter.tags.includes(tag))
+    .map((item: any) => ({
+      title: item.frontmatter.title,
+      slug: item.fields.slug,
+    }));
 
   return (
     <section
@@ -33,13 +36,13 @@ export const Nav = ({ tag, slug }) => {
       }}
     >
       <nav className="nav-map" style={{ listStyle: `none` }}>
-        {pages.map((item) => (
+        {pages.map((item: any) => (
           <li
             key={item.title}
             style={
               slug === item.slug
                 ? { textDecoration: "underline", color: "#3388ff" }
-                : null
+                : {}
             }
           >
             <Link to={item.slug}>{item.title}</Link>

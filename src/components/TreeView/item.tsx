@@ -1,12 +1,11 @@
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
 import TreeViewContext from "./context";
 import IconContanner from "./icon";
 import Label from "./label";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_) => ({
   treeItemRoot: {
     width: "100%",
     cursor: "pointer",
@@ -23,9 +22,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TreeItem = ({
-  expandable,
-  defalutExpanded,
+const TreeItem: React.FC<{
+  nodeId: string;
+  expandWidth?: number | string;
+  label: React.ReactNode | string;
+  expandable: boolean;
+  defalutExpanded: boolean;
+  classesNames: { group: string; label: string };
+  onClick?: (e: React.MouseEvent) => void;
+}> = ({
+  expandable = false,
+  defalutExpanded = false,
+
   classesNames,
   nodeId = "",
   expandWidth = 10,
@@ -89,26 +97,6 @@ const TreeItem = ({
       {canExpand && expandedNode}
     </>
   );
-};
-
-TreeItem.propTypes = {
-  expandable: PropTypes.bool,
-  defalutExpanded: PropTypes.bool,
-  expandWidth: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
-  label: PropTypes.oneOfType(PropTypes.string, PropTypes.element),
-  classesNames: PropTypes.shape({
-    group: PropTypes.string,
-    label: PropTypes.string,
-  }),
-  onClick: PropTypes.func,
-  nodeId: PropTypes.string,
-};
-
-TreeItem.defaultProps = {
-  expandable: false,
-  defalutExpanded: false,
-  expandWidth: 15,
-  onClick: () => {},
 };
 
 export default TreeItem;

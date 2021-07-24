@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import React from "react";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_) => ({
   labelRoot: {
     width: "100%",
     position: "relative",
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Label = ({ children }) => {
+const Label: React.FC<{}> = ({ children }) => {
   const classes = useStyles();
 
   return (
@@ -24,7 +24,5 @@ const Label = ({ children }) => {
     </Typography>
   );
 };
-
-Label.propTypes = {};
 
 export default Label;

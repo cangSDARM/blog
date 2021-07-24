@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import useAnime from "../../useAnime";
 import { ListItemIcon, Typography } from "../header/styled";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_) => ({
   listItem: {
     paddingRight: 16 + 16,
     marginBottom: 1,
@@ -47,14 +47,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SkipIndexTag = ({ tag, children, count }) => {
+const SkipIndexTag: React.FC<{
+  tag: any;
+  count: number;
+}> = ({ tag, children, count }) => {
   const anime = useAnime();
   const [entered, setEntered] = useState(false);
   const [bgGlow, setBgGlow] = useState("");
 
   const classes = useStyles();
 
-  const mouseEnter = (e) => {
+  const mouseEnter = (e: React.MouseEvent) => {
     setEntered(true);
     const targetBox = e?.currentTarget?.getBoundingClientRect();
 
@@ -72,7 +75,7 @@ const SkipIndexTag = ({ tag, children, count }) => {
     }
   };
 
-  const mouseLeave = (e) => {
+  const mouseLeave = (_: React.MouseEvent) => {
     setEntered(false);
     setBgGlow("");
 
@@ -86,7 +89,7 @@ const SkipIndexTag = ({ tag, children, count }) => {
     });
   };
 
-  const mouseMove = (e) => {
+  const mouseMove = (e: React.MouseEvent) => {
     const bounds = e.currentTarget?.getBoundingClientRect();
     if (!bounds) return;
 
@@ -120,8 +123,8 @@ const SkipIndexTag = ({ tag, children, count }) => {
           backgroundImage: bgGlow,
           border: `1px solid ${entered ? "#ffffff0f" : "#fff0"}`,
         }}
-        onClick={(event) => event.stopPropagation()}
-        onFocus={(event) => event.stopPropagation()}
+        onClick={(event: React.MouseEvent) => event.stopPropagation()}
+        onFocus={(event: React.FocusEvent) => event.stopPropagation()}
         onMouseEnter={mouseEnter}
         onMouseLeave={mouseLeave}
         onMouseMove={mouseMove}
@@ -134,12 +137,12 @@ const SkipIndexTag = ({ tag, children, count }) => {
             {count}
           </Avatar>
         </ListItemIcon>
-        <Typography component="p">{children}</Typography>
+        <Typography>{children}</Typography>
       </ListItem>
     );
   }
 };
-function tagToPath(tag) {
+function tagToPath(tag: string) {
   return `/tags/${tag}`;
 }
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 export { ZhiHu_Zhuanlan as zhihu } from "./zhihu.module.css";
 export { JianShu as jianshu } from "./jianshu.module.css";
 export { Bilibili as bilibili } from "./bilibili.module.css";
