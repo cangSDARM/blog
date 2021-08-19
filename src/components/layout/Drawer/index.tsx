@@ -11,6 +11,9 @@ const useDrawerTheme = makeStyles((_) => ({
   paper: {
     backgroundColor: "#e8e8e8",
   },
+  root: {
+    overflow: "show",
+  },
   toggleWrapper: {
     zIndex: 111,
     position: "fixed",
@@ -122,7 +125,7 @@ const Drawer = () => {
         classes={{ paper: classes.paper }}
         onClose={toggleDrawer(false)}
       >
-        <List component="nav" aria-label="drawer">
+        <List component="nav" aria-label="drawer" className={classes.root}>
           <ListSubheader color="primary" className={classes.allTags}>
             All tags
           </ListSubheader>
@@ -137,7 +140,7 @@ const Drawer = () => {
               </SkipIndexTag>
             );
           })}
-        </List>{" "}
+        </List>
       </MDrawer>
     </>
   );

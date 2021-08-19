@@ -7,12 +7,11 @@ import React from "react";
 const useAppBarStyle = makeStyles((_) => ({
   root: {
     userSelect: "none",
-    background: "rebeccapurple",
+    background: "rgb(39 51 69)",
     borderBottom: "1px solid rgba(50, 50, 50, 0.5)",
     overflow: "hidden" /*enable to BFC*/,
     justifyContent: "center",
     textDecoration: "none",
-    fontFamily: "Source Sans Pro, Helvetica, Arial, sans-serif",
     boxShadow:
       "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)",
     transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
@@ -22,7 +21,6 @@ const useAppBarStyle = makeStyles((_) => ({
     boxSizing: "border-box",
     flexShrink: 0,
     flexDirection: "column",
-    color: "#eee",
     height: 86 /* if want expanded to hidden Y scrollbar, need this*/,
   },
   toolbar: {
@@ -31,6 +29,9 @@ const useAppBarStyle = makeStyles((_) => ({
   title: {
     fontFamily: "inherit",
     alignItems: "baseline",
+    "& a": {
+      color: "#eee",
+    },
   },
   icon: {
     minWidth: 48,
@@ -51,7 +52,7 @@ const AppBar: React.FC<
   return (
     <header className={classes.root} {...props}>
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h2" className={clsx(classes.title, wrapper)}>
+        <Typography variant="h3" className={clsx(classes.title, wrapper)}>
           <Link to="/" id="head">
             {siteTitle}
           </Link>

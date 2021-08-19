@@ -6,18 +6,13 @@ import { ListItemIcon, Typography } from "../header/styled";
 
 const useStyles = makeStyles((_) => ({
   listItem: {
-    paddingRight: 16 + 16,
-    marginBottom: 1,
+    margin: "3px 4px",
     boxSizing: "border-box",
+    width: "auto",
+    alignItems: "baseline",
 
-    "&>p>a::after": {
-      content: "'\u27A4'",
-      position: "absolute",
-      right: 16,
-      width: 16,
-    },
     "& a": {
-      color: "rgb(63 81 181)",
+      color: "rgb(17,24,39)",
     },
   },
   acrylic: {
@@ -26,7 +21,7 @@ const useStyles = makeStyles((_) => ({
     overflow: "hidden",
     backgroundBlendMode: "exclusion",
 
-    "&::before": {
+    "&>::before": {
       content: "''",
       position: "absolute",
       top: 0,
@@ -34,16 +29,17 @@ const useStyles = makeStyles((_) => ({
       right: 0,
       bottom: 0,
       zIndex: -99,
-      boxShadow: "inset 0 0 2000rem rgba(255, 255, 255, .5)",
+      boxShadow: "inset 0 0 2000rem rgba(9, 30, 66, 0.04)",
       filter: "blur(10px)",
       background: "inherit",
       backdropFilter: "blur(30rem) saturate(120%)",
     },
   },
   avatar: {
-    width: 24,
-    height: 24,
-    borderRadius: 0,
+    width: "1.25em",
+    fontSize: "1em",
+    height: "1.25em",
+    backdropFilter: "contrast(0.5)",
   },
 }));
 
@@ -70,7 +66,7 @@ const SkipIndexTag: React.FC<{
         width: targetBox.width,
         height: targetBox.height,
         borderRadius: 0,
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        backgroundColor: "rgba(9, 30, 66, 0.1)",
       });
     }
   };
@@ -104,10 +100,10 @@ const SkipIndexTag: React.FC<{
       `
       radial-gradient(
         circle at
-        ${center.x * 2 + bounds.width / 2}px
-        ${center.y * 2 + bounds.height / 2}px,
-        #ffffff0f,
-        #30303011
+        ${center.x + bounds.width / 2}px
+        ${center.y + bounds.height / 2}px,
+        #ffffff1f,
+        #3030301A
       )
     `.trim()
     );
@@ -121,7 +117,7 @@ const SkipIndexTag: React.FC<{
         component="div"
         style={{
           backgroundImage: bgGlow,
-          border: `1px solid ${entered ? "#ffffff0f" : "#fff0"}`,
+          border: `1px solid ${entered ? "rgba(255,255,255,0.15)" : "#fff0"}`,
         }}
         onClick={(event: React.MouseEvent) => event.stopPropagation()}
         onFocus={(event: React.FocusEvent) => event.stopPropagation()}
@@ -130,10 +126,7 @@ const SkipIndexTag: React.FC<{
         onMouseMove={mouseMove}
       >
         <ListItemIcon>
-          <Avatar
-            className={clsx(classes.acrylic, classes.avatar)}
-            style={{ backgroundColor: "#888" }}
-          >
+          <Avatar className={clsx(classes.acrylic, classes.avatar)}>
             {count}
           </Avatar>
         </ListItemIcon>
@@ -142,6 +135,7 @@ const SkipIndexTag: React.FC<{
     );
   }
 };
+
 function tagToPath(tag: string) {
   return `/tags/${tag}`;
 }

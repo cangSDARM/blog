@@ -1,13 +1,38 @@
+import { makeStyles } from "@material-ui/styles";
+import { graphql, Link } from "gatsby";
 import React from "react";
-import { Link, graphql } from "gatsby";
 import Layout from "../components/layout";
 
-const Tags: React.FC<{pageContext: any, data: any}> = ({ pageContext, data }) => {
+const useTheme = makeStyles((_) => ({
+  listItem: {
+    margin: "0.2em 0",
+    padding: "0.4em 1em",
+    borderRadius: 4,
+
+    "&>a": {
+      color: "rgb(17,24,39)",
+    },
+
+    "&:hover": {
+      "&>a": {
+        color: "rgb(55,65,81)",
+      },
+      backgroundColor: "#e8eaee",
+    },
+  },
+}));
+
+const Tags: React.FC<{ pageContext: any; data: any }> = ({
+  pageContext,
+  data,
+}) => {
   const { tag } = pageContext;
   const { edges, totalCount } = data.allMdx;
   const tagHeader = `${totalCount} post${
     totalCount === 1 ? "" : "s"
   } tagged with "${tag}"`;
+
+  const classes = useTheme();
 
   return (
     <Layout
@@ -18,34 +43,32 @@ const Tags: React.FC<{pageContext: any, data: any}> = ({ pageContext, data }) =>
       }}
     >
       <h1>{tagHeader}</h1>
-      <div>
-        <ul
-          style={{
-            listStyle: `none`,
-          }}
-        >
-          {edges.map(({ node }: any) => {
-            const { slug = '' } = node.fields;
-            const depth = (slug as string).match(/\//g) || [];
-            depth.shift();
-            depth.shift();
-            const { title } = node.frontmatter;
-            return (
-              <li key={slug}>
-                {depth.map((_:any, i) => {
-                  return (
-                    <span
-                      key={`_${i}`}
-                      style={{ width: `1em`, display: `inline-block` }}
-                    ></span>
-                  );
-                })}
-                <Link to={`${slug}/`}>{title}</Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <ul
+        style={{
+          listStyle: `none`,
+        }}
+      >
+        {edges.map(({ node }: any) => {
+          const { slug = "" } = node.fields;
+          const depth = (slug as string).match(/\//g) || [];
+          depth.shift();
+          depth.shift();
+          const { title } = node.frontmatter;
+          return (
+            <li key={slug} className={classes.listItem}>
+              {depth.map((_: any, i) => {
+                return (
+                  <span
+                    key={`_${i}`}
+                    style={{ width: `1em`, display: `inline-block` }}
+                  ></span>
+                );
+              })}
+              <Link to={`${slug}/`}>{title}</Link>
+            </li>
+          );
+        })}
+      </ul>
     </Layout>
   );
 };

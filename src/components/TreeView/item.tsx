@@ -14,7 +14,8 @@ const useStyles = makeStyles((_) => ({
   },
   expandableRoot: {
     '& *[role*="menuitem"]': {
-      backgroundColor: "rgba(63, 81, 181, 0.16)",
+      backgroundColor: "#e8eaee",
+      borderRadius: "0.25em",
     },
   },
   collapse: {
