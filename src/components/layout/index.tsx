@@ -7,7 +7,6 @@
 
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { graphql, useStaticQuery } from "gatsby";
-import "katex/dist/katex.min.css";
 import React from "react";
 import Drawer from "./Drawer";
 import Footer from "./footer";
