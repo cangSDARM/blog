@@ -6,8 +6,8 @@ import * as mainstyles from "../main.module.css";
 import HeadingView from "./headingView";
 
 const Resources: React.FC<{ avatar: string; reference: string; toc: any }> = ({
-  avatar = '',
-  reference = '',
+  avatar = "",
+  reference = "",
   toc,
 }) => {
   const [refTitle, refLink] = reference.split("|");
