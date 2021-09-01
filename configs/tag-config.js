@@ -1,7 +1,7 @@
 const path = require("path");
 const { kebabCase } = require("lodash");
 
-const tagTemplate = path.resolve("src/templates/tags.tsx"); //resolve从项目目录开始的……有点奇怪
+const tagTemplate = path.resolve("src/templates/tags.tsx");
 
 exports.tagComponentInject = function (tags, createPage) {
   tags.forEach((tag) => {

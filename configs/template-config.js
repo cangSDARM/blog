@@ -51,13 +51,12 @@ function passSets(el) {
         const el = ele.replace(/\.\S*/g, "");
         const newPath = path.join(paths, el);
 
-        //没配置
+        //no file found
         !passSets(el) &&
           fs.mkdir(newPath, (e) => {
-            e &&
-              console.warn(
-                `exisit config [Error: ${e.code}: file already exists, ${e.syscall} ${e.path}]`
-              );
+            if (e && e.code !== "EEXIST") {
+              console.warn(`config Error: ${e.code} [${e.syscall} ${e.path}]`);
+            }
             templateConfig[el] = {
               slug: `/${el}`,
               template: `src/templates/${ele}`,
@@ -126,7 +125,7 @@ function markName(name, ext) {
   });
   if (!trust) {
     throw new Error(
-      `${name}${ext} is not markdown file, but it also run in inject program. PLEASE FIND ANY BUGS!!`
+      `${name}${ext} is not markdown file, but it also run in inject procedure!`
     );
   }
   return name;
@@ -141,7 +140,7 @@ function parseAbsPath(absPath) {
   let { name, ext } = path.parse(absPath);
   // {
   //   root: 'C:/',
-  //   dir: 'C:/Users/itc190106/Desktop/GaphicsLearnning/cangSDARM.github.io/src/pages/slug-graphics',
+  //   dir: 'C:/Users/random/Desktop/blog/src/pages/slug-graphics',
   //   base: 'index.md',
   //   ext: '.md',
   //   name: 'index'
@@ -164,8 +163,9 @@ exports.templateFieldInject = function (_slug, node, createNodeField) {
   };
   // console.log("nodeInject", _slug, node.fileAbsolutePath, indexPage, name);
   const slug = slugDir.exec(_slug)[1];
-  if (!templateConfig[slug]) throw new Error(reg, "isn't exec for", _slug);
-  else {
+  if (!templateConfig[slug]) {
+    throw new Error(`${slugDir} isn't exec for ${_slug}`);
+  } else {
     //slug:/graphics, i.tag: graphics
     createConfig.templateTag = slug;
     createNodeFields(createNodeField, node, createConfig);

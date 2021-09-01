@@ -65,9 +65,10 @@ exports.createPages = async ({ actions, graphql }) => {
     }
   `);
   if (result.errors) {
-    console.error("query error", result.errors);
+    console.error("createPages query error", result.errors);
   }
 
   templateContextInject(result.data.postsRemark.edges);
+  //XXX: refactor this to dectect templates dir, rather than mannually query groups
   tagComponentInject(result.data.tagsGroup.group, createPage);
 };
