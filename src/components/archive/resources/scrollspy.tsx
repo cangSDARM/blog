@@ -42,12 +42,14 @@ const getTarget = (
     : target;
 const noop = () => {};
 
-interface ScrollSpyConfig<T extends { hash: any }> {
+type ScrollSpyItem = { hash: string };
+
+interface ScrollSpyConfig<T extends ScrollSpyItem> {
   items: T[];
   target?: (Window & typeof globalThis) | string | null | HTMLElement;
 }
 
-const useScrollSpy: <T extends { hash: any }>(data: ScrollSpyConfig<T>) => any =
+const useScrollSpy: <T extends ScrollSpyItem>(data: ScrollSpyConfig<T>) => any =
   ({ items = [], target = window }) => {
     const itemsWithNodeRef = useRef<ReturnType<typeof getItemsClient>>([]);
     const trueTarget = useRef<ReturnType<typeof getTarget>>(null);
@@ -59,7 +61,7 @@ const useScrollSpy: <T extends { hash: any }>(data: ScrollSpyConfig<T>) => any =
       trueTarget.current = getTarget(target);
     }, [target]);
 
-    const [activeState, setActiveState] = useState(null);
+    const [activeState, setActiveState] = useState<null | string>(null);
     const [lock, setLock] = useState(false);
     const [onScroll, setOnScroll] = useState(false);
 
@@ -120,7 +122,7 @@ const useScrollSpy: <T extends { hash: any }>(data: ScrollSpyConfig<T>) => any =
     };
   };
 
-const getItemsClient = <T extends { hash: any }>(items: T[]) =>
+const getItemsClient = <T extends ScrollSpyItem>(items: T[]) =>
   items.map(({ hash }) => ({
     hash,
     node: document?.getElementById(hash),
