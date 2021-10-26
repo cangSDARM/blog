@@ -18,10 +18,10 @@ jobs:
       - name: Install and Build 🔧
         uses: actions/setup-node@v1
         with:
-          node-version: "13.x"
+          node-version: "14.x"
 
       - name: Install dependencies without Proxy 📁
-        run: npm npm --proxy=null --https_proxy=null --strict-ssl=true config list && npm --proxy=null --https_proxy=null --strict-ssl=true install
+        run: npm --proxy=null --https_proxy=null --strict-ssl=true install
 
       - name: Cache dependencies 🍪
         uses: actions/cache@v1
