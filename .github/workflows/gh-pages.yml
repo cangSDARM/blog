@@ -20,11 +20,8 @@ jobs:
         with:
           node-version: "13.x"
 
-      - name: No Proxy in Action 🧷
-        run: npm config rm proxy && npm config rm https-proxy && npm config set strict-ssl true
-
       - name: Install dependencies 📁
-        run: npm config list && npm install
+        run: npm config list && npm install --proxy="" --https_proxy=""
 
       - name: Cache dependencies 🍪
         uses: actions/cache@v1
