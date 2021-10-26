@@ -1,7 +1,7 @@
 import { Avatar, ListItem, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { debounce } from "lodash";
 import React, { useState } from "react";
-import useAnime from "../../useAnime";
 import { ListItemIcon, Typography } from "../header/styled";
 
 const useStyles = makeStyles((_) => ({
@@ -47,46 +47,31 @@ const SkipIndexTag: React.FC<{
   tag: any;
   count: number;
 }> = ({ tag, children, count }) => {
-  const anime = useAnime();
+  // const anime = useAnime();
   const [entered, setEntered] = useState(false);
   const [bgGlow, setBgGlow] = useState("");
 
   const classes = useStyles();
 
-  const mouseEnter = (e: React.MouseEvent) => {
+  const mouseEnter = function (e: React.MouseEvent) {
     setEntered(true);
-    const targetBox = e?.currentTarget?.getBoundingClientRect();
+    // const targetBox = e?.currentTarget?.getBoundingClientRect();
 
-    if (targetBox) {
-      anime({
-        targets: "outer-poiner",
-        duration: 200,
-        translateX: targetBox.left,
-        translateY: targetBox.top,
-        width: targetBox.width,
-        height: targetBox.height,
-        borderRadius: 0,
-        backgroundColor: "rgba(9, 30, 66, 0.1)",
-      });
-    }
+    // if (targetBox) {
+    //   anime({
+    //     targets: "outer-poiner",
+    //     duration: 200,
+    //     translateX: targetBox.left,
+    //     translateY: targetBox.top,
+    //     width: targetBox.width,
+    //     height: targetBox.height,
+    //     borderRadius: 0,
+    //     backgroundColor: "rgba(9, 30, 66, 0.1)",
+    //   });
+    // }
   };
 
-  const mouseLeave = (_: React.MouseEvent) => {
-    setEntered(false);
-    setBgGlow("");
-
-    anime({
-      targets: "outer-poiner",
-      duration: 200,
-      width: 40,
-      height: 40,
-      borderRadius: "50%",
-      backgroundColor: "transparent",
-    });
-  };
-
-  const mouseMove = (e: React.MouseEvent) => {
-    const bounds = e.currentTarget?.getBoundingClientRect();
+  const mouseMove = debounce(function (e: React.MouseEvent, bounds: DOMRect) {
     if (!bounds) return;
 
     const leftX = e.clientX - bounds.x;
@@ -107,6 +92,25 @@ const SkipIndexTag: React.FC<{
       )
     `.trim()
     );
+  }, 10);
+
+  const mouseLeave = function (_: React.MouseEvent) {
+    mouseMove.cancel();
+    setEntered(false);
+    setBgGlow("");
+
+    // anime({
+    //   targets: "outer-poiner",
+    //   duration: 200,
+    //   width: 40,
+    //   height: 40,
+    //   borderRadius: "50%",
+    //   backgroundColor: "transparent",
+    // });
+  };
+
+  const debouncedMouseMove = function (e: React.MouseEvent) {
+    return mouseMove(e, e.currentTarget?.getBoundingClientRect());
   };
 
   if (tag.fieldValue.toString() === "index") return <></>;
@@ -119,11 +123,15 @@ const SkipIndexTag: React.FC<{
           backgroundImage: bgGlow,
           border: `1px solid ${entered ? "rgba(255,255,255,0.15)" : "#fff0"}`,
         }}
-        onClick={(event: React.MouseEvent) => event.stopPropagation()}
-        onFocus={(event: React.FocusEvent) => event.stopPropagation()}
+        onClick={function (event: React.MouseEvent) {
+          event.stopPropagation();
+        }}
+        onFocus={function (event: React.FocusEvent) {
+          event.stopPropagation();
+        }}
         onMouseEnter={mouseEnter}
         onMouseLeave={mouseLeave}
-        onMouseMove={mouseMove}
+        onMouseMove={debouncedMouseMove}
       >
         <ListItemIcon>
           <Avatar className={clsx(classes.acrylic, classes.avatar)}>

@@ -2,7 +2,7 @@ import { Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import { Link } from "gatsby";
-import React from "react";
+import React, { memo } from "react";
 
 const useAppBarStyle = makeStyles((_) => ({
   root: {
@@ -63,4 +63,4 @@ const AppBar: React.FC<
   );
 };
 
-export default AppBar;
+export default memo(AppBar);

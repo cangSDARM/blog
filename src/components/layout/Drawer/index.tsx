@@ -2,7 +2,7 @@ import { Drawer as MDrawer, List, ListSubheader } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import { graphql, Link, useStaticQuery } from "gatsby";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import ImageComponent from "../../image";
 import useAnime from "../../useAnime";
 import { SkipIndexTag, tagToPath } from "./indexing";
@@ -49,6 +49,10 @@ const useDrawerTheme = makeStyles((_) => ({
   },
 }));
 
+const dragStart = function (e: React.DragEvent) {
+  e.dataTransfer.setDragImage(new Image(), 0, 0);
+};
+
 const Drawer = () => {
   const [opend, setOpen] = useState(false);
   const { tagsGroup } = useStaticQuery(graphql`
@@ -63,7 +67,7 @@ const Drawer = () => {
   `);
   const classes = useDrawerTheme();
   const anime = useAnime();
-  const draggableRef: React.LegacyRef<HTMLDivElement> = useRef(null);
+  const draggableRef: React.RefObject<HTMLDivElement> = useRef(null);
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent) => {
     if (
@@ -76,6 +80,41 @@ const Drawer = () => {
     setOpen(open);
   };
 
+  function drag(e: React.DragEvent) {
+    if (draggableRef?.current && e.pageY > 1e-5) {
+      anime.set(draggableRef.current, {
+        translateY: e.pageY - 20,
+        translateX: e.pageX - 20,
+      });
+    }
+  }
+
+  function dragEnd(e: React.DragEvent) {
+    anime({
+      targets: draggableRef?.current,
+      duration: 180,
+      easing: "spring(1, 80, 12, 0)",
+      translateX: 0,
+      translateY: e.clientY,
+    });
+  }
+
+  const tags = useMemo(
+    () =>
+      tagsGroup?.group.map((i: any) => {
+        return (
+          <SkipIndexTag
+            tag={i}
+            count={i?.totalCount}
+            key={i?.fieldValue.toString()}
+          >
+            <Link to={tagToPath(i.fieldValue)}>{i.fieldValue}</Link>
+          </SkipIndexTag>
+        );
+      }),
+    [tagsGroup]
+  );
+
   return (
     <>
       <div>
@@ -86,30 +125,13 @@ const Drawer = () => {
             opend ? classes.toggleHidden : ""
           )}
           draggable
-          onDragStart={(e) => {
-            e.dataTransfer.setDragImage(new Image(), 0, 0);
-          }}
-          onDrag={(e) => {
-            if (draggableRef?.current && e.pageY > 1e-5) {
-              anime.set(draggableRef.current, {
-                translateY: e.pageY - 20,
-                translateX: e.pageX - 20,
-              });
-            }
-          }}
-          onDragEnd={(e) => {
-            anime({
-              targets: draggableRef?.current,
-              duration: 180,
-              easing: "spring(1, 80, 12, 0)",
-              translateX: 0,
-              translateY: e.clientY,
-            });
-          }}
+          onDragStart={dragStart}
+          onDrag={drag}
+          onDragEnd={dragEnd}
         >
           <button
             className={classes.toggleButton}
-            onClick={() => {
+            onClick={function () {
               setOpen(true);
             }}
           >
@@ -129,17 +151,7 @@ const Drawer = () => {
           <ListSubheader color="primary" className={classes.allTags}>
             All tags
           </ListSubheader>
-          {tagsGroup?.group.map((i: any) => {
-            return (
-              <SkipIndexTag
-                tag={i}
-                count={i?.totalCount}
-                key={i?.fieldValue.toString()}
-              >
-                <Link to={tagToPath(i.fieldValue)}>{i.fieldValue}</Link>
-              </SkipIndexTag>
-            );
-          })}
+          {tags}
         </List>
       </MDrawer>
     </>

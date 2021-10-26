@@ -1,6 +1,5 @@
 import { graphql } from "gatsby";
-import React from "react";
-import { FC } from "react";
+import React, { FC } from "react";
 import Image from "../components/image";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -50,7 +49,7 @@ const IndexPage: FC<{ data: any }> = ({ data }) => (
         }}
       >
         {puns.map((pun) => {
-          const key = pun.substring(0, 15);
+          const key = pun.toString().substring(0, 15);
           return (
             <blockquote
               style={{
