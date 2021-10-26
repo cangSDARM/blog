@@ -1,1 +1,5 @@
-{"componentChunkName":"component---src-templates-tags-tsx","path":"/tags/math/","result":{"data":{"allMdx":{"totalCount":1,"edges":[{"node":{"fields":{"slug":"/math"},"frontmatter":{"title":"Hello Math"}}}]}},"pageContext":{"tag":"math"}},"staticQueryHashes":["2763354658","3649515864","49750724"]}
+{
+    "componentChunkName": "component---src-templates-tags-tsx",
+    "path": "/tags/math/",
+    "result": {"data":{"allMdx":{"totalCount":1,"edges":[{"node":{"fields":{"slug":"/math"},"frontmatter":{"title":"Hello Math"}}}]}},"pageContext":{"tag":"math"}},
+    "staticQueryHashes": ["2763354658","3649515864","49750724"]}
