@@ -2,7 +2,7 @@ import { Drawer as MDrawer, List, ListSubheader } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import { graphql, Link, useStaticQuery } from "gatsby";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import ImageComponent from "../../image";
 import useAnime from "../../useAnime";
 import { SkipIndexTag, tagToPath } from "./indexing";
@@ -54,7 +54,7 @@ const dragStart = function (e: React.DragEvent) {
 };
 
 const Drawer = () => {
-  const [opend, setOpen] = useState(false);
+  const [opened, setOpen] = useState(false);
   const { tagsGroup } = useStaticQuery(graphql`
     {
       tagsGroup: allMdx(limit: 2000) {
@@ -69,35 +69,44 @@ const Drawer = () => {
   const anime = useAnime();
   const draggableRef: React.RefObject<HTMLDivElement> = useRef(null);
 
-  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
+  const toggleDrawer = useCallback(
+    (open: boolean) => (event: React.KeyboardEvent) => {
+      if (
+        event.type === "keydown" &&
+        (event.key === "Tab" || event.key === "Shift")
+      ) {
+        return;
+      }
 
-    setOpen(open);
-  };
+      setOpen(open);
+    },
+    []
+  );
 
-  function drag(e: React.DragEvent) {
-    if (draggableRef?.current && e.pageY > 1e-5) {
-      anime.set(draggableRef.current, {
-        translateY: e.pageY - 20,
-        translateX: e.pageX - 20,
+  const drag = useCallback(
+    (e: React.DragEvent) => {
+      if (draggableRef?.current && e.pageY > 1e-5) {
+        anime.set(draggableRef.current, {
+          translateY: e.pageY - 20,
+          translateX: e.pageX - 20,
+        });
+      }
+    },
+    [anime, draggableRef]
+  );
+
+  const dragEnd = useCallback(
+    (e: React.DragEvent) => {
+      anime({
+        targets: draggableRef?.current,
+        duration: 180,
+        easing: "spring(1, 80, 12, 0)",
+        translateX: 0,
+        translateY: e.clientY,
       });
-    }
-  }
-
-  function dragEnd(e: React.DragEvent) {
-    anime({
-      targets: draggableRef?.current,
-      duration: 180,
-      easing: "spring(1, 80, 12, 0)",
-      translateX: 0,
-      translateY: e.clientY,
-    });
-  }
+    },
+    [anime, draggableRef]
+  );
 
   const tags = useMemo(
     () =>
@@ -122,7 +131,7 @@ const Drawer = () => {
           ref={draggableRef}
           className={clsx(
             classes.toggleWrapper,
-            opend ? classes.toggleHidden : ""
+            opened ? classes.toggleHidden : ""
           )}
           draggable
           onDragStart={dragStart}
@@ -143,7 +152,7 @@ const Drawer = () => {
         </div>
       </div>
       <MDrawer
-        open={opend}
+        open={opened}
         classes={{ paper: classes.paper }}
         onClose={toggleDrawer(false)}
       >

@@ -1,8 +1,13 @@
-import { Avatar, ListItem, makeStyles } from "@material-ui/core";
+import {
+  Avatar,
+  ListItem,
+  ListItemIcon,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import clsx from "clsx";
 import { debounce } from "lodash";
-import React, { useState } from "react";
-import { ListItemIcon, Typography } from "../header/styled";
+import React, { useCallback, useRef, useState } from "react";
 
 const useStyles = makeStyles((_) => ({
   listItem: {
@@ -13,6 +18,15 @@ const useStyles = makeStyles((_) => ({
 
     "& a": {
       color: "rgb(17,24,39)",
+    },
+
+    "& div[class*='MuiListItemIcon']": {
+      minWidth: 32,
+    },
+
+    "& p[class*='MuiTypography']": {
+      alignItems: "baseline",
+      fontFamily: "inherit",
     },
   },
   acrylic: {
@@ -43,6 +57,10 @@ const useStyles = makeStyles((_) => ({
   },
 }));
 
+function stopPropagation<T extends { stopPropagation: () => void }>(e: T) {
+  e.stopPropagation();
+}
+
 const SkipIndexTag: React.FC<{
   tag: any;
   count: number;
@@ -51,9 +69,11 @@ const SkipIndexTag: React.FC<{
   const [entered, setEntered] = useState(false);
   const [bgGlow, setBgGlow] = useState("");
 
+  const animeRef = useRef<React.ElementRef<typeof ListItem>>(null);
+
   const classes = useStyles();
 
-  const mouseEnter = function (e: React.MouseEvent) {
+  const mouseEnter = useCallback((_e: React.MouseEvent) => {
     setEntered(true);
     // const targetBox = e?.currentTarget?.getBoundingClientRect();
 
@@ -69,32 +89,36 @@ const SkipIndexTag: React.FC<{
     //     backgroundColor: "rgba(9, 30, 66, 0.1)",
     //   });
     // }
-  };
+  }, []);
 
-  const mouseMove = debounce(function (e: React.MouseEvent, bounds: DOMRect) {
-    if (!bounds) return;
+  const mouseMove = useCallback(
+    debounce(function (e: React.MouseEvent) {
+      const bounds = animeRef.current?.getBoundingClientRect();
+      if (!bounds) return;
 
-    const leftX = e.clientX - bounds.x;
-    const topY = e.clientY - bounds.y;
-    const center = {
-      x: leftX - bounds.width / 2,
-      y: topY - bounds.height / 2,
-    };
+      const leftX = e.clientX - bounds.x;
+      const topY = e.clientY - bounds.y;
+      const center = {
+        x: leftX - bounds.width / 2,
+        y: topY - bounds.height / 2,
+      };
 
-    setBgGlow(
-      `
-      radial-gradient(
-        circle at
-        ${center.x + bounds.width / 2}px
-        ${center.y + bounds.height / 2}px,
-        #ffffff1f,
-        #3030301A
-      )
-    `.trim()
-    );
-  }, 10);
+      setBgGlow(
+        `
+    radial-gradient(
+      circle at
+      ${center.x + bounds.width / 2}px
+      ${center.y + bounds.height / 2}px,
+      #ffffff1f,
+      #3030301A
+    )
+  `.trim()
+      );
+    }, 10),
+    [animeRef]
+  );
 
-  const mouseLeave = function (_: React.MouseEvent) {
+  const mouseLeave = useCallback((_: React.MouseEvent) => {
     mouseMove.cancel();
     setEntered(false);
     setBgGlow("");
@@ -107,41 +131,33 @@ const SkipIndexTag: React.FC<{
     //   borderRadius: "50%",
     //   backgroundColor: "transparent",
     // });
-  };
-
-  const debouncedMouseMove = function (e: React.MouseEvent) {
-    return mouseMove(e, e.currentTarget?.getBoundingClientRect());
-  };
+  }, []);
 
   if (tag.fieldValue.toString() === "index") return <></>;
-  else {
-    return (
-      <ListItem
-        className={clsx(classes.listItem, classes.acrylic)}
-        component="div"
-        style={{
-          backgroundImage: bgGlow,
-          border: `1px solid ${entered ? "rgba(255,255,255,0.15)" : "#fff0"}`,
-        }}
-        onClick={function (event: React.MouseEvent) {
-          event.stopPropagation();
-        }}
-        onFocus={function (event: React.FocusEvent) {
-          event.stopPropagation();
-        }}
-        onMouseEnter={mouseEnter}
-        onMouseLeave={mouseLeave}
-        onMouseMove={debouncedMouseMove}
-      >
-        <ListItemIcon>
-          <Avatar className={clsx(classes.acrylic, classes.avatar)}>
-            {count}
-          </Avatar>
-        </ListItemIcon>
-        <Typography>{children}</Typography>
-      </ListItem>
-    );
-  }
+
+  return (
+    <ListItem
+      ref={animeRef}
+      className={clsx(classes.listItem, classes.acrylic)}
+      component="div"
+      style={{
+        backgroundImage: bgGlow,
+        border: `1px solid ${entered ? "rgba(255,255,255,0.15)" : "#fff0"}`,
+      }}
+      onClick={stopPropagation}
+      onFocus={stopPropagation}
+      onMouseEnter={mouseEnter}
+      onMouseLeave={mouseLeave}
+      onMouseMove={mouseMove}
+    >
+      <ListItemIcon>
+        <Avatar className={clsx(classes.acrylic, classes.avatar)}>
+          {count}
+        </Avatar>
+      </ListItemIcon>
+      <Typography>{children}</Typography>
+    </ListItem>
+  );
 };
 
 function tagToPath(tag: string) {
