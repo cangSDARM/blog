@@ -49,78 +49,84 @@ interface ScrollSpyConfig<T extends ScrollSpyItem> {
   target?: (Window & typeof globalThis) | string | null | HTMLElement;
 }
 
-const useScrollSpy: <T extends ScrollSpyItem>(data: ScrollSpyConfig<T>) => any =
-  ({ items = [], target = window }) => {
-    const itemsWithNodeRef = useRef<ReturnType<typeof getItemsClient>>([]);
-    const trueTarget = useRef<ReturnType<typeof getTarget>>(null);
-    useEffect(() => {
-      itemsWithNodeRef.current = getItemsClient(items);
-    }, [items]);
+const useScrollSpy: <T extends ScrollSpyItem>(
+  data: ScrollSpyConfig<T>
+) => {
+  activated: string | null;
+  requireLock: React.Dispatch<React.SetStateAction<boolean>>;
+  onScroll: boolean;
+} = ({ items = [], target = window }) => {
+  const itemsWithNodeRef = useRef<ReturnType<typeof getItemsClient>>([]);
+  const trueTarget = useRef<ReturnType<typeof getTarget>>(null);
 
-    useEffect(() => {
-      trueTarget.current = getTarget(target);
-    }, [target]);
+  useEffect(() => {
+    itemsWithNodeRef.current = getItemsClient(items);
+  }, [items]);
 
-    const [activeState, setActiveState] = useState<null | string>(null);
-    const [lock, setLock] = useState(false);
-    const [onScroll, setOnScroll] = useState(false);
+  useEffect(() => {
+    trueTarget.current = getTarget(target);
+  }, [target]);
 
-    const findActiveIndex = useCallback(() => {
-      let active;
-      for (let i = itemsWithNodeRef.current.length - 1; i >= 0; i -= 1) {
-        // No hash if we're near the top of the page
-        // @ts-ignore
-        if (trueTarget.current?.scrollTop < 200) {
-          active = { hash: null };
-          break;
-        }
+  const [activeState, setActiveState] = useState<null | string>(null);
+  const [lock, setLock] = useState(false);
+  const [onScroll, setOnScroll] = useState(false);
 
-        const item = itemsWithNodeRef.current[i];
+  const findActiveIndex = useCallback(() => {
+    let active;
+    for (let i = itemsWithNodeRef.current.length - 1; i >= 0; i -= 1) {
+      // No hash if we're near the top of the page
+      // @ts-ignore
+      if (trueTarget.current?.scrollTop < 200) {
+        active = { hash: null };
+        break;
+      }
 
-        if (process.env.NODE_ENV !== "production") {
-          if (!item.node) {
-            console.error(
-              `Missing node on the item ${JSON.stringify(item, null, 2)}`
-            );
-          }
-        }
+      const item = itemsWithNodeRef.current[i];
 
-        if (
-          item.node &&
-          item.node.offsetTop <
-            //@ts-ignore
-            trueTarget.current?.scrollTop + trueTarget.current?.clientHeight / 8
-        ) {
-          active = item;
-          break;
+      if (process.env.NODE_ENV !== "production") {
+        if (!item.node) {
+          console.error(
+            `Missing node on the item ${JSON.stringify(item, null, 2)}`
+          );
         }
       }
 
-      if (active && activeState !== active.hash) {
-        setActiveState(active.hash);
+      if (
+        item.node &&
+        item.node.offsetTop <
+          //@ts-ignore
+          trueTarget.current?.scrollTop + trueTarget.current?.clientHeight / 8
+      ) {
+        active = item;
+        break;
       }
-    }, [activeState]);
+    }
 
-    const withLockScroll = () => {
-      if (lock) return;
+    if (active && activeState !== active.hash) {
+      setActiveState(active.hash);
+    }
+  }, [activeState]);
 
-      setOnScroll(true);
-      findActiveIndex();
-      setOnScroll(false);
-    };
+  const withLockScroll = useCallback(() => {
+    if (lock) return;
 
-    useThrottledOnScroll(
-      items.length > 0 ? withLockScroll : null,
-      166,
-      trueTarget.current
-    );
+    setOnScroll(true);
+    findActiveIndex();
+    setOnScroll(false);
+  }, [lock]);
 
-    return {
-      actived: activeState,
-      requireLock: setLock,
-      onScroll,
-    };
+  useThrottledOnScroll(
+    items.length > 0 ? withLockScroll : null,
+    166,
+    trueTarget.current
+  );
+
+  return {
+    activated: activeState,
+    requireLock: setLock,
+    onScroll,
   };
+};
 
 const getItemsClient = <T extends ScrollSpyItem>(items: T[]) =>
   items.map(({ hash }) => ({

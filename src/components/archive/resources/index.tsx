@@ -1,6 +1,6 @@
 import { Avatar } from "@material-ui/core";
 import React from "react";
-import Navigation from "../../naviagtion";
+import Navigation from "../../navigation";
 //@ts-ignore
 import * as mainstyles from "../main.module.css";
 import HeadingView from "./headingView";

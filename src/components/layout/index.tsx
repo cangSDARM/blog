@@ -5,7 +5,11 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 import Drawer from "./Drawer";
@@ -15,16 +19,18 @@ import "./layout.css";
 
 const theme = createTheme({
   palette: {
-    type: "dark",
+    mode: "dark",
   },
 });
 
-const Layout: React.FC<{
-  header?: object;
-  content?: object;
-  footer?: object;
-  main?: { style: {}; [k: string]: {} };
-}> = ({ children, ...otherProps }) => {
+const Layout: React.FC<
+  React.PropsWithChildren<{
+    header?: object;
+    content?: object;
+    footer?: object;
+    main?: { style: {}; [k: string]: {} };
+  }>
+> = ({ children, ...otherProps }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -46,30 +52,32 @@ const Layout: React.FC<{
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
-        <div
-          id="scroll-spy"
-          style={{
-            margin: `0 auto`,
-            paddingTop: 0,
-            height: `calc(100vh - 86px)`,
-            overflowY: `auto`,
-            overflowX: `hidden`,
-            scrollBehavior: "smooth",
-            display: "flex",
-            flexDirection: "column",
-          }}
-          {...contentProps}
-        >
-          <main {...mainProps} style={{ ...mainStyle, flexGrow: 1 }}>
-            {children}
-          </main>
-          <Footer {...footerProps} />
-        </div>
-        <Drawer />
+        <StyledEngineProvider injectFirst>
+          <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
+          <div
+            id="scroll-spy"
+            style={{
+              margin: `0 auto`,
+              paddingTop: 0,
+              height: `calc(100vh - 86px)`,
+              overflowY: `auto`,
+              overflowX: `hidden`,
+              scrollBehavior: "smooth",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            {...contentProps}
+          >
+            <main {...mainProps} style={{ ...mainStyle, flexGrow: 1 }}>
+              {children}
+            </main>
+            <Footer {...footerProps} />
+          </div>
+          <Drawer />
+        </StyledEngineProvider>
       </ThemeProvider>
     </>
   );
 };
 
-export default Layout;
+export default React.memo(Layout);

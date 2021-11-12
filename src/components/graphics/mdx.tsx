@@ -1,13 +1,13 @@
 import {
-  Modal,
+  Dialog,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from "@material-ui/core";
+import clsx from "clsx";
 import React, { Fragment, useState } from "react";
 import Img from "../image";
-import clsx from "clsx";
 //@ts-ignore
 import * as styles from "./style.module.css";
 import { Table as STable } from "./styled";
@@ -80,7 +80,10 @@ export const Tab: React.FC<{ expan: boolean; vicinage: boolean }> = ({
   const classes: string[] = [styles.Tab];
   if (expan) classes.push(styles.hidden);
 
-  let RES = children ? (
+  return vicinage ? (
+    //@ts-ignore
+    <div className={styles.Tab} vicinage="true" />
+  ) : children ? (
     <Fragment>
       <div className={clsx(classes)}>{children}</div>
       {expan && <br />}
@@ -88,13 +91,6 @@ export const Tab: React.FC<{ expan: boolean; vicinage: boolean }> = ({
   ) : (
     <div className={clsx(classes)} />
   );
-
-  {
-    /** @ts-ignore */
-  }
-  RES = vicinage ? <div className={styles.Tab} vicinage="true" /> : RES;
-
-  return RES;
 };
 
 export const Expansion: React.FC<{}> = ({ children }) => {
@@ -126,45 +122,38 @@ export const Aphorism: React.FC<{}> = ({ children }) => {
 };
 
 export const Model: React.FC<{ about: string }> = ({ about, children }) => {
-  const [curr, setState] = useState(false);
+  const [curr, setCurr] = useState(false);
   const path = ImgList[parseInt(about.replace("@", "")) - 1];
-  const Image = function () {
-    return (
-      <Img
-        title="缩小"
-        path={`graphics/${path}`}
-        ext={"png"}
-        imgStyle={{
-          objectFit: "none",
-        }}
-        style={{
-          height: `100vh`,
-        }}
-      />
-    );
-  };
 
   return (
     <div
       className={styles.model}
       onClick={function () {
-        setState(true);
+        setCurr(true);
       }}
     >
       {children}
-      {curr && (
-        <Modal
-          open={curr}
-          id={`model${about}`}
-          onClick={function (e) {
-            e.stopPropagation();
-            setState(false);
+      <Dialog
+        open={curr}
+        id={`model${about}`}
+        onClose={(e: React.MouseEvent) => {
+          e.stopPropagation();
+          setCurr(false);
+        }}
+        scroll="body"
+        PaperProps={{
+          style: { maxWidth: "unset" },
+        }}
+      >
+        <Img
+          title="缩小"
+          path={`graphics/${path}`}
+          ext={"png"}
+          imgStyle={{
+            objectFit: "none",
           }}
-          className={`${styles.FullScreen}`}
-        >
-          <Image />
-        </Modal>
-      )}
+        />
+      </Dialog>
     </div>
   );
 };

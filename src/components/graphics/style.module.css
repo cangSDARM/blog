@@ -7,17 +7,6 @@
   cursor: pointer;
   color: #d9ff00;
 }
-.FullScreen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #293134;
-  z-index: 200;
-  cursor: default;
-  overflow: auto;
-}
 .hide {
   display: none;
 }

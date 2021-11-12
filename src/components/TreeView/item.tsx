@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import React, { useContext, useEffect, useState } from "react";
 import TreeViewContext from "./context";
-import IconContanner from "./icon";
+import IconContainer from "./icon";
 import Label from "./label";
 
 const useStyles = makeStyles((_) => ({
@@ -28,12 +28,12 @@ const TreeItem: React.FC<{
   expandWidth?: number | string;
   label: React.ReactNode | string;
   expandable: boolean;
-  defalutExpanded: boolean;
+  defaultExpanded: boolean;
   classesNames: { group: string; label: string };
   onClick?: (e: React.MouseEvent) => void;
 }> = ({
   expandable = false,
-  defalutExpanded = false,
+  defaultExpanded = false,
 
   classesNames,
   nodeId = "",
@@ -48,25 +48,29 @@ const TreeItem: React.FC<{
   const [expan, setExpan] = useState(false);
 
   useEffect(() => {
-    if (expan != defalutExpanded) setExpan(defalutExpanded);
-  }, [defalutExpanded]);
+    if (expan != defaultExpanded) setExpan(defaultExpanded);
+  }, [defaultExpanded]);
 
   const canExpand = expandable && expan;
 
-  const iconNode = expandable ? (
-    <IconContanner
-      collapseIcon={context.collapseIcon}
-      expandIcon={context.expandedIcon}
-      expanded={!expan}
-      width={expandWidth}
-    />
-  ) : (
-    <IconContanner
-      collapseIcon={<></>}
-      expandIcon={<></>}
-      expanded={!expan}
-      width={expandWidth}
-    />
+  const iconNode = React.useMemo(
+    () =>
+      expandable ? (
+        <IconContainer
+          collapseIcon={context.collapseIcon}
+          expandIcon={context.expandedIcon}
+          expanded={!expan}
+          width={expandWidth}
+        />
+      ) : (
+        <IconContainer
+          collapseIcon={<></>}
+          expandIcon={<></>}
+          expanded={!expan}
+          width={expandWidth}
+        />
+      ),
+    [context, expan, expandWidth]
   );
 
   const collapsedNode = (

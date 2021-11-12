@@ -10,6 +10,7 @@ import { SkipIndexTag, tagToPath } from "./indexing";
 const useDrawerTheme = makeStyles((_) => ({
   paper: {
     backgroundColor: "#e8e8e8",
+    backgroundImage: "unset",
   },
   root: {
     overflow: "show",
@@ -45,6 +46,8 @@ const useDrawerTheme = makeStyles((_) => ({
   },
   allTags: {
     fontSize: "1.5rem",
+    color: "#222",
+    backgroundColor: "#e8e8e8",
     fontWeight: 600,
   },
 }));

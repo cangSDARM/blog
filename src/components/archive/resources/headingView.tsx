@@ -1,6 +1,6 @@
 import { SvgIcon } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import TreeView, { TreeItem } from "../../TreeView";
 import useScrollSpy from "./scrollspy";
 
@@ -32,50 +32,66 @@ interface HeadingViewProps {
   toc: { url: string; title?: string }[];
 }
 type ArrayItem<T extends any[]> = T extends (infer S)[] ? S : never;
+type Node = ArrayItem<HeadingViewProps["toc"]> & { items?: Node[] };
 
 const indexing = "目录";
 const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
-  const spyUrl = toc.map((post) => ({
-    hash: post["url"].substring(1),
-  }));
+  const spyUrl = useMemo(
+    () =>
+      toc.map((post) => ({
+        hash: post["url"].substring(1),
+      })),
+    [toc]
+  );
 
   const [selected, setSelected] = useState<string[]>([]);
 
-  const { actived } = useScrollSpy({
+  const { activated } = useScrollSpy({
     items: spyUrl,
     target: "scroll-spy",
   });
 
   useEffect(() => {
-    if (actived == null) setSelected([toc[0]?.url]);
-    else setSelected([`#${actived}`]);
-  }, [actived, toc]);
+    if (activated == null) setSelected([toc[0]?.url]);
+    else setSelected([`#${activated}`]);
+  }, [activated, toc]);
 
   const classes = useTreeStyles();
 
-  type Node = ArrayItem<HeadingViewProps["toc"]> & { items?: Node[] };
-  const renderTreeItem = (nodes: Node) => (
-    <TreeItem
-      key={nodes.url}
-      nodeId={nodes.url}
-      classesNames={{
-        label: classes.label,
-        group: classes.group,
-      }}
-      label={
-        <a className={classes.labelItem} href={nodes.url}>
-          {nodes.title}
-        </a>
-      }
-      expandable={!!nodes.items}
-      defalutExpanded={nodes.url == "#"}
-    >
-      {Array.isArray(nodes.items)
-        ? nodes.items.map((node) => {
-            return renderTreeItem(node);
-          })
-        : null}
-    </TreeItem>
+  const renderTreeItem = useCallback(
+    (nodes: Node) => (
+      <TreeItem
+        key={nodes.url}
+        nodeId={nodes.url}
+        classesNames={{
+          label: classes.label,
+          group: classes.group,
+        }}
+        label={
+          <a className={classes.labelItem} href={nodes.url}>
+            {nodes.title}
+          </a>
+        }
+        expandable={!!nodes.items}
+        defaultExpanded={nodes.url == "#"}
+      >
+        {Array.isArray(nodes.items)
+          ? nodes.items.map((node) => {
+              return renderTreeItem(node);
+            })
+          : null}
+      </TreeItem>
+    ),
+    [classes]
+  );
+  const memoNodes = useMemo(
+    () =>
+      renderTreeItem({
+        title: indexing,
+        url: "#",
+        items: toc,
+      }),
+    [toc]
   );
 
   return toc.length > 0 ? (
@@ -104,11 +120,7 @@ const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
         </SvgIcon>
       }
     >
-      {renderTreeItem({
-        title: indexing,
-        url: "#",
-        items: toc,
-      })}
+      {memoNodes}
     </TreeView>
   ) : (
     <></>

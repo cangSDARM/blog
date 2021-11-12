@@ -1,10 +1,5 @@
-import {
-  Avatar,
-  ListItem,
-  ListItemIcon,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Avatar, ListItem, ListItemIcon, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import { debounce } from "lodash";
 import React, { useCallback, useRef, useState } from "react";
@@ -139,7 +134,6 @@ const SkipIndexTag: React.FC<{
     <ListItem
       ref={animeRef}
       className={clsx(classes.listItem, classes.acrylic)}
-      component="div"
       style={{
         backgroundImage: bgGlow,
         border: `1px solid ${entered ? "rgba(255,255,255,0.15)" : "#fff0"}`,

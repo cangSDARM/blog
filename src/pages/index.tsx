@@ -45,6 +45,8 @@ const IndexPage: FC<{ data: any }> = ({ data }) => (
           margin: "1em .5em 0 0",
           padding: ".5em",
           paddingLeft: "1em",
+          lineHeight: 1.2,
+          fontSize: 14,
           backgroundColor: "#f1f1f1",
         }}
       >
@@ -54,7 +56,7 @@ const IndexPage: FC<{ data: any }> = ({ data }) => (
             <blockquote
               style={{
                 color: "rgba(0,0,0,.5)",
-                margin: "4px 0",
+                padding: "4px 0 3px",
               }}
               key={key}
             >

@@ -34,6 +34,31 @@ const Tags: React.FC<{ pageContext: any; data: any }> = ({
 
   const classes = useTheme();
 
+  const memoList = React.useMemo(
+    () =>
+      edges.map(({ node }: any) => {
+        const { slug = "" } = node.fields;
+        const depth = (slug as string).match(/\//g) || [];
+        depth.shift();
+        depth.shift();
+        const { title } = node.frontmatter;
+        return (
+          <li key={slug} className={classes.listItem}>
+            {depth.map((_: any, i) => {
+              return (
+                <span
+                  key={`_${i}`}
+                  style={{ width: `1em`, display: `inline-block` }}
+                ></span>
+              );
+            })}
+            <Link to={`${slug}/`}>{title}</Link>
+          </li>
+        );
+      }),
+    [edges]
+  );
+
   return (
     <Layout
       main={{
@@ -48,26 +73,7 @@ const Tags: React.FC<{ pageContext: any; data: any }> = ({
           listStyle: `none`,
         }}
       >
-        {edges.map(({ node }: any) => {
-          const { slug = "" } = node.fields;
-          const depth = (slug as string).match(/\//g) || [];
-          depth.shift();
-          depth.shift();
-          const { title } = node.frontmatter;
-          return (
-            <li key={slug} className={classes.listItem}>
-              {depth.map((_: any, i) => {
-                return (
-                  <span
-                    key={`_${i}`}
-                    style={{ width: `1em`, display: `inline-block` }}
-                  ></span>
-                );
-              })}
-              <Link to={`${slug}/`}>{title}</Link>
-            </li>
-          );
-        })}
+        {memoList}
       </ul>
     </Layout>
   );

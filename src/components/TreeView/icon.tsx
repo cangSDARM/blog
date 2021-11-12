@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((_) => ({
-  iconContanner: {
+  iconContainer: {
     display: "flex",
     justifyContent: "center",
     flexShrink: 0,
@@ -14,7 +14,7 @@ const useStyles = makeStyles((_) => ({
   },
 }));
 
-const IconContanner: React.FC<{
+const IconContainer: React.FC<{
   collapseIcon: React.ReactNode | string;
   expandIcon: React.ReactNode;
   expanded: boolean;
@@ -23,10 +23,10 @@ const IconContanner: React.FC<{
   const classes = useStyles();
 
   return (
-    <span className={clsx(classes.iconContanner)} style={{ width: width }}>
+    <span className={clsx(classes.iconContainer)} style={{ width: width }}>
       {expanded ? expandIcon : collapseIcon}
     </span>
   );
 };
 
-export default IconContanner;
+export default IconContainer;

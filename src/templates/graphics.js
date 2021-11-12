@@ -17,7 +17,7 @@ import {
 } from "../components/graphics/mdx";
 import Indexing from "../components/indexing";
 import Layout from "../components/layout";
-import Navigation from "../components/naviagtion";
+import Navigation from "../components/navigation";
 import SEO from "../components/seo";
 import TagsList from "../components/tag-lists";
 
