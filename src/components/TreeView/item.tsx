@@ -12,7 +12,7 @@ const useStyles = makeStyles((_) => ({
     display: "flex",
     alignItems: "center",
   },
-  expandableRoot: {
+  selected: {
     '& *[role*="menuitem"]': {
       backgroundColor: "#e8eaee",
       borderRadius: "0.25em",
@@ -80,8 +80,10 @@ const TreeItem: React.FC<{
     <div
       className={clsx(
         classes.treeItemRoot,
-        context.selected.indexOf(nodeId) > -1 && classes.expandableRoot,
-        expandable ? classesNames.group : classesNames.label
+        expandable ? classesNames.group : classesNames.label,
+        {
+          [classes.selected]: context.selected.indexOf(nodeId) > -1,
+        }
       )}
       onClick={(e) => {
         setExpan(!expan);

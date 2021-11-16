@@ -2,7 +2,7 @@ import { SvgIcon } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import TreeView, { TreeItem } from "../../TreeView";
-import useScrollSpy from "./scrollspy";
+import useIntersectionObserver from "./useIntersectionObserver";
 
 const useTreeStyles = makeStyles((_) => ({
   root: {
@@ -36,23 +36,24 @@ type Node = ArrayItem<HeadingViewProps["toc"]> & { items?: Node[] };
 
 const indexing = "目录";
 const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
-  const spyUrl = useMemo(
-    () =>
-      toc.map((post) => ({
-        hash: post["url"].substring(1),
-      })),
-    [toc]
-  );
+  const spyElements = useMemo(() => {
+    const urls: Element[] = [];
+    for (const ele of toc) {
+      const documentEle = globalThis?.document?.getElementById(
+        ele["url"].substring(1)
+      );
+      if (documentEle) urls.push(documentEle);
+    }
+    return urls;
+  }, [toc]);
 
   const [selected, setSelected] = useState<string[]>([]);
 
-  const { activated } = useScrollSpy({
-    items: spyUrl,
-    target: "scroll-spy",
-  });
+  const activated = useIntersectionObserver(spyElements);
 
   useEffect(() => {
-    if (activated == null) setSelected([toc[0]?.url]);
+    if (activated == null || activated.trim() === "")
+      setSelected([toc[0]?.url]);
     else setSelected([`#${activated}`]);
   }, [activated, toc]);
 
@@ -68,7 +69,16 @@ const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
           group: classes.group,
         }}
         label={
-          <a className={classes.labelItem} href={nodes.url}>
+          <a
+            className={classes.labelItem}
+            href={nodes.url}
+            onClick={(e) => {
+              e.preventDefault();
+              document.querySelector(nodes.url)?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+          >
             {nodes.title}
           </a>
         }
@@ -83,15 +93,6 @@ const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
       </TreeItem>
     ),
     [classes]
-  );
-  const memoNodes = useMemo(
-    () =>
-      renderTreeItem({
-        title: indexing,
-        url: "#",
-        items: toc,
-      }),
-    [toc]
   );
 
   return toc.length > 0 ? (
@@ -120,7 +121,11 @@ const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
         </SvgIcon>
       }
     >
-      {memoNodes}
+      {renderTreeItem({
+        title: indexing,
+        url: "#",
+        items: toc,
+      })}
     </TreeView>
   ) : (
     <></>
