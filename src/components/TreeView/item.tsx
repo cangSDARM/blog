@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import React, { useContext, useEffect, useState } from "react";
-import TreeViewContext from "./context";
+import React, { memo, useContext, useEffect, useState } from "react";
+import { TreeIconContext, TreeSelectorContext } from "./context";
 import IconContainer from "./icon";
 import Label from "./label";
 
@@ -23,6 +23,29 @@ const useStyles = makeStyles((_) => ({
   },
 }));
 
+const IconNode: React.FC<{
+  expandable: boolean;
+  expandWidth: number | string;
+  expanded: boolean;
+}> = memo(({ expandable, expandWidth, expanded }) => {
+  const context = useContext(TreeIconContext);
+  return expandable ? (
+    <IconContainer
+      collapseIcon={context.collapseIcon}
+      expandIcon={context.expandedIcon}
+      expanded={!expanded}
+      width={expandWidth}
+    />
+  ) : (
+    <IconContainer
+      collapseIcon={<></>}
+      expandIcon={<></>}
+      expanded={!expanded}
+      width={expandWidth}
+    />
+  );
+});
+
 const TreeItem: React.FC<{
   nodeId: string;
   expandWidth?: number | string;
@@ -43,7 +66,7 @@ const TreeItem: React.FC<{
   onClick = () => {},
 }) => {
   const classes = useStyles();
-  const context = useContext(TreeViewContext);
+  const context = useContext(TreeSelectorContext);
 
   const [expan, setExpan] = useState(false);
 
@@ -52,26 +75,6 @@ const TreeItem: React.FC<{
   }, [defaultExpanded]);
 
   const canExpand = expandable && expan;
-
-  const iconNode = React.useMemo(
-    () =>
-      expandable ? (
-        <IconContainer
-          collapseIcon={context.collapseIcon}
-          expandIcon={context.expandedIcon}
-          expanded={!expan}
-          width={expandWidth}
-        />
-      ) : (
-        <IconContainer
-          collapseIcon={<></>}
-          expandIcon={<></>}
-          expanded={!expan}
-          width={expandWidth}
-        />
-      ),
-    [context, expan, expandWidth]
-  );
 
   const collapsedNode = (
     <div
@@ -85,7 +88,11 @@ const TreeItem: React.FC<{
         onClick(e);
       }}
     >
-      {iconNode}
+      <IconNode
+        expandWidth={expandWidth}
+        expandable={expandable}
+        expanded={expan}
+      />
       <Label>{label}</Label>
     </div>
   );

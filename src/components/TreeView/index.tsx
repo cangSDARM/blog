@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import React, { useEffect, useMemo, useState } from "react";
-import TreeViewContext from "./context";
+import React, { useEffect, useState } from "react";
+import { TreeIconContext, TreeSelectorContext } from "./context";
 
 const useTreeStyles = makeStyles((_) => ({
   root: {
@@ -42,20 +42,15 @@ const TreeView: React.FC<{
     setSelectedNodes(selected);
   }, [selected]);
 
-  const memoTreeContext = useMemo(
-    () => ({
-      expandedIcon: expandIcon,
-      collapseIcon,
-      selected: selectedNodes,
-    }),
-    [expandIcon, collapseIcon, selectedNodes]
-  );
-
   return (
     <ul role="tree" className={clsx(classes.root, className)} style={style}>
-      <TreeViewContext.Provider value={memoTreeContext}>
-        {children}
-      </TreeViewContext.Provider>
+      <TreeSelectorContext.Provider value={{ selected: selectedNodes }}>
+        <TreeIconContext.Provider
+          value={{ collapseIcon, expandedIcon: expandIcon }}
+        >
+          {children}
+        </TreeIconContext.Provider>
+      </TreeSelectorContext.Provider>
     </ul>
   );
 };

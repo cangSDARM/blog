@@ -1,13 +1,15 @@
-import { createContext } from "react";
+import { createContext, ReactNode } from "react";
 
-const TreeViewContext = createContext<{
-  expandedIcon: any;
-  collapseIcon: any;
+export const TreeSelectorContext = createContext<{
   selected: string[];
 }>({
-  expandedIcon: null,
-  collapseIcon: null,
   selected: [],
 });
 
-export default TreeViewContext;
+export const TreeIconContext = createContext<{
+  expandedIcon: ReactNode;
+  collapseIcon: ReactNode;
+}>({
+  expandedIcon: null,
+  collapseIcon: null,
+});
