@@ -36,20 +36,14 @@ type Node = ArrayItem<HeadingViewProps["toc"]> & { items?: Node[] };
 
 const indexing = "目录";
 const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
-  const spyElements = useMemo(() => {
-    const urls: Element[] = [];
-    for (const ele of toc) {
-      const documentEle = globalThis?.document?.getElementById(
-        ele["url"].substring(1)
-      );
-      if (documentEle) urls.push(documentEle);
-    }
-    return urls;
-  }, [toc]);
+  const spyUrl = useMemo(
+    () => toc.map((item) => ({ hash: item["url"].substring(1) })),
+    [toc]
+  );
 
   const [selected, setSelected] = useState<string[]>([]);
 
-  const activated = useIntersectionObserver(spyElements);
+  const activated = useIntersectionObserver(spyUrl);
 
   useEffect(() => {
     if (activated == null || activated.trim() === "")

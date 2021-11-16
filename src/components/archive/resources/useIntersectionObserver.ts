@@ -1,15 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { ScrollSpyItem } from "./scrollspy";
 
 /**
  * @ref: https://www.emgoto.com/react-table-of-contents/
  */
-const useIntersectionObserver = (toc: Element[]) => {
+const useIntersectionObserver = (toc: ScrollSpyItem[]) => {
   const headingElementsRef = useRef<Record<string, IntersectionObserverEntry>>(
     {}
   );
   const [selected, setSelected] = useState<string>("");
 
-  useEffect(() => {
+  const getItemsNode = useCallback(() => {
+    const urls: Element[] = [];
+    for (const ele of toc) {
+      const documentEle = globalThis?.document?.getElementById(ele.hash);
+      if (documentEle) urls.push(documentEle);
+    }
+    return urls;
+  }, [toc]);
+
+  useLayoutEffect(() => {
+    const nodes = getItemsNode();
     const callback: IntersectionObserverCallback = (headings) => {
       headingElementsRef.current = headings.reduce((map, headingElement) => {
         map[headingElement.target.id] = headingElement;
@@ -27,7 +38,7 @@ const useIntersectionObserver = (toc: Element[]) => {
         setSelected(visibleHeadings[0].target.id);
       } else if (visibleHeadings.length > 1) {
         const getIndexFromId = (id: string) =>
-          toc.findIndex((heading) => heading.id === id);
+          nodes.findIndex((heading) => heading.id === id);
 
         const sortedVisibleHeadings = visibleHeadings.sort(
           (a, b) => getIndexFromId(a.target.id) - getIndexFromId(b.target.id)
@@ -40,10 +51,10 @@ const useIntersectionObserver = (toc: Element[]) => {
       rootMargin: "0px 0px -40% 0px",
     });
 
-    toc.forEach((element) => observer.observe(element));
+    nodes.forEach((item) => observer.observe(item));
 
     return () => observer.disconnect();
-  }, [toc]);
+  }, [getItemsNode]);
 
   return selected;
 };

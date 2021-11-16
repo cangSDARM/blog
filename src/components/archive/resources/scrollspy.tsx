@@ -42,7 +42,7 @@ const getTarget = (
     : target;
 const noop = () => {};
 
-type ScrollSpyItem = { hash: string };
+export type ScrollSpyItem = { hash: string };
 
 interface ScrollSpyConfig<T extends ScrollSpyItem> {
   items: T[];
