@@ -44,13 +44,13 @@ const TreeView: React.FC<{
 
   return (
     <ul role="tree" className={clsx(classes.root, className)} style={style}>
-      <TreeSelectorContext.Provider value={{ selected: selectedNodes }}>
-        <TreeIconContext.Provider
-          value={{ collapseIcon, expandedIcon: expandIcon }}
-        >
+      <TreeIconContext.Provider
+        value={{ collapseIcon, expandedIcon: expandIcon }}
+      >
+        <TreeSelectorContext.Provider value={{ selected: selectedNodes }}>
           {children}
-        </TreeIconContext.Provider>
-      </TreeSelectorContext.Provider>
+        </TreeSelectorContext.Provider>
+      </TreeIconContext.Provider>
     </ul>
   );
 };
