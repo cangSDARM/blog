@@ -3,7 +3,7 @@ const fs = require("fs");
 const { trimEnd } = require("lodash");
 
 /**
- * Set this if you want cat this specifical file of any templates in URL.
+ * Set this if you want cat this special file of any templates in URL.
  */
 const indexPage = "/index";
 
