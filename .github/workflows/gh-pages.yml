@@ -15,13 +15,21 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      - name: Environment Setup and Cache 🔧
-        uses: actions/setup-node@v2
+      - name: Environment Setup 🔧
+        uses: actions/setup-node@v1
         with:
           node-version: "14.x"
-          cache: "npm"
+
+      - name: Check package change or not 👀
+        id: changes
+        run: |
+          PACKAGE_CHANGED=$(git show | grep diff | cut -d" " -f 3 | grep package.json -c)
+          test $PACKAGE_CHANGED -eq 0 &&
+          echo "::set-output name=cached:'true'" ||
+          echo "::set-output name=cached::'false'"
 
       - name: Install dependencies without Proxy 📁
+        if: steps.changes.outputs.cached != 'true'
         run: npm --proxy=null --https_proxy=null --strict-ssl=true install
 
       - name: Build 🚧
