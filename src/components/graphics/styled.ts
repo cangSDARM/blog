@@ -1,5 +1,5 @@
-import { Table as MTable } from "@material-ui/core";
-import { styled } from "@material-ui/styles";
+import { Table as MTable } from "@mui/material";
+import { styled } from "@mui/styles";
 
 export const Table = styled(MTable)({
   width: "auto",

@@ -1,5 +1,5 @@
-import { SvgIcon } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { SvgIcon } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import TreeView, { TreeItem } from "../../TreeView";
 import useIntersectionObserver from "./useIntersectionObserver";

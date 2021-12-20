@@ -4,7 +4,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from "@mui/material";
 import clsx from "clsx";
 import React, { Fragment, useState } from "react";
 import Img from "../image";

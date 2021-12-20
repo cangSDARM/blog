@@ -1,5 +1,5 @@
-import { Paper } from "@material-ui/core";
 import { MDXProvider } from "@mdx-js/react";
+import { Paper } from "@mui/material";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import _ from "lodash";

@@ -1,6 +1,6 @@
-import * as React from "react";
+import { Avatar, Chip } from "@mui/material";
 import { navigate } from "gatsby";
-import { Chip, Avatar } from "@material-ui/core";
+import * as React from "react";
 
 function tagToPath(tag: string) {
   return `/tags/${tag}`;

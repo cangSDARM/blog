@@ -69,6 +69,6 @@ exports.createPages = async ({ actions, graphql }) => {
   }
 
   templateContextInject(result.data.postsRemark.edges);
-  //XXX: refactor this to dectect templates dir, rather than mannually query groups
+  //XXX: refactor this to detect templates dir, rather than manually query groups
   tagComponentInject(result.data.tagsGroup.group, createPage);
 };

@@ -1,8 +1,7 @@
-import React from "react";
-import { Link as GLink } from "gatsby";
+import { Link as MLink } from "@mui/material";
 import { Location, WindowLocation } from "@reach/router";
-import { Link as MLink } from "@material-ui/core";
-import { FC } from "react";
+import { Link as GLink } from "gatsby";
+import React, { FC } from "react";
 
 class SameLevel {
   path: string;

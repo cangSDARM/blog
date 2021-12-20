@@ -1,5 +1,5 @@
-import { Toolbar, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Toolbar, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { Link } from "gatsby";
 import React, { memo } from "react";

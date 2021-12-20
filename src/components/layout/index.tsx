@@ -9,7 +9,7 @@ import {
   createTheme,
   StyledEngineProvider,
   ThemeProvider,
-} from "@material-ui/core/styles";
+} from "@mui/material/styles";
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 import Drawer from "./Drawer";

@@ -7,7 +7,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-typescript`,
-    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-react-helmet-async`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
@@ -102,11 +102,7 @@ module.exports = {
     // `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-material-ui`,
-      options: {
-        stylesProvider: {
-          injectFirst: true,
-        },
-      },
+      options: {},
     },
   ],
 };

@@ -1,5 +1,5 @@
-import { Avatar, ListItem, ListItemIcon, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Avatar, ListItem, ListItemIcon, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { debounce } from "lodash";
 import React, { useCallback, useRef, useState } from "react";

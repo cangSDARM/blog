@@ -1,7 +1,9 @@
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { graphql, Link } from "gatsby";
+import _ from "lodash";
 import React from "react";
 import Layout from "../components/layout";
+import SEO from "../components/seo";
 
 const useTheme = makeStyles((_) => ({
   listItem: {
@@ -67,6 +69,12 @@ const Tags: React.FC<{ pageContext: any; data: any }> = ({
         },
       }}
     >
+      <SEO
+        title={_.startCase(tag)}
+        config={{
+          titleTemplate: `%s | Tags`,
+        }}
+      />
       <h1>{tagHeader}</h1>
       <ul
         style={{

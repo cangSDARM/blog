@@ -1,5 +1,5 @@
-import { TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
 import { MDXProvider } from "@mdx-js/react";
+import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import React from "react";

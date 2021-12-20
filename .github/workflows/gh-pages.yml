@@ -24,7 +24,7 @@ jobs:
         id: changes
         run: |
           PACKAGE_CHANGED=$(git show | grep diff | cut -d" " -f 3 | grep package.json -c)
-          test $PACKAGE_CHANGED -eq 1 && echo "::set-output name=package-json::'true'" || echo "package.json wasn't changed"
+          test $PACKAGE_CHANGED -eq 1 && echo "::set-output name=package-json::'true'"
 
       - name: Cache dependencies 🍪
         uses: actions/cache@v2
@@ -39,6 +39,15 @@ jobs:
           steps.cache.outputs.cache-hit != 'true' ||
           steps.changes.outputs.package-json == 'true'
         run: npm --proxy=null --https_proxy=null --strict-ssl=true install
+
+      - name: Cache buildings 🏗
+        uses: actions/cache@v2
+        id: building
+        with:
+          path: |
+            **/.cache/
+            **/public/
+          key: ${{ runner.os }}-build
 
       - name: Build 🚧
         run: npm run build
