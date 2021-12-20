@@ -15,21 +15,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      - name: Environment Setup 🔧
-        uses: actions/setup-node@v1
+      - name: Environment Setup and Cache 🔧
+        uses: actions/setup-node@v2
         with:
           node-version: "14.x"
+          cache: "npm"
 
       - name: Install dependencies without Proxy 📁
         run: npm --proxy=null --https_proxy=null --strict-ssl=true install
-
-      - name: Cache dependencies 🍪
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Build 🚧
         run: npm run build
