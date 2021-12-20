@@ -24,7 +24,7 @@ jobs:
         id: changes
         run: |
           PACKAGE_CHANGED=$(git show | grep diff | cut -d" " -f 3 | grep package.json -c)
-          test $PACKAGE_CHANGED -eq 1 && echo "::set-output name=package-json::'true'"
+          test $PACKAGE_CHANGED -eq 1 && echo "::set-output name=package-json::'true'" || echo "package.json wasn't changed"
 
       - name: Cache dependencies 🍪
         uses: actions/cache@v2
@@ -34,9 +34,9 @@ jobs:
           key: ${{ runner.os }}-node
 
       - name: Install dependencies without Proxy 📁
-        # only install when cache miss and package.json changed
+        # only install when cache miss or package.json changed
         if: |
-          steps.cache.outputs.cache-hit != 'true' &&
+          steps.cache.outputs.cache-hit != 'true' ||
           steps.changes.outputs.package-json == 'true'
         run: npm --proxy=null --https_proxy=null --strict-ssl=true install
 
