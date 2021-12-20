@@ -24,8 +24,7 @@ jobs:
         id: changes
         run: |
           PACKAGE_CHANGED=$(git show | grep diff | cut -d" " -f 3 | grep package.json -c)
-          test $PACKAGE_CHANGED -eq 0 &&
-          echo "::set-output name=package-json::'true'"
+          test $PACKAGE_CHANGED -eq 1 && echo "::set-output name=package-json::'true'"
 
       - name: Cache dependencies 🍪
         uses: actions/cache@v2
