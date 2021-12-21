@@ -23,7 +23,6 @@
     "gatsby-plugin-typescript": "^4.4.0",
     "gatsby-remark-autolink-headers": "~5.4.0",
     "gatsby-remark-images": "~6.4.0",
-    "gatsby-remark-katex": "~6.4.0",
     "gatsby-remark-prismjs": "~6.4.0",
     "gatsby-source-filesystem": "~4.4.0",
     "gatsby-transformer-sharp": "~4.4.0",
@@ -34,6 +33,8 @@
     "react": "~17.0.2",
     "react-dom": "~17.0.2",
     "react-helmet-async": "^1.2.2",
+    "remark-html-katex": "^4.0.1",
+    "remark-math": "^5.1.1",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
@@ -45,6 +46,7 @@
     "@typescript-eslint/parser": "^4.28.4",
     "eslint": "^7.31.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "esm": "^3.2.25",
     "gh-pages": "^3.2.3",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",

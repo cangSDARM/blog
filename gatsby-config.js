@@ -1,3 +1,5 @@
+const esmRequire = require("./fuckNode");
+
 module.exports = {
   pathPrefix: "/blog",
   siteMetadata: {
@@ -8,6 +10,21 @@ module.exports = {
   plugins: [
     `gatsby-plugin-typescript`,
     `gatsby-plugin-react-helmet-async`,
+    //https://www.gatsbyjs.org/packages/gatsby-plugin-templated-files/ 有bug
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "pages",
+        path: `${__dirname}/src/pages`,
+      },
+    },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
@@ -21,13 +38,6 @@ module.exports = {
               wrapperStyle: (fluidResult) =>
                 `margin: 5px 10px; border: 0px solid transparent; display: block; position: relative;`,
               showCaptions: true,
-            },
-          },
-          {
-            resolve: `gatsby-remark-katex`,
-            options: {
-              // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
-              strict: `ignore`,
             },
           },
           {
@@ -56,22 +66,10 @@ module.exports = {
             },
           },
         ],
-        remarkPlugins: [],
-      },
-    },
-    //https://www.gatsbyjs.org/packages/gatsby-plugin-templated-files/ 有bug
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `images`,
-        path: `${__dirname}/src/images`,
-      },
-    },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "pages",
-        path: `${__dirname}/src/pages`,
+        remarkPlugins: [
+          esmRequire("remark-html-katex"),
+          esmRequire("remark-math"),
+        ],
       },
     },
     `gatsby-plugin-image`,

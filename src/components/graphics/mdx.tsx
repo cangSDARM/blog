@@ -3,7 +3,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
+  TableRow
 } from "@mui/material";
 import clsx from "clsx";
 import React, { Fragment, useState } from "react";
@@ -13,7 +13,7 @@ import * as styles from "./style.module.css";
 import { Table as STable } from "./styled";
 import { displayComment, displayExpansion } from "./utils";
 
-//TODO: fix aria-role issue, currencly i dont know the right role
+//TODO: fix aria-role issue, currently i dont know the right role
 
 let QueryList: any[] = [];
 let ImgList: any[] = [];

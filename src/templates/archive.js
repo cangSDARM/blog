@@ -45,7 +45,7 @@ export default function Template({ data }) {
               ? `%s`
               : `%s | ArchivedArticle`,
         }}
-      ></SEO>
+      />
       <div className={className}>
         <h1>{frontmatter.title}</h1>
         <Resources

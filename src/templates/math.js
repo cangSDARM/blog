@@ -11,7 +11,7 @@ export default function Template({ data }) {
   const { frontmatter, body, fields } = mdx;
   let title =
     fields.slug === `/${fields.templateTag}`
-      ? `MathLearnning`
+      ? `MathLearning`
       : frontmatter.title;
   return (
     <Layout>
@@ -23,10 +23,9 @@ export default function Template({ data }) {
               ? `%s`
               : `%s | MathLearnning`,
         }}
-      ></SEO>
+      />
       <div className="math-post">
         <h1>{frontmatter.title}</h1>
-        {/* <small>{frontmatter.date}</small> */}
         {/* <TagsList tags={post.frontmatter.tags} /> */}
         <MDXRenderer>{body}</MDXRenderer>
       </div>

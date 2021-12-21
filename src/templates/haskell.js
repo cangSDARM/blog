@@ -36,7 +36,7 @@ function HaskellHeader(fluid) {
 }
 
 export default function Template({ data }) {
-  const { mdx, headerIamge, logoIamge } = data;
+  const { mdx, headerImage, logoImage } = data;
   const { frontmatter, body, fields } = mdx;
   let title =
     fields.slug === `/${fields.templateTag}`
@@ -46,10 +46,10 @@ export default function Template({ data }) {
     <Layout
       header={{
         style: {
-          backgroundImage: `url(${getSrc(headerIamge.childImageSharp)})`,
+          backgroundImage: `url(${getSrc(headerImage.childImageSharp)})`,
           backgroundSize: `cover`,
         },
-        children: HaskellHeader(logoIamge.childImageSharp),
+        children: HaskellHeader(logoImage.childImageSharp),
       }}
     >
       <SEO
@@ -60,10 +60,9 @@ export default function Template({ data }) {
               ? `%s`
               : `%s | LearnYouAHaskell`,
         }}
-      ></SEO>
+      />
       <div className="haskell-post">
         <h1>{frontmatter.title}</h1>
-        {/* <h2>{frontmatter.date}</h2> */}
         <TagsList tags={frontmatter.tags} />
         <MDXRenderer>{body}</MDXRenderer>
       </div>
@@ -86,13 +85,13 @@ export const query = graphql`
       }
     }
 
-    headerIamge: file(relativePath: { eq: "haskell-header.png" }) {
+    headerImage: file(relativePath: { eq: "haskell-header.png" }) {
       childImageSharp {
         gatsbyImageData(formats: [AUTO, WEBP], quality: 100)
       }
     }
 
-    logoIamge: file(relativePath: { eq: "haskell-logo.png" }) {
+    logoImage: file(relativePath: { eq: "haskell-logo.png" }) {
       childImageSharp {
         gatsbyImageData(formats: [AUTO, WEBP], quality: 100, height: 56)
       }
