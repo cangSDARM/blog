@@ -51,8 +51,8 @@ const Layout: React.FC<
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <StyledEngineProvider injectFirst>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
           <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
           <div
             id="scroll-spy"
@@ -74,8 +74,8 @@ const Layout: React.FC<
             <Footer {...footerProps} />
           </div>
           <Drawer />
-        </StyledEngineProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </>
   );
 };
