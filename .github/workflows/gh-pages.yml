@@ -34,7 +34,9 @@ jobs:
           path: |
             **/.npm
             **/node_modules/
-          key: ${{ runner.os }}-node
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies without Proxy 📁
         # only install when cache miss or package.json changed
