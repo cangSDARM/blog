@@ -25,27 +25,31 @@ Typeclass 的运用是很随意的。我们可以定义自己的资料型态，�
 
 我们来看看 IO 是怎么样的一个 Functor instance。当我们 fmap 用一个 function 来 map over I/O action 时，我们会想要拿回一个装着已经用 function 映射过值的 I/O action。
 
+```haskell
 instance Functor IO where
     fmap f action = do
         result <- action
         return (f result)
+```
+
 对一个 I/O action 做 map over 动作的结果仍会是一个 I/O action，所以我们才用 do syntax 来把两个 I/O action 黏成一个。在 fmap 的实作中，我们先执行了原本传进的 I/O action，并把结果绑定成 result。然后我们写了 return (f result)。return 就如你所知道的，是一个只会回传包了你传给他东西的 I/O action。还有一个 do block 的回传值一定是他最后一个 I/O action 的回传值。这也是为什么我们需要 return。其实他只是回传包了 f result 的 I/O action。
 
-我们可以再多实验一下来找到些感觉。来看看这段 code：
+我们可以再多实验一下来找到些感觉。来看看这段 code:
 
 ```haskell
 main = do line <- getLine   
         let line' = reverse line  
-        putStrLn $ "You said " ++ line' ++ " backwards!"  
-        putStrLn $ "Yes, you really said" ++ line' ++ " backwards!"  
+        putStrLn \$ "You said " ++ line' ++ " backwards!"  
+        putStrLn \$ "Yes, you really said" ++ line' ++ " backwards!"  
 ```
 
-这程式要求使用者输入一行文字，然后印出一行反过来的。 我们可以用 fmap 来改写：
+这程式要求使用者输入一行文字，然后印出一行反过来的。 我们可以用 fmap 来改写:
 
+```haskell
 main = do line <- fmap reverse getLine  
-            putStrLn $ "You said " ++ line ++ " backwards!"  
-            putStrLn $ "Yes, you really said" ++ line ++ " backwards!"  
-
+            putStrLn \$ "You said " ++ line ++ " backwards!"  
+            putStrLn \$ "Yes, you really said" ++ line ++ " backwards!"  
+```
 
 就像我们用 fmap reverse 来 map over Just "blah" 会得到 Just "halb"，我们也可以 fmap reverse 来 map over getLine。getLine 是一个 I/O action，他的 type 是 IO String，而用 reverse 来 map over 他会回传一个取回一个字串并 reverse 他的 I/O action。就像我们 apply 一个 function 到一个 Maybe 一样，我们也可以 apply 一个 function 到一个 IO，只是这个 IO 会跑去外面拿回某些值。然后我们把结果用 <- 绑定到某个名称，而这个名称绑定的值是已经 reverse 过了。
 
@@ -61,7 +65,7 @@ import Data.List
 
 main = do line <- fmap (intersperse '-' . reverse . map toUpper) getLine  
           putStrLn line  
-$ runhaskell fmapping_io.hs  
+\$ runhaskell fmapping_io.hs  
 hello there  
 E-R-E-H-T- -O-L-L-E-H 
 ```
@@ -92,9 +96,9 @@ ghci> :t fmap (*3) (+100)
 fmap (*3) (+100) :: (Num a) => a -> a  
 ghci> fmap (*3) (+100) 1  
 303  
-ghci> (*3) `fmap` (+100) $ 1  
+ghci> (*3) `fmap` (+100) \$ 1  
 303  
-ghci> (*3) . (+100) $ 1  
+ghci> (*3) . (+100) \$ 1  
 303  
 ghci> fmap (show . (*3)) (*100) 1  
 "300"  
@@ -141,7 +145,7 @@ Left "foo"
 
 functor law 的第一条说明，如果我们对 functor 做 map id，那得到的新的 functor 应该要跟原来的一样。如果写得正式一点，他代表 fmap id = id。基本上他就是说对 functor 呼叫 fmap id，应该等同于对 functor 呼叫 id 一样。毕竟 id 只是 identity function，他只会把参数照原样丢出。他也可以被写成 \x -> x。如果我们对 functor 的概念就是可以被 map over 的物件，那 fmap id = id 的性就显而易见。
 
-我们来看看这个定律的几个案例：
+我们来看看这个定律的几个案例:
 
 ```shell
 ghci> fmap id (Just 3)  
@@ -160,9 +164,12 @@ Nothing
 
 如果我们看看 Maybe 的 fmap 的实作，我们不难发现第一定律为何被遵守。
 
+```haskell
 instance Functor Maybe where  
     fmap f (Just x) = Just (f x)  
     fmap f Nothing = Nothing  
+```
+
 我们可以想像在 f 的位置摆上 id。我们看到 fmap id 拿到 Just x 的时候，结果只不过是 Just (id x)，而 id 有只回传他拿到的东西，所以可以知道 Just (id x) 等价于 Just x。所以说我们可以知道对 Maybe 中的 Just 用 id 去做 map over 的动作，会拿回一样的值。
 
 而将 id map over Nothing 会拿回 Nothing 并不稀奇。所以从这两个 fmap 的实作，我们可以看到的确 fmap id = id 有被遵守。
@@ -323,24 +330,24 @@ Nothing
 
 这样很棒吧！用 applicative style 的方式来使用 applicative functors。像是 pure f <*> x <*> y <*> ... 就让我们可以拿一个接受多个参数的函数，而且这些参数不一定是被包在 functor 中。就这样来套用在多个在 functor context 的值。这个函数可以吃任意多的参数，毕竟 <*> 只是做 partial application 而已。
 
-如果我们考虑到 pure f <*> x 等于 fmap f x 的话，这样的用法就更方便了。这是 applicative laws 的其中一条。我们稍后会更仔细地检视这条定律。现在我们先依直觉来使用他。就像我们先前所说的，pure 把一个值放进一个预设的 context 中。如果我们要把一个函数放在一个预设的 context，然后把他取出并套用在放在另一个 applicative functor 的值。我们会做的事就是把函数 map over 那个 applicative functor。但我们不会写成 pure f <*> x <*> y <*> ...，而是写成 fmap f x <*> y <*> ...。这也是为什么 Control.Applicative 会 export 一个函数 <$>，他基本上就是中缀版的 fmap。他是这么被定义的：
+如果我们考虑到 pure f <*> x 等于 fmap f x 的话，这样的用法就更方便了。这是 applicative laws 的其中一条。我们稍后会更仔细地检视这条定律。现在我们先依直觉来使用他。就像我们先前所说的，pure 把一个值放进一个预设的 context 中。如果我们要把一个函数放在一个预设的 context，然后把他取出并套用在放在另一个 applicative functor 的值。我们会做的事就是把函数 map over 那个 applicative functor。但我们不会写成 pure f <*> x <*> y <*> ...，而是写成 fmap f x <*> y <*> ...。这也是为什么 Control.Applicative 会 export 一个函数 <\$>，他基本上就是中缀版的 fmap。他是这么被定义的：
 
-(<$>) :: (Functor f) => (a -> b) -> f a -> f b  
-f <$> x = fmap f x  
+(<\$>) :: (Functor f) => (a -> b) -> f a -> f b  
+f <\$> x = fmap f x  
 要记住型别变数跟参数的名字还有值绑定的名称不冲突。``f`` 在函数的型别宣告中是型别变数，说明 ``f`` 应该要满足 ``Functor`` typeclass 的条件。而在函数本体中的 ``f`` 则表示一个函数，我们将他 map over x。我们同样用 ``f`` 来表示他们并代表他们是相同的东西。
-<$> 的使用显示了 applicative style 的好处。如果我们想要将 f 套用三个 applicative functor。我们可以写成 f <$> x <*> y <*> z。如果参数不是 applicative functor 而是普通值的话。我们则写成 f x y z。
+<\$> 的使用显示了 applicative style 的好处。如果我们想要将 f 套用三个 applicative functor。我们可以写成 f <\$> x <*> y <*> z。如果参数不是 applicative functor 而是普通值的话。我们则写成 f x y z。
 
 我们再仔细看看他是如何运作的。我们有一个 Just "johntra" 跟 Just "volta" 这样的值，我们希望将他们结合成一个 String，并且包含在 Maybe 中。我们会这样做：
 
-ghci> (++) <$> Just "johntra" <*> Just "volta"  
+ghci> (++) <\$> Just "johntra" <*> Just "volta"  
 Just "johntravolta"  
 可以将上面的跟下面这行比较一下：
 
 ghci> (++) "johntra" "volta"  
 "johntravolta"  
-可以将一个普通的函数套用在 applicative functor 上真不错。只要稍微写一些 <$> 跟 <*> 就可以把函数变成 applicative style，可以操作 applicatives 并回传 applicatives。
+可以将一个普通的函数套用在 applicative functor 上真不错。只要稍微写一些 <\$> 跟 <*> 就可以把函数变成 applicative style，可以操作 applicatives 并回传 applicatives。
 
-总之当我们在做 (++) <$> Just "johntra" <*> Just "volta" 时，首先我们将 (++) map over 到 Just "johntra"，然后产生 Just ("johntra"++)，其中 (++) 的型别为 (++) :: [a] -> [a] -> [a]，Just ("johntra"++) 的型别为 Maybe ([Char] -> [Char])。注意到 (++) 是如何吃掉第一个参数，以及我们是怎么决定 a 是 Char 的。当我们做 Just ("johntra"++) <*> Just "volta"，他接受一个包在 Just 中的函数，然后 map over Just "volta"，产生了 Just "johntravolta"。如果两个值中有任意一个为 Nothing，那整个结果就会是 Nothing。
+总之当我们在做 (++) <\$> Just "johntra" <*> Just "volta" 时，首先我们将 (++) map over 到 Just "johntra"，然后产生 Just ("johntra"++)，其中 (++) 的型别为 (++) :: [a] -> [a] -> [a]，Just ("johntra"++) 的型别为 Maybe ([Char] -> [Char])。注意到 (++) 是如何吃掉第一个参数，以及我们是怎么决定 a 是 Char 的。当我们做 Just ("johntra"++) <*> Just "volta"，他接受一个包在 Just 中的函数，然后 map over Just "volta"，产生了 Just "johntravolta"。如果两个值中有任意一个为 Nothing，那整个结果就会是 Nothing。
 
 到目前为止我们只有用 Maybe 当作我们的案例，你可能也会想说 applicative functor 差不多就等于 Maybe。不过其实有许多其他 Applicative 的 instance。我们来看看有哪些。
 
@@ -367,11 +374,11 @@ ghci> [(+),(*)] <*> [1,2] <*> [3,4]
 
 list 的 applicative style 是相当有趣的：
 
-ghci> (++) <$> ["ha","heh","hmm"] <*> ["?","!","."]  
+ghci> (++) <\$> ["ha","heh","hmm"] <*> ["?","!","."]  
 ["ha?","ha!","ha.","heh?","heh!","heh.","hmm?","hmm!","hmm."] 
 看看我们是如何将一个接受两个字串参数的函数套用到两个 applicative functor 上的，只要用适当的 applicative 运算子就可以达成。
 
-你可以将 list 看作是一个 non-deterministic 的计算。而对于像 100 或是 "what" 这样的值则是 deterministic 的计算，只会有一个结果。而 [1,2,3] 则可以看作是没有确定究竟是哪一种结果。所以他代表的是所有可能的结果。当你在做 (+) <$> [1,2,3] <*> [4,5,6]，你可以想做是把两个 non-deterministic 的计算做 +，只是他会产生另一个 non-deterministic 的计算，而且结果更加不确定。
+你可以将 list 看作是一个 non-deterministic 的计算。而对于像 100 或是 "what" 这样的值则是 deterministic 的计算，只会有一个结果。而 [1,2,3] 则可以看作是没有确定究竟是哪一种结果。所以他代表的是所有可能的结果。当你在做 (+) <\$> [1,2,3] <*> [4,5,6]，你可以想做是把两个 non-deterministic 的计算做 +，只是他会产生另一个 non-deterministic 的计算，而且结果更加不确定。
 
 Applicative style 对于 list 而言是一个取代 list comprehension 的好方式。在第二章中，我们想要看到 [2,5,10] 跟 [8,10,11] 相乘的结果，所以我们这样做：
 
@@ -379,11 +386,11 @@ ghci> [ x*y | x <- [2,5,10], y <- [8,10,11]]
 [16,20,22,40,50,55,80,100,110]     
 我们只是从两个 list 中取出元素，并将一个函数套用在任何元素的组合上。这也可以用 applicative style 的方式来写：
 
-ghci> (*) <$> [2,5,10] <*> [8,10,11]  
+ghci> (*) <\$> [2,5,10] <*> [8,10,11]  
 [16,20,22,40,50,55,80,100,110]  
 这写法对我来说比较清楚。可以清楚表达我们是要对两个 non-deterministic 的计算做 *。如果我们想要所有相乘大于 50 可能的计算结果，我们会这样写：
 
-ghci> filter (>50) $ (*) <$> [2,5,10] <*> [8,10,11]  
+ghci> filter (>50) \$ (*) <\$> [2,5,10] <*> [8,10,11]  
 [55,80,100,110]  
 很容易看到 pure f <*> xs 等价于 fmap f xs。而 pure f 就是 [f]，而且 [f] <*> xs 可将左边的每个函数套用至右边的每个值。但左边其实只有一个函数，所以他做起来就像是 mapping。
 
@@ -409,20 +416,20 @@ myAction :: IO String
 myAction = do  
     a <- getLine  
     b <- getLine  
-    return $ a ++ b  
+    return \$ a ++ b  
 这是一个提示使用者输入两行并产生将两行输入串接在一起结果的一个 I/O action。我们先把两个 getLine 黏在一起，然后用一个 return，这是因为我们想要这个黏成的 I/O action 包含 a ++ b 的结果。我们也可以用 applicative style 的方式来描述：
 
 myAction :: IO String  
-myAction = (++) <$> getLine <*> getLine  
+myAction = (++) <\$> getLine <*> getLine  
 我们先前的作法是将两个 I/O action 的结果喂给函数。还记得 getLine 的型别是 getLine :: IO String。当我们对 applicative functor 使用 <*> 的时候，结果也会是 applicative functor。
 
-如果我们再使用盒子的类比，我们可以把 getLine 想做是一个去真实世界中拿取字串的盒子。而 (++) <$> getLine <*> getLine 会创造一个比较大的盒子，这个大盒子会派两个盒子去终端拿取字串，并把结果串接起来放进自己的盒子中。
+如果我们再使用盒子的类比，我们可以把 getLine 想做是一个去真实世界中拿取字串的盒子。而 (++) <\$> getLine <*> getLine 会创造一个比较大的盒子，这个大盒子会派两个盒子去终端拿取字串，并把结果串接起来放进自己的盒子中。
 
-(++) <$> getLine <*> getLine 的型别是 IO String，他代表这个表达式式一个再普通不过的 I/O action，他里面也装着某种值。这也是为什么我们可以这样写：
+(++) <\$> getLine <*> getLine 的型别是 IO String，他代表这个表达式式一个再普通不过的 I/O action，他里面也装着某种值。这也是为什么我们可以这样写：
 
 main = do  
-    a <- (++) <$> getLine <*> getLine  
-    putStrLn $ "The two lines concatenated turn out to be: " ++ a  
+    a <- (++) <\$> getLine <*> getLine  
+    putStrLn \$ "The two lines concatenated turn out to be: " ++ a  
 如果你发现你是在做 binding I/O action 的动作，而且在 binding 之后还呼叫一些函数，最后用 return 来将结果包起来。 那你可以考虑使用 applicative style，这样可以更简洁。
 
 另一个 Applicative 的 instance 是 (->) r。虽然他们通常是用在 code golf 的情况，但他们还是十分有趣的例子。所以我们还是来看一下他们是怎么被实作的。
@@ -441,19 +448,19 @@ ghci> pure 3 "blah"
 3  
 而 <*> 的实作是比较不容易了解的，我们最好看一下怎么用 applicative style 的方式来使用作为 applicative functor 的 function。
 
-ghci> :t (+) <$> (+3) <*> (*100)  
-(+) <$> (+3) <*> (*100) :: (Num a) => a -> a  
-ghci> (+) <$> (+3) <*> (*100) $ 5  
+ghci> :t (+) <\$> (+3) <*> (*100)  
+(+) <\$> (+3) <*> (*100) :: (Num a) => a -> a  
+ghci> (+) <\$> (+3) <*> (*100) \$ 5  
 508 
-将两个 applicative functor 喂给 <*> 可以产生一个新的 applicative functor，所以如果我们丢给他两个函数，我们能得到一个新的函数。所以是怎么一回事呢？当我们做 (+) <$> (+3) <*> (*100)，我们是在实作一个函数，他会将 (+3) 跟 (*100) 的结果再套用 +。要看一个实际的范例的话，可以看一下 (+) <$> (+3) <*> (*100) $ 5 首先 5 被丢给 (+3) 跟 (*100)，产生 8 跟 500。然后 + 被套用到 8 跟 500，得到 508。
+将两个 applicative functor 喂给 <*> 可以产生一个新的 applicative functor，所以如果我们丢给他两个函数，我们能得到一个新的函数。所以是怎么一回事呢？当我们做 (+) <\$> (+3) <*> (*100)，我们是在实作一个函数，他会将 (+3) 跟 (*100) 的结果再套用 +。要看一个实际的范例的话，可以看一下 (+) <\$> (+3) <*> (*100) \$ 5 首先 5 被丢给 (+3) 跟 (*100)，产生 8 跟 500。然后 + 被套用到 8 跟 500，得到 508。
 
-ghci> (\x y z -> [x,y,z]) <$> (+3) <*> (*2) <*> (/2) $ 5  
+ghci> (\x y z -> [x,y,z]) <\$> (+3) <*> (*2) <*> (/2) \$ 5  
 [8.0,10.0,2.5]  
 
 
 这边也一样。我们创建了一个函数，他会呼叫 \x y z -> [x,y,z]，而丢的参数是 (+3), (*2) 跟 (/2)。5 被丢给以上三个函数，然后他们结果又接到 \x y z -> [x, y, z]。
 
-你可以将函数想做是装着最终结果的盒子，所以 k <$> f <*> g 会制造一个函数，他会将 f 跟 g 的结果丢给 k。当我们做 (+) <$> Just 3 <*> Just 5，我们是用 + 套用在一些可能有或可能没有的值上，所以结果也会是可能有或没有。当我们做 (+) <$> (+10) <*> (+5)，我们是将 + 套用在 (+10) 跟 (+5) 的结果上，而结果也会是一个函数，当被喂给一个参数的时候会产生结果。
+你可以将函数想做是装着最终结果的盒子，所以 k <\$> f <*> g 会制造一个函数，他会将 f 跟 g 的结果丢给 k。当我们做 (+) <\$> Just 3 <*> Just 5，我们是用 + 套用在一些可能有或可能没有的值上，所以结果也会是可能有或没有。当我们做 (+) <\$> (+10) <*> (+5)，我们是将 + 套用在 (+10) 跟 (+5) 的结果上，而结果也会是一个函数，当被喂给一个参数的时候会产生结果。
 
 我们通常不会将函数当作 applicative 用，不过仍然值得当作练习。对于 (->) r 怎么定义成 Applicative 的并不是真的那么重要，所以如果你不是很懂的话也没关系。这只是让你获得一些操作上的直觉罢了。
 
@@ -474,13 +481,13 @@ pure 也值得我们讨论一下。他接受一个值，把他重复地放进一
 
 那 zip list 是怎么用 applicative style 操作的呢？我们来看看，ZipList a 型别并没有定义成 Show 的 instance，所以我们必须用 getZipList 函数来从 zip list 取出一个普通的 list。
 
-ghci> getZipList $ (+) <$> ZipList [1,2,3] <*> ZipList [100,100,100]  
+ghci> getZipList \$ (+) <\$> ZipList [1,2,3] <*> ZipList [100,100,100]  
 [101,102,103]  
-ghci> getZipList $ (+) <$> ZipList [1,2,3] <*> ZipList [100,100..]  
+ghci> getZipList \$ (+) <\$> ZipList [1,2,3] <*> ZipList [100,100..]  
 [101,102,103]  
-ghci> getZipList $ max <$> ZipList [1,2,3,4,5,3] <*> ZipList [5,3,1,2]  
+ghci> getZipList \$ max <\$> ZipList [1,2,3,4,5,3] <*> ZipList [5,3,1,2]  
 [5,3,3,4]  
-ghci> getZipList $ (,,) <$> ZipList "dog" <*> ZipList "cat" <*> ZipList "rat"  
+ghci> getZipList \$ (,,) <\$> ZipList "dog" <*> ZipList "cat" <*> ZipList "rat"  
 [('d','c','r'),('o','a','a'),('g','t','t')]  
 ``(,,)`` 函数跟 ``\x y z -> (x,y,z)`` 是等价的，而 ``(,)`` 跟 ``\x y -> (x,y)`` 是等价的。
 除了 zipWith，标准函式库中也有 zipWith3, zipWith4 之类的函数，最多支援到 7。zipWith 接受一个接受两个参数的函数，并把两个 list zip 起来。zipWith3 则接受一个接受三个参数的函数，然后把三个 list zip 起来。以此类推。用 applicative style 的方式来操作 zip list 的话，我们就不需要对每个数量的 list 都定义一个独立的 zip 函数来 zip 他们。我们只需要用 applicative style 的方式来把任意数量的 list zip 起来就可以了。
@@ -488,7 +495,7 @@ ghci> getZipList $ (,,) <$> ZipList "dog" <*> ZipList "cat" <*> ZipList "rat"
 Control.Applicative 定义了一个函数叫做 liftA2，他的型别是 liftA2 :: (Applicative f) => (a -> b -> c) -> f a -> f b -> f c。他定义如下：
 
 liftA2 :: (Applicative f) => (a -> b -> c) -> f a -> f b -> f c  
-liftA2 f a b = f <$> a <*> b  
+liftA2 f a b = f <\$> a <*> b  
 并没有太难理解的东西，他不过就是对两个 applicatives 套用函数而已，而不用我们刚刚熟悉的 applicative style。我们提及他的理由只是要展示为什么 applicative functors 比起一般的普通 functor 要强。如果只是普通的 functor 的话，我们只能将一个函数 map over 这个 functor。但有了 applicative functor，我们可以对好多个 functor 套用一个函数。看看这个函数的型别，他会是 (a -> b -> c) -> (f a -> f b -> f c)。当我们从这样的角度来看他的话，我们可以说 liftA2 接受一个普通的二元函数，并将他升级成一个函数可以运作在两个 functor 之上。
 
 另外一个有趣的概念是，我们可以接受两个 applicative functor 并把他们结合成一个 applicative functor，这个新的将这两个 applicative functor 装在 list 中。举例来说，我们现在有 Just 3 跟 Just 4。我们假设后者是一个只包含单元素的 list。
@@ -499,16 +506,16 @@ Just [4]
 
 ghci> liftA2 (:) (Just 3) (Just [4])  
 Just [3,4]  
-ghci> (:) <$> Just 3 <*> Just [4]  
+ghci> (:) <\$> Just 3 <*> Just [4]  
 Just [3,4]  
 还记得 : 是一个函数，他接受一个元素跟一个 list，并回传一个新的 list，其中那个元素已经接在前面。现在我们有了 Just [3,4]，我们能够将他跟 Just 2 绑在一起变成 Just [2,3,4] 吗？当然可以。我们可以将任意数量的 applicative 绑在一起变成一个 applicative，里面包含一个装有结果的 list。我们试着实作一个函数，他接受一串装有 applicative 的 list，然后回传一个 applicative 里面有一个装有结果的 list。我们称呼他为 sequenceA。
 
 sequenceA :: (Applicative f) => [f a] -> f [a]  
 sequenceA [] = pure []  
-sequenceA (x:xs) = (:) <$> x <*> sequenceA xs  
+sequenceA (x:xs) = (:) <\$> x <*> sequenceA xs  
 居然用到了递回！首先我们来看一下他的型别。他将一串 applicative 的 list 转换成一个 applicative 装有一个 list。从这个资讯我们可以推测出边界条件。如果我们要将一个空的 list 变成一个装有 list 的 applicative。我们只要把这个空的 list 放进一个预设的 context。现在来看一下我们怎么用递回的。如果们有一个可以分成头跟尾的 list（x 是一个 applicative 而 xs 是一串 applicatve），我们可以对尾巴呼叫 sequenceA，便会得到一个装有 list 的 applicative。然后我们只要将在 x 中的值把他接到装有 list 的 applicative 前面就可以了。
 
-所以如果我们做 sequenceA [Just 1, Just 2]，也就是 (:) <$> Just 1 <*> sequenceA [Just 2]。那会等价于 (:) <$> Just 1 <*> ((:) <$> Just 2 <*> sequenceA [])。我们知道 sequenceA [] 算出来会是 Just []，所以运算式就变成 (:) <$> Just 1 <*> ((:) <$> Just 2 <*> Just [])，也就是 (:) <$> Just 1 <*> Just [2]，算出来就是 Just [1,2]。
+所以如果我们做 sequenceA [Just 1, Just 2]，也就是 (:) <\$> Just 1 <*> sequenceA [Just 2]。那会等价于 (:) <\$> Just 1 <*> ((:) <\$> Just 2 <*> sequenceA [])。我们知道 sequenceA [] 算出来会是 Just []，所以运算式就变成 (:) <\$> Just 1 <*> ((:) <\$> Just 2 <*> Just [])，也就是 (:) <\$> Just 1 <*> Just [2]，算出来就是 Just [1,2]。
 
 另一种实作 sequenceA 的方式是用 fold。要记得几乎任何需要走遍整个 list 并 accumulate 成一个结果的都可以用 fold 来实作。
 
@@ -532,19 +539,19 @@ ghci> sequenceA [[1,2,3],[4,5,6],[3,4,4],[]]
 
 当套用在函数时，sequenceA 接受装有一堆函数的 list，并回传一个回传 list 的函数。在我们的范例中，我们写了一个函数，他只接受一个数值作为参数，他会把他套用至 list 中的每一个函数，并回传一个包含结果的 list。sequenceA [(+3),(+2),(+1)] 3 会将 3 喂给 (+3), (+2) 跟 (+1)，然后将所有结果装在一个 list 中。
 
-而 (+) <$> (+3) <*> (*2) 会创见一个接受单一参数的一函数，将他同时喂给 (+3) 跟 (*2)，然后呼叫 + 来将两者加起来。同样的道理，sequenceA [(+3),(*2)] 是制造一个接受单一参数的函数，他会将他喂给所有包含在 list 中的函数。但他最后不是呼叫 +，而是呼叫 : 跟 pure [] 来把结果接成一个 list，得到最后的结果。
+而 (+) <\$> (+3) <*> (*2) 会创见一个接受单一参数的一函数，将他同时喂给 (+3) 跟 (*2)，然后呼叫 + 来将两者加起来。同样的道理，sequenceA [(+3),(*2)] 是制造一个接受单一参数的函数，他会将他喂给所有包含在 list 中的函数。但他最后不是呼叫 +，而是呼叫 : 跟 pure [] 来把结果接成一个 list，得到最后的结果。
 
 当我们有一串函数，我们想要将相同的输入都喂给他们并检视结果的时候，sequenceA 非常好用。例如说，我们手上有一个数值，但不知道他是否满足一串 predicate。一种实作的方式是像这样：
 
 ghci> map (\f -> f 7) [(>4),(<10),odd]  
 [True,True,True]  
-ghci> and $ map (\f -> f 7) [(>4),(<10),odd]  
+ghci> and \$ map (\f -> f 7) [(>4),(<10),odd]  
 True  
 记住 and 接受一串布林值，并只有在全部都是 True 的时候才回传 True。 另一种实作方式是用 sequenceA：
 
 ghci> sequenceA [(>4),(<10),odd] 7  
 [True,True,True]  
-ghci> and $ sequenceA [(>4),(<10),odd] 7  
+ghci> and \$ sequenceA [(>4),(<10),odd] 7  
 True  
 sequenceA [(>4),(<10),odd] 接受一个函数，他接受一个数值并将他喂给所有的 predicate，包含 [(>4),(<10),odd]。然后回传一串布林值。他将一个型别为 (Num a) => [a -> Bool] 的 list 变成一个型别为 (Num a) => a -> [Bool] 的函数，很酷吧。
 
@@ -564,15 +571,15 @@ ghci> sequenceA [[1,2],[3,4],[5,6]]
 [[1,3,5],[1,3,6],[1,4,5],[1,4,6],[2,3,5],[2,3,6],[2,4,5],[2,4,6]]  
 ghci> [[x,y,z] | x <- [1,2], y <- [3,4], z <- [5,6]]  
 [[1,3,5],[1,3,6],[1,4,5],[1,4,6],[2,3,5],[2,3,6],[2,4,5],[2,4,6]]  
-这可能有点难以理解，但如果你多做点尝试，你会比较能看出来些眉目。假设我们在做 sequenceA [[1,2],[3,4]]。要知道这是怎么回事，我们首先用 sequenceA 的定义 sequenceA (x:xs) = (:) <$> x <*> sequenceA xs 还有边界条件 sequenceA [] = pure [] 来看看。你不需要实际计算，但他可以帮助你理解 sequenceA 是怎么运作在一串 list 上，毕竟这有点复杂。
+这可能有点难以理解，但如果你多做点尝试，你会比较能看出来些眉目。假设我们在做 sequenceA [[1,2],[3,4]]。要知道这是怎么回事，我们首先用 sequenceA 的定义 sequenceA (x:xs) = (:) <\$> x <*> sequenceA xs 还有边界条件 sequenceA [] = pure [] 来看看。你不需要实际计算，但他可以帮助你理解 sequenceA 是怎么运作在一串 list 上，毕竟这有点复杂。
 
 \# 我们从 ``sequenceA [[1,2],[3,4]]`` 开始
-\# 那可以被计算成 ``(:) <$> [1,2] <*> sequenceA [[3,4]]``
-\# 计算内层的 ``sequenceA``，会得到 ``(:) <$> [1,2] <*> ((:) <$> [3,4] <*> sequenceA [])``
-\# 我们碰到了边界条件，所以会是 ``(:) <$> [1,2] <*> ((:) <$> [3,4] <*> [[]])``
-\# 现在我们计算 ``(:) <$> [3,4] <*> [[]] `` 的部份，我们会对左边 list 中的每一个值 (也就是 ``3`` 跟 ``4``) 跟右边的每一个值 (只有 ``[]``)套用 ``:``，而得到 ``[3:[], 4:[]]``，也就是 ``[[3],[4]]``。所以我们有 ``(:) <$> [1,2] <*> [[3],[4]]``
+\# 那可以被计算成 ``(:) <\$> [1,2] <*> sequenceA [[3,4]]``
+\# 计算内层的 ``sequenceA``，会得到 ``(:) <\$> [1,2] <*> ((:) <\$> [3,4] <*> sequenceA [])``
+\# 我们碰到了边界条件，所以会是 ``(:) <\$> [1,2] <*> ((:) <\$> [3,4] <*> [[]])``
+\# 现在我们计算 ``(:) <\$> [3,4] <*> [[]] `` 的部份，我们会对左边 list 中的每一个值 (也就是 ``3`` 跟 ``4``) 跟右边的每一个值 (只有 ``[]``)套用 ``:``，而得到 ``[3:[], 4:[]]``，也就是 ``[[3],[4]]``。所以我们有 ``(:) <\$> [1,2] <*> [[3],[4]]``
 \# 而对于左边的每一个值(``1`` 跟 ``2``)以及右边可能的值（``[3]`` 跟 ``[4]``）我们套用 ``:`` 而得到 ``[1:[3], 1:[4], 2:[3], 2:[4]]``，他等于 ``[[1,3],[1,4],[2,3],[2,4]]``
-计算 (+) <$> [1,2] <*> [4,5,6] 会得到一个 non-deterministic 的结果 x + y，其中 x 代表 [1,2] 中的每一个值，而 y 代表 [4,5,6] 中的每一个值。我们用 list 来表示每一种可能的情形。同样的，当我们在做 sequence [[1,2],[3,4],[5,6],[7,8]]，他的结果会是 non-deterministic 的 [x,y,z,w]，其中 x 代表 [1,2] 中的每一个值，而 y 代表 [3,4] 中的每一个值。以此类推。我们用 list 代表 non-deterministic 的计算，每一个元素都是一个可能的情形。这也是为什么会用到 list of list。
+计算 (+) <\$> [1,2] <*> [4,5,6] 会得到一个 non-deterministic 的结果 x + y，其中 x 代表 [1,2] 中的每一个值，而 y 代表 [4,5,6] 中的每一个值。我们用 list 来表示每一种可能的情形。同样的，当我们在做 sequence [[1,2],[3,4],[5,6],[7,8]]，他的结果会是 non-deterministic 的 [x,y,z,w]，其中 x 代表 [1,2] 中的每一个值，而 y 代表 [3,4] 中的每一个值。以此类推。我们用 list 代表 non-deterministic 的计算，每一个元素都是一个可能的情形。这也是为什么会用到 list of list。
 
 当使用在 I/O action 上的时候，sequenceA 跟 sequence 是等价的。他接受一串 I/O action 并回传一个 I/O action，这个 I/O action 会计算 list 中的每一个 I/O action，并把结果放在一个 list 中。要将型别为 [IO a] 的值转换成 IO [a] 的值，也就是会产生一串 list 的一个 I/O action，那这些 I/O action 必须要一个一个地被计算，毕竟对于这些 I/O action 你没办法不计算就得到结果。
 
@@ -586,10 +593,10 @@ woo
 \# ``pure id <*> v = v``
 \# ``pure (.) <*> u <*> v <*> w = u <*> (v <*> w)``
 \# ``pure f <*> pure x = pure (f x)``
-\# ``u <*> pure y = pure ($ y) <*> u``
+\# ``u <*> pure y = pure (\$ y) <*> u``
 我们不会一项一项地细看，那样会花费很大的篇幅而且对读者来说很无聊，但如果你有兴趣，你可以针对某些 instance 看看他们会不会遵守。
 
-结论就是 applicative functor 不只是有趣而且实用， 他允许我们结合不同种类的计算，像是 I/O 计算，non-deterministic 的计算，有可能失败的计算等等。而使用 <$> 跟 <*> 我们可以将普通的函数来运作在任意数量的 applicative functors 上。
+结论就是 applicative functor 不只是有趣而且实用， 他允许我们结合不同种类的计算，像是 I/O 计算，non-deterministic 的计算，有可能失败的计算等等。而使用 <\$> 跟 <*> 我们可以将普通的函数来运作在任意数量的 applicative functors 上。
 
 关键字"newtype"
 
@@ -602,7 +609,7 @@ ghci> [(+1),(*100),(*5)] <*> [1,2,3]
 [2,3,4,100,200,300,5,10,15]  
 第二种方式是将 <*> 定义成将左边的第一个函数套用至右边的第一个值，然后将左边第二个函数套用至右边第二个值。以此类推。最终，这表现得有点像将两个 list 用一个拉链拉起来一样。但由于 list 已经被定义成 Applicaitive 的 instance 了，所以我们要怎么要让 list 可以被定义成第二种方式呢？如果你还记得我们说过我们是有很好的理由定义了 ZipList a，其中他里面只包含一个值构造子跟只包含一个栏位。其实他的理由就是要让 ZipList 定义成用拉链的方式来表现 applicative 行为。我们只不过用 ZipList 这个构造子将他包起来，然后用 getZipList 来解开来。
 
-ghci> getZipList $ ZipList [(+1),(*100),(*5)] <*> ZipList [1,2,3]  
+ghci> getZipList \$ ZipList [(+1),(*100),(*5)] <*> ZipList [1,2,3]  
 [2,200,15]  
 所以这跟 newtype 这个关键字有什么关系呢？想想看我们是怎么宣告我们的 ZipList a 的，一种方式是像这样：
 
@@ -674,9 +681,9 @@ class Functor f where
     fmap :: (a -> b) -> f a -> f b  
 如果我们将一个 tuple 转换成 Pair b a，我们可以用 fmap 来 map over 第一个部份。
 
-ghci> getPair $ fmap (*100) (Pair (2,3))  
+ghci> getPair \$ fmap (*100) (Pair (2,3))  
 (200,3)  
-ghci> getPair $ fmap reverse (Pair ("london calling", 3))  
+ghci> getPair \$ fmap reverse (Pair ("london calling", 3))  
 ("gnillac nodnol",3)  
 On newtype laziness
 我们提到 newtype 一般来讲比 data 来得有效率。newtype 能做的唯一一件事就是将现有的型别包成新的型别。这样 Haskell 在内部就能将新的型别的值用旧的方式来操作。只是要记住他们还是不同的型别。这代表 newtype 并不只是有效率，他也具备 lazy 的特性。我们来说明一下这是什么意思。
@@ -858,23 +865,23 @@ instance Num a => Monoid (Product a) where
     Product x `mappend` Product y = Product (x * y)  
 mempty 只不过是将 1 包在 Product 中。mappend 则对 Product 的构造子做模式匹配，将两个取出的数值相乘后再将结果放回去。就如你看到的，typeclass 定义前面有 Num a 的条件限制。所以他代表 Product a 对于所有属于 Num 的 a 是一个 Monoid。要将 Product a 作为一个 monoid 使用，我们需要用 newtype 来做包裹跟解开的动作。
 
-ghci> getProduct $ Product 3 `mappend` Product 9  
+ghci> getProduct \$ Product 3 `mappend` Product 9  
 27  
-ghci> getProduct $ Product 3 `mappend` mempty  
+ghci> getProduct \$ Product 3 `mappend` mempty  
 3  
-ghci> getProduct $ Product 3 `mappend` Product 4 `mappend` Product 2  
+ghci> getProduct \$ Product 3 `mappend` Product 4 `mappend` Product 2  
 24  
-ghci> getProduct . mconcat . map Product $ [3,4,2]  
+ghci> getProduct . mconcat . map Product \$ [3,4,2]  
 24  
 这当作 Monoid 的一个演练还不错，但并不会有人觉得这会比 3 * 9 跟 3 * 1 这种方式来做乘法要好。但我们稍后会说明尽管像这种显而易见的定义还是有他方便的地方。
 
 Sum 跟 Product 定义的方式类似，我们也可以用类似的方式操作：
 
-ghci> getSum $ Sum 2 `mappend` Sum 9  
+ghci> getSum \$ Sum 2 `mappend` Sum 9  
 11  
-ghci> getSum $ mempty `mappend` Sum 3  
+ghci> getSum \$ mempty `mappend` Sum 3  
 3  
-ghci> getSum . mconcat . map Sum $ [1,2,3]  
+ghci> getSum . mconcat . map Sum \$ [1,2,3]  
 6  
 Any and ALL
 另一种可以有两种表示成 monoid 方式的型别是 Bool。第一种方式是将 || 当作二元函数，而 False 作为 identity。这样的意思是只要有任何一个参数是 True 他就回传 True，否则回传 False。所以如果我们使用 False 作为 identity，他会在跟 False 做 OR 时回传 False，跟 True 做 OR 时回传 True。Any 这个 newtype 是 Monoid 的一个 instance，并定义如下：
@@ -888,13 +895,13 @@ instance Monoid Any where
     Any x `mappend` Any y = Any (x || y)  
 他叫做 Any 的理由是 x `mappend` y 当有任何一个是 True 时就会是 True。就算是更多个用 mappend 串起来的 Any，他也会在任何一个是 True 回传 True。
 
-ghci> getAny $ Any True `mappend` Any False  
+ghci> getAny \$ Any True `mappend` Any False  
 True  
-ghci> getAny $ mempty `mappend` Any True  
+ghci> getAny \$ mempty `mappend` Any True  
 True  
-ghci> getAny . mconcat . map Any $ [False, False, False, True]  
+ghci> getAny . mconcat . map Any \$ [False, False, False, True]  
 True  
-ghci> getAny $ mempty `mappend` mempty  
+ghci> getAny \$ mempty `mappend` mempty  
 False  
 另一种 Bool 表现成 Monoid 的方式是用 && 作为二元函数，而 True 作为 identity。只有当所有都是 True 的时候才会回传 True。下面是他的 newtype 定义：
 
@@ -907,13 +914,13 @@ instance Monoid All where
         All x `mappend` All y = All (x && y)  
 当我们用 mappend 来串起 All 型别的值时，结果只有当所有 mappend 的值是 True 时才会是 True：
 
-ghci> getAll $ mempty `mappend` All True  
+ghci> getAll \$ mempty `mappend` All True  
 True  
-ghci> getAll $ mempty `mappend` All False  
+ghci> getAll \$ mempty `mappend` All False  
 False  
-ghci> getAll . mconcat . map All $ [True, True, True]  
+ghci> getAll . mconcat . map All \$ [True, True, True]  
 True  
-ghci> getAll . mconcat . map All $ [True, True, False]  
+ghci> getAll . mconcat . map All \$ [True, True, False]  
 False  
 就如乘法跟加法一样，我们通常宁愿用二元函数来操作他们也不会用 newtype 来将他们包起来。不会将他们包成 Any 或 All 然后用 mappend，mempty 或 mconcat 来操作。通常使用 or 跟 and，他们接受一串 Bool，并只有当任意一个或是所有都是 True 的时候才回传 True。
 
@@ -1046,24 +1053,24 @@ instance Monoid (First a) where
 正如我们说过得，mempty 就是包在 First 中的 Nothing。如果 mappend 的第一个参数是 Just，我们就直接忽略第二个参数。如果第一个参数是 Nothing，那我们就将第二个参数当作结果。并不管他究竟是 Just 或是 Nothing：
 
 ```shell
-ghci> getFirst $ First (Just 'a') `mappend` First (Just 'b')  
+ghci> getFirst \$ First (Just 'a') `mappend` First (Just 'b')  
 Just 'a'  
-ghci> getFirst $ First Nothing `mappend` First (Just 'b')  
+ghci> getFirst \$ First Nothing `mappend` First (Just 'b')  
 Just 'b'  
-ghci> getFirst $ First (Just 'a') `mappend` First Nothing  
+ghci> getFirst \$ First (Just 'a') `mappend` First Nothing  
 Just 'a'
 ```
 
 First 在我们有一大串 Maybe 而且想知道他们之中就竟有没有 Just 的时候很有用。可以利用 mconcat：
 
-ghci> getFirst . mconcat . map First $ [Nothing, Just 9, Just 10]  
+ghci> getFirst . mconcat . map First \$ [Nothing, Just 9, Just 10]  
 Just 9  
 如果我们希望定义一个 Maybe a 的 monoid，让他当 mappend 的两个参数都是 Just 的时候将第二个参数当作结果。Data.Monoid 中有一个现成的 Last a，他很像是 First a，只差在 mappend 跟 mconcat 会保留最后一个非 Nothing 的值。
 
 ```shell
-ghci> getLast . mconcat . map Last $ [Nothing, Just 9, Just 10]  
+ghci> getLast . mconcat . map Last \$ [Nothing, Just 9, Just 10]  
 Just 10  
-ghci> getLast $ Last (Just "one") `mappend` Last (Just "two")  
+ghci> getLast \$ Last (Just "one") `mappend` Last (Just "two")  
 Just "two" 
 Using monoids to fold data structures
 ```
@@ -1148,11 +1155,11 @@ ghci> F.foldl (*) 1 testTree
 foldMap 不只是定义 Foldable 新的 instance 有用。他也对简化我们的结构至单一 monoid 值有用。举例来说，如果我们想要知道我们的树中有没有 3，我们可以这样做：
 
 ```shell
-ghci> getAny $ F.foldMap (\x -> Any $ x == 3) testTree  
+ghci> getAny \$ F.foldMap (\x -> Any \$ x == 3) testTree  
 True 
-#这边 \x -> Any $ x == 3 是一个接受一个数值并回传一个 monoid 的函数，也就是一个包在 Any 中的 Bool。foldMap 将这个函数套用至树的每一个节点，并把结果用 mappend 简化成单一 monoid。如果我们这样做：
+#这边 \x -> Any \$ x == 3 是一个接受一个数值并回传一个 monoid 的函数，也就是一个包在 Any 中的 Bool。foldMap 将这个函数套用至树的每一个节点，并把结果用 mappend 简化成单一 monoid。如果我们这样做：
 
-ghci> getAny $ F.foldMap (\x -> Any $ x > 15) testTree  
+ghci> getAny \$ F.foldMap (\x -> Any \$ x > 15) testTree  
 False
 ```
 

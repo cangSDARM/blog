@@ -3,7 +3,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
 } from "@mui/material";
 import clsx from "clsx";
 import React, { Fragment, useState } from "react";

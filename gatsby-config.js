@@ -65,11 +65,16 @@ module.exports = {
               },
             },
           },
+          {
+            //https://github.com/gatsbyjs/gatsby/issues/34305
+            resolve: `gatsby-remark-katex`,
+            options: {
+              // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
+              strict: `ignore`,
+            },
+          },
         ],
-        remarkPlugins: [
-          esmRequire("remark-html-katex"),
-          esmRequire("remark-math"),
-        ],
+        remarkPlugins: [esmRequire("remark-math")],
       },
     },
     `gatsby-plugin-image`,

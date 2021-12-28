@@ -23,6 +23,7 @@
     "gatsby-plugin-typescript": "^4.4.0",
     "gatsby-remark-autolink-headers": "~5.4.0",
     "gatsby-remark-images": "~6.4.0",
+    "gatsby-remark-katex": "^6.4.0",
     "gatsby-remark-prismjs": "~6.4.0",
     "gatsby-source-filesystem": "~4.4.0",
     "gatsby-transformer-sharp": "~4.4.0",
@@ -33,8 +34,7 @@
     "react": "~17.0.2",
     "react-dom": "~17.0.2",
     "react-helmet-async": "^1.2.2",
-    "remark-html-katex": "^4.0.1",
-    "remark-math": "^5.1.1",
+    "remark-math": "^3.0.1",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
