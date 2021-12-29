@@ -108,6 +108,6 @@ module.exports = {
       options: {},
     },
     "top-providers",
-    `multi-theme`,
+    `multi-templates`,
   ],
 };
