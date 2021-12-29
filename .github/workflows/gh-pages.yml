@@ -20,13 +20,6 @@ jobs:
         with:
           node-version: "14.x"
 
-      - name: Check package change or not 👀
-        id: changes
-        run: |
-          PACKAGE_CHANGED=$(git show | grep diff | cut -d" " -f 3 | grep package.json -c)
-          echo $PACKAGE_CHANGED
-          test $PACKAGE_CHANGED -eq 1 && echo "::set-output name=package-json::$(echo true)"
-
       - name: Cache dependencies 🍪
         uses: actions/cache@v2
         id: cache
@@ -40,9 +33,7 @@ jobs:
 
       - name: Install dependencies without Proxy 📁
         # only install when cache miss or package.json changed
-        if: |
-          steps.cache.outputs.cache-hit != 'true' ||
-          steps.changes.outputs.package-json == 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm --proxy=null --https_proxy=null --strict-ssl=true install
 
       - name: Cache buildings 🏗
