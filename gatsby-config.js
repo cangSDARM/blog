@@ -77,17 +77,18 @@ module.exports = {
         remarkPlugins: [esmRequire("remark-math")],
       },
     },
-    `gatsby-plugin-image`,
-    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-plugin-sharp`,
       options: {
         defaults: {
           quality: 80,
           placeholder: `blurred`,
+          formats: ["auto", "webp"],
         },
       },
     },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-image`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
