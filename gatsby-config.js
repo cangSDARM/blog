@@ -107,5 +107,7 @@ module.exports = {
       resolve: `gatsby-plugin-material-ui`,
       options: {},
     },
+    "top-providers",
+    `multi-theme`,
   ],
 };

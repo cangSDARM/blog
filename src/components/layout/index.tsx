@@ -5,23 +5,11 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import {
-  createTheme,
-  StyledEngineProvider,
-  ThemeProvider,
-} from "@mui/material/styles";
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 import Drawer from "./Drawer";
 import Footer from "./footer";
 import Header from "./header";
-import "./layout.css";
-
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
 
 const Layout: React.FC<
   React.PropsWithChildren<{
@@ -51,33 +39,29 @@ const Layout: React.FC<
 
   return (
     <>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
-          <div
-            id="scroll-spy"
-            style={{
-              margin: `0 auto`,
-              paddingTop: 0,
-              height: `calc(100vh - 86px)`,
-              overflowY: `auto`,
-              overflowX: `hidden`,
-              scrollBehavior: "smooth",
-              display: "flex",
-              flexDirection: "column",
-            }}
-            {...contentProps}
-          >
-            <main {...mainProps} style={{ ...mainStyle, flexGrow: 1 }}>
-              {children}
-            </main>
-            <Footer {...footerProps} />
-          </div>
-          <Drawer />
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <Header siteTitle={data.site.siteMetadata.title} {...headerProps} />
+      <div
+        id="scroll-spy"
+        style={{
+          margin: `0 auto`,
+          paddingTop: 0,
+          height: `calc(100vh - 86px)`,
+          overflowY: `auto`,
+          overflowX: `hidden`,
+          scrollBehavior: "smooth",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        {...contentProps}
+      >
+        <main {...mainProps} style={{ ...mainStyle, flexGrow: 1 }}>
+          {children}
+        </main>
+        <Footer {...footerProps} />
+      </div>
+      <Drawer />
     </>
   );
 };
 
-export default React.memo(Layout);
+export default Layout;
