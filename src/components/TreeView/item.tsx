@@ -62,9 +62,7 @@ const TreeItem: React.FC<{
       className={clsx(
         classes.treeItem,
         expandable ? classesNames.group : classesNames.label,
-        {
-          [classes.selected]: context.selected.indexOf(nodeId) > -1,
-        }
+        context.selected.indexOf(nodeId) > -1 && classes.selected
       )}
       onClick={(e) => {
         setExpan(!expan);

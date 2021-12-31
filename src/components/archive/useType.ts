@@ -1,14 +1,14 @@
 //@ts-ignore
-import * as mainstyle from "./main.module.css";
+import * as mainStyle from "./main.module.css";
 import {
   bilibili,
   douban,
   godot,
+  guancha,
   jianshu,
   tieba,
   weibo,
   zhihu,
-  //@ts-ignore
 } from "./styles";
 
 const Type = {
@@ -19,11 +19,12 @@ const Type = {
   TieBa: "tieba.baidu.com",
   Weibo: "weibo.com",
   Godot: "docs.godotengine.org",
+  Guancha: "user.guancha.cn",
 };
 
 function styleConcat(...typeStyle: string[]) {
-  const arcivePost = [mainstyle.arcivePost];
-  return arcivePost.concat(typeStyle).join(` `);
+  const archivePost = [mainStyle.arcivePost];
+  return archivePost.concat(typeStyle).join(` `);
 }
 
 export const useType = (typo: string) => {
@@ -42,6 +43,8 @@ export const useType = (typo: string) => {
       return styleConcat(weibo);
     case Type.Godot:
       return styleConcat(godot);
+    case Type.Guancha:
+      return styleConcat(guancha);
     default:
       return styleConcat();
   }

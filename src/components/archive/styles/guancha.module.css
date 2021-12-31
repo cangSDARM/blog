@@ -1,0 +1,81 @@
+/* 观察者-风闻社区 */
+.Guancha {
+  margin-top: 30px;
+  width: 770px;
+  background-color: #fff;
+  position: relative;
+  padding: 18px 20px 15px 20px;
+}
+.Guancha h1, .Guancha h2 {
+  font-weight: bold;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "WenQuanYi Micro Hei", "Helvetica Neue", Arial, sans-s;
+  word-break: break-all;
+  color: rgb(52, 52, 52);
+}
+.Guancha h1 {
+  margin: 0 0 20px;
+  font-size: 30px;
+}
+.Guancha h2 {
+  font-size: 26px;
+  display: inline-block;
+}
+.Guancha article {
+  font-size: 16px;
+  line-height: 170%;
+  margin-top: 25px;
+  color: #000;
+  position: relative;
+  word-break: break-all;
+  zoom: 1;
+  font-family: "Microsoft YaHei", Arial;
+  overflow: hidden;
+}
+.Guancha + div[class="empty"] {
+  width: 100%;
+  height: calc(100% + 80px);
+  background-color: #f2f2f2;
+  position: absolute;
+  z-index: -999;
+  top: 0;
+  left: 0;
+}
+.Guancha article > p {
+  margin-top: 20px;
+  word-break: break-word;
+  word-wrap: break-word;
+  color: #000;
+  font-size: 16px;
+  line-height: 170%;
+}
+.Guancha article > blockquote {
+  background: #ccc;
+  margin: 16px 0 16px;
+  position: relative;
+  padding: 8px 20px 8px 26px;
+  background-color: #f7f7f7;
+  border-top: 1px solid transparent;
+  color: #8590a6;
+}
+.Guancha article > blockquote:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: #d3d3d3;
+}
+.Guancha nav > a {
+  color: #656565;
+}
+.Guancha figure, .Guancha figure > span {
+  margin-left: unset !important;
+}
+.Guancha figcaption {
+  text-align: left;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #656565;
+}
