@@ -1,56 +1,11 @@
 import { Drawer as MDrawer, List, ListSubheader } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { graphql, Link, useStaticQuery } from "gatsby";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ImageComponent from "../../image";
 import useAnime from "../../useAnime";
+import * as classes from "./index.module.css";
 import { SkipIndexTag, tagToPath } from "./indexing";
-
-const useDrawerTheme = makeStyles((_) => ({
-  paper: {
-    backgroundColor: "#e8e8e8",
-    backgroundImage: "unset",
-  },
-  root: {
-    overflow: "show",
-  },
-  toggleWrapper: {
-    zIndex: 111,
-    position: "fixed",
-    top: 0,
-    left: 0,
-    transform: "translate(0px, 140px)",
-    display: "inline-flex",
-    alignItems: "center",
-    transition: "left .25s linear",
-  },
-  toggleButton: {
-    display: "inline-flex",
-    justifyContent: "center",
-    alignItems: "center",
-    cursor: "pointer",
-    padding: 0,
-    border: "none",
-    backgroundColor: "transparent",
-    background: "transparent",
-    position: "relative",
-    left: -8,
-  },
-  toggleImage: {
-    height: 40,
-    width: 40,
-  },
-  toggleHidden: {
-    left: -40,
-  },
-  allTags: {
-    fontSize: "1.5rem",
-    color: "#222",
-    backgroundColor: "#e8e8e8",
-    fontWeight: 600,
-  },
-}));
 
 const dragStart = function (e: React.DragEvent) {
   e.dataTransfer.setDragImage(new Image(), 0, 0);
@@ -68,7 +23,6 @@ const Drawer = () => {
       }
     }
   `);
-  const classes = useDrawerTheme();
   const anime = useAnime();
   const draggableRef: React.RefObject<HTMLDivElement> = useRef(null);
 
@@ -159,7 +113,11 @@ const Drawer = () => {
         classes={{ paper: classes.paper }}
         onClose={toggleDrawer(false)}
       >
-        <List component="nav" aria-label="drawer" className={classes.root}>
+        <List
+          component="nav"
+          aria-label="drawer"
+          className={classes.drawerList}
+        >
           <ListSubheader color="primary" className={classes.allTags}>
             All tags
           </ListSubheader>

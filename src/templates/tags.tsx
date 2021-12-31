@@ -1,28 +1,9 @@
-import { makeStyles } from "@mui/styles";
 import { graphql, Link } from "gatsby";
 import _ from "lodash";
 import React from "react";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-
-const useTheme = makeStyles((_) => ({
-  listItem: {
-    margin: "0.2em 0",
-    padding: "0.4em 1em",
-    borderRadius: 4,
-
-    "&>a": {
-      color: "rgb(17,24,39)",
-    },
-
-    "&:hover": {
-      "&>a": {
-        color: "rgb(55,65,81)",
-      },
-      backgroundColor: "#e8eaee",
-    },
-  },
-}));
+import * as classes from "./style.module.css";
 
 const Tags: React.FC<{ pageContext: any; data: any }> = ({
   pageContext,
@@ -34,8 +15,6 @@ const Tags: React.FC<{ pageContext: any; data: any }> = ({
     totalCount === 1 ? "" : "s"
   } tagged with "${tag}"`;
 
-  const classes = useTheme();
-
   const memoList = React.useMemo(
     () =>
       edges.map(({ node }: any) => {
@@ -45,7 +24,7 @@ const Tags: React.FC<{ pageContext: any; data: any }> = ({
         depth.shift();
         const { title } = node.frontmatter;
         return (
-          <li key={slug} className={classes.listItem}>
+          <li key={slug} className={classes.tagsListItem}>
             {depth.map((_: any, i) => {
               return (
                 <span

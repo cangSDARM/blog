@@ -1,56 +1,8 @@
 import { Avatar, ListItem, ListItemIcon, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import { debounce } from "lodash";
+import { throttle } from "lodash";
 import React, { useCallback, useRef, useState } from "react";
-
-const useStyles = makeStyles((_) => ({
-  listItem: {
-    margin: "3px 4px",
-    boxSizing: "border-box",
-    width: "auto",
-    alignItems: "baseline",
-
-    "& a": {
-      color: "rgb(17,24,39)",
-    },
-
-    "& div[class*='MuiListItemIcon']": {
-      minWidth: 32,
-    },
-
-    "& p[class*='MuiTypography']": {
-      alignItems: "baseline",
-      fontFamily: "inherit",
-    },
-  },
-  acrylic: {
-    borderRadius: "0.2rem",
-    background: "inherit",
-    overflow: "hidden",
-    backgroundBlendMode: "exclusion",
-
-    "&>::before": {
-      content: "''",
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      zIndex: -99,
-      boxShadow: "inset 0 0 2000rem rgba(9, 30, 66, 0.04)",
-      filter: "blur(10px)",
-      background: "inherit",
-      backdropFilter: "blur(30rem) saturate(120%)",
-    },
-  },
-  avatar: {
-    width: "1.25em",
-    fontSize: "1em",
-    height: "1.25em",
-    backdropFilter: "contrast(0.5)",
-  },
-}));
+import * as classes from "./index.module.css";
 
 function stopPropagation<T extends { stopPropagation: () => void }>(e: T) {
   e.stopPropagation();
@@ -65,8 +17,6 @@ const SkipIndexTag: React.FC<{
   const [bgGlow, setBgGlow] = useState("");
 
   const animeRef = useRef<React.ElementRef<typeof ListItem>>(null);
-
-  const classes = useStyles();
 
   const mouseEnter = useCallback((_e: React.MouseEvent) => {
     setEntered(true);
@@ -87,7 +37,7 @@ const SkipIndexTag: React.FC<{
   }, []);
 
   const mouseMove = useCallback(
-    debounce(function (e: React.MouseEvent) {
+    throttle(function (e: React.MouseEvent) {
       const bounds = animeRef.current?.getBoundingClientRect();
       if (!bounds) return;
 
@@ -98,18 +48,14 @@ const SkipIndexTag: React.FC<{
         y: topY - bounds.height / 2,
       };
 
-      setBgGlow(
-        `
+      setBgGlow(`
     radial-gradient(
       circle at
       ${center.x + bounds.width / 2}px
       ${center.y + bounds.height / 2}px,
       #ffffff1f,
-      #3030301A
-    )
-  `.trim()
-      );
-    }, 10),
+      #3030301A)`);
+    }, 20),
     [animeRef]
   );
 
@@ -117,15 +63,6 @@ const SkipIndexTag: React.FC<{
     mouseMove.cancel();
     setEntered(false);
     setBgGlow("");
-
-    // anime({
-    //   targets: "outer-poiner",
-    //   duration: 200,
-    //   width: 40,
-    //   height: 40,
-    //   borderRadius: "50%",
-    //   backgroundColor: "transparent",
-    // });
   }, []);
 
   if (tag.fieldValue.toString() === "index") return <></>;

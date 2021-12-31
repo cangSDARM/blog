@@ -1,0 +1,83 @@
+div.paper {
+  background-color: #e8e8e8;
+  background-image: unset;
+}
+.paper .drawerList {
+  overflow: visible;
+}
+.toggleWrapper {
+  z-index: 111;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(0px, 140px);
+  display: inline-flex;
+  align-items: center;
+  transition: left 0.25s linear;
+}
+.toggleButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  background: transparent;
+  position: relative;
+  left: -8px;
+}
+.toggleImage {
+  height: 40px;
+  width: 40px;
+}
+.toggleHidden {
+  left: -40px;
+}
+li.allTags {
+  font-size: 1.5rem;
+  color: #222;
+  background-color: #e8e8e8;
+  font-weight: 600;
+}
+div.avatar {
+  width: 1.25em;
+  font-size: 1em;
+  height: 1.25em;
+  backdrop-filter: contrast(0.5);
+}
+body div .acrylic {
+  border-radius: 0.2rem;
+  background: inherit;
+  overflow: hidden;
+  background-blend-mode: exclusion;
+}
+.acrylic::before {
+  content: "'";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -99;
+  box-shadow: inset 0 0 2000rem rgba(9, 30, 66, 0.04);
+  filter: blur(10px);
+  background: inherit;
+  backdrop-filter: blur(30rem) saturate(120%);
+}
+li.listItem {
+  margin: 3px 4px;
+  box-sizing: border-box;
+  width: auto;
+  align-items: baseline;
+}
+.listItem a {
+  color: rgb(17,24,39);
+}
+.listItem div[class*=MuiListItemIcon] {
+  min-width: 32px;
+}
+.listItem p[class*=MuiTypography] {
+  align-items: baseline;
+  font-family: inherit;
+}

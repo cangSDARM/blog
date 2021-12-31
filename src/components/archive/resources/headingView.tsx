@@ -1,32 +1,8 @@
 import { SvgIcon } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import TreeView, { TreeItem } from "../../TreeView";
+import * as classes from "./index.module.css";
 import useIntersectionObserver from "./useIntersectionObserver";
-
-const useTreeStyles = makeStyles((_) => ({
-  root: {
-    margin: "1.4em 0 !important",
-    display: "table",
-  },
-  label: {
-    display: "flex",
-  },
-  group: {
-    marginTop: "1ex !important",
-  },
-  labelItem: {
-    width: "100%",
-    borderBottom: "none !important",
-    color: "rgb(26,26,26) !important",
-    textDecoration: "none",
-    cursor: "pointer",
-    display: "-webkit-box",
-    WebkitBoxOrient: "vertical",
-    WebkitLineClamp: 1,
-    overflow: "hidden",
-  },
-}));
 
 interface HeadingViewProps {
   toc: { url: string; title?: string }[];
@@ -50,8 +26,6 @@ const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
       setSelected([toc[0]?.url]);
     else setSelected([`#${activated}`]);
   }, [activated, toc]);
-
-  const classes = useTreeStyles();
 
   const renderTreeItem = useCallback(
     (nodes: Node) => (
@@ -96,7 +70,7 @@ const HeadingView: React.FC<HeadingViewProps> = ({ toc }) => {
         flexGrow: 1,
         maxWidth: 400,
       }}
-      className={classes.root}
+      className={classes.tree}
       selected={selected}
       collapseIcon={
         <SvgIcon>

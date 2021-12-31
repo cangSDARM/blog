@@ -1,27 +1,9 @@
-import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import React, { memo, useContext, useEffect, useState } from "react";
 import { TreeIconContext, TreeSelectorContext } from "./context";
 import IconContainer from "./icon";
 import Label from "./label";
-
-const useStyles = makeStyles((_) => ({
-  treeItemRoot: {
-    width: "100%",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-  },
-  selected: {
-    '& *[role*="menuitem"]': {
-      backgroundColor: "#e8eaee",
-      borderRadius: "0.25em",
-    },
-  },
-  collapse: {
-    display: "flex",
-  },
-}));
+import * as classes from "./style.module.css";
 
 const IconNode: React.FC<{
   expandable: boolean;
@@ -65,7 +47,6 @@ const TreeItem: React.FC<{
   children = null,
   onClick = () => {},
 }) => {
-  const classes = useStyles();
   const context = useContext(TreeSelectorContext);
 
   const [expan, setExpan] = useState(false);
@@ -79,7 +60,7 @@ const TreeItem: React.FC<{
   const collapsedNode = (
     <div
       className={clsx(
-        classes.treeItemRoot,
+        classes.treeItem,
         expandable ? classesNames.group : classesNames.label,
         {
           [classes.selected]: context.selected.indexOf(nodeId) > -1,
@@ -100,7 +81,7 @@ const TreeItem: React.FC<{
   );
 
   const expandedNode = (
-    <div className={clsx(classes.collapse)}>
+    <div style={{ display: "flex" }}>
       <div>{children}</div>
     </div>
   );

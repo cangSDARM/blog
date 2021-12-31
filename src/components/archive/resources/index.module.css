@@ -1,0 +1,21 @@
+.tree[role*="tree"] {
+  margin: 1.4em 0;
+  display: table;
+}
+.label {
+  display: flex;
+}
+.group {
+  margin-top: 1ex !important;
+}
+.labelItem {
+  width: 100%;
+  border-bottom: none !important;
+  color: rgb(26, 26, 26) !important;
+  text-decoration: none;
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
