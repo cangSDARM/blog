@@ -26,19 +26,16 @@ const Drawer = () => {
   const anime = useAnime();
   const draggableRef: React.RefObject<HTMLDivElement> = useRef(null);
 
-  const toggleDrawer = useCallback(
-    (open: boolean) => (event: React.KeyboardEvent) => {
-      if (
-        event.type === "keydown" &&
-        (event.key === "Tab" || event.key === "Shift")
-      ) {
-        return;
-      }
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
 
-      setOpen(open);
-    },
-    []
-  );
+    setOpen(open);
+  };
 
   const drag = useCallback(
     (e: React.DragEvent) => {
@@ -112,6 +109,9 @@ const Drawer = () => {
         open={opened}
         classes={{ paper: classes.paper }}
         onClose={toggleDrawer(false)}
+        ModalProps={{
+          keepMounted: true,
+        }}
       >
         <List
           component="nav"
