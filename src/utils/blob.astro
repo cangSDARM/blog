@@ -1,0 +1,56 @@
+---
+export const normalizePathSpliter = (path: string) => {
+  return (path || "").replaceAll("\\", "/");
+};
+
+export async function getImage(path: string) {
+  const images = (await Astro.glob("../images/**/*.{png,jpg,jpeg}")).map(
+    (item) => item.default.src
+  );
+  const relatedPathes = images.map((src) =>
+    normalizePathSpliter(src).replace(/.*images\//i, "")
+  );
+  const idx = relatedPathes.findIndex(
+    (item) => item.replace(/\..*$/i, "") === path
+  );
+  return {
+    absPath: images[idx],
+    rPath: `../images/` + relatedPathes[idx],
+  };
+}
+
+export class TagMap {
+  private static _tagMap: Map<string, { count: number, pages: Mdx[] }> = new Map();
+  private static _first = false;
+
+  private static async initTags() {
+    await Astro.glob("../pages/**/*.{mdx,md}").then((list: any[]) => {
+      list.forEach((file) => {
+        Array.from<string>(file.frontmatter?.tags)?.forEach((tag) => {
+          let utag = TagMap._tagMap.get(tag);
+          if (utag) {
+            utag.count += 1;
+            utag.pages.push(file);
+          } else {
+            utag = { count: 1, pages: [file] };
+          }
+          TagMap._tagMap.set(tag, utag);
+        });
+      });
+    });
+  }
+
+  public static async instance() {
+    if (!TagMap._first) {
+      await TagMap.initTags();
+      TagMap._first = true;
+    }
+
+    return TagMap._tagMap;
+  }
+  public static async getTopicList(topic: string) {
+    const instance = await TagMap.instance();
+    return instance.get(topic)?.pages || [];
+  }
+}
+---

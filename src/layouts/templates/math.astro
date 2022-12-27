@@ -1,0 +1,23 @@
+---
+import Seo from "@/layouts/seo/index.astro";
+import BaseLayout from "@/layouts/common/index.astro";
+import { trailingUrl } from "@/utils/url";
+
+type Props = Mdx;
+
+const { frontmatter, url } = Astro.props;
+
+const title =
+  trailingUrl(url) === `/math` ? `MathLearning` : frontmatter?.title;
+---
+
+<Seo
+  title={title}
+  config={{
+    titleTemplate: trailingUrl(url) === `/math` ? `%s` : `%s | MathLearnning`,
+  }}
+>
+  <BaseLayout>
+    <slot />
+  </BaseLayout>
+</Seo>

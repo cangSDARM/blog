@@ -1,0 +1,30 @@
+---
+import Header from "./header/index";
+import { getImage, TagMap } from "@/utils/blob.astro";
+
+const path = await getImage("haskell-header");
+const topic = "math";
+const mdxes = await TagMap.getTopicList(topic);
+
+TagMap.instance().then(console.log)
+---
+
+<header>
+  <Header client:load imgSrc={path.absPath} topic={topic} fileList={mdxes} />
+</header>
+<main>
+  <slot />
+</main>
+
+<style>
+  header {
+    height: 80px;
+    position: relative;
+  }
+  main {
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100vw;
+    height: calc(100vh - 80px);
+  }
+</style>

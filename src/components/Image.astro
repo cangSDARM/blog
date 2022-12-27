@@ -1,0 +1,12 @@
+---
+import { Image } from "@astrojs/image/components";
+import { getImage } from '@/utils/blob.astro';
+
+interface Props {
+  path: string;
+}
+
+const { path } = Astro.props;
+---
+
+<Image src={getImage(path).then((paths) => import(paths.rPath))} alt={path} />
