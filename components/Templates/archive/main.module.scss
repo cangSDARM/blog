@@ -1,0 +1,57 @@
+.archivePost {
+  cursor: default;
+  user-select: none;
+
+  figcaption {
+    font-size: 1em;
+    display: inherit;
+    visibility: inherit;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+  h2 {
+    font-size: 1.62671rem;
+  }
+  h3 {
+    font-size: 1.38316rem;
+  }
+  h4 {
+    font-size: 1rem;
+  }
+  h5 {
+    font-size: 0.85028rem;
+  }
+  h6 {
+    font-size: 0.78405rem;
+  }
+}
+
+.references {
+  position: fixed;
+  left: calc(50vw + 4em + (690px) / 2);
+  height: 0;
+  margin: auto;
+  top: 120px;
+  z-index: 999;
+
+  nav {
+    display: flex;
+    flex-flow: column;
+    margin-left: 0.2em;
+    max-width: 16vw;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+  }
+
+  & > div {
+    display: flex;
+    height: 52;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-pack: center;
+    margin-left: 16;
+  }
+}
