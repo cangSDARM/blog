@@ -73,7 +73,7 @@
   font-size: 14px;
   width: 100%;
 }
-.TieBa article > div > p figcaption {
+.TieBa article > div > p [role="figcaption"] {
   text-align: center;
 }
 .TieBa article > div::before {

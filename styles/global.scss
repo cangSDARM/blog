@@ -18,3 +18,33 @@ html,
   margin: 0;
   overflow: hidden;
 }
+
+.anchor.after {
+  display: inline-block;
+  padding-left: 4px;
+}
+
+.anchor svg {
+  visibility: hidden;
+}
+
+h2:hover .anchor svg,
+h3:hover .anchor svg {
+  visibility: visible;
+}
+
+[role="figure"] {
+  margin: 0;
+  hyphens: auto;
+  word-break: break-word;
+  line-break: auto;
+  border: 0px solid transparent;
+  display: block;
+  position: relative;
+
+  [role="figcaption"] {
+    display: none;
+    font-size: 0;
+    visibility: hidden;
+  }
+}

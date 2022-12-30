@@ -75,7 +75,7 @@
 .Douban nav > a {
   color: #666699;
 }
-.Douban figcaption {
+.Douban [role="figcaption"] {
   text-align: center;
   margin-bottom: 1.5em;
 }

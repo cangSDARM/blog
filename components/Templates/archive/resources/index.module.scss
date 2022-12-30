@@ -1,0 +1,54 @@
+.tree[role*="tree"] {
+  margin: 1.4em 0;
+  display: table;
+}
+.label {
+  display: flex;
+}
+.group {
+  margin-top: 1ex !important;
+}
+.labelItem {
+  width: 100%;
+  border-bottom: none !important;
+  color: rgb(26, 26, 26) !important;
+  text-decoration: none;
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.references {
+  position: fixed;
+  left: calc(50vw + 4em + (690px) / 2);
+  height: 0;
+  margin: auto;
+  top: 120px;
+  z-index: 999;
+
+  nav {
+    display: flex;
+    flex-flow: column;
+    margin-left: 0.2em;
+    max-width: 16vw;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+  }
+
+  & > div {
+    display: flex;
+    height: 52;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-pack: center;
+    margin-left: 16;
+  }
+}
+
+.avatar {
+  height: var(--fontSizeHero900);
+  width: var(--fontSizeHero900);
+}

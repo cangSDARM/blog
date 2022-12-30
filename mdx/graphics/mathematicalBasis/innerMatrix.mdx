@@ -1,0 +1,61 @@
+---
+title: "内置的变量: inner matrix"
+tags: ["graphics"]
+index: 3.1
+---
+
+<Navigation desc="返回" to="./"/>
+
+\--------------------------------------------------------------------------------------------------------
+
+-----------------------------------UNITY_MATRIX_MV及其相关矩阵需要特别留意----------------------------------
+
+<Table title="内置的变换矩阵">{
+    [{
+        cells: ["UNITY_MATRIX_MVP", "模型->世界->观察->裁剪的矩阵"], component: ['th']
+    }, {
+        cells: ["UNITY_MATRIX_MV", "模型->世界->观察的矩阵"], component: ['th']
+    }, {
+        cells: ["UNITY_MATRIX_V", "世界->观察的矩阵"], component: ['th']
+    }, {
+        cells: ["UNITY_MATRIX_P", "观察->裁剪的矩阵"], component: ['th']
+    }, {
+        cells: ["UNITY_MATRIX_VP", "世界->观察->裁剪的矩阵"], component: ['th']
+    }, {
+        cells: ["UNITY_MATRIX_T_MV", "UNITY_MATRIX_MV的转置矩阵"], component: ['th']
+    }, {
+        cells: ["UNITY_MATRIX_IT_MV", "UNITY_MATRIX_MV的逆转置矩阵(可以用于得到UNITY_MATRIX_MV的逆矩阵\n 法线从模型->世界->观察的矩阵"], component: ['th']
+    }, {
+        cells: ["_Object2World", "模型->世界的矩阵"], component: ['th']
+    }, {
+        cells: ["_World2Object", "_Object2World的逆矩阵. 世界->模型的矩阵"], component: ['th']
+    }]}
+</Table>
+
+\--------------------------------------------------------------------------------------------------------
+
+<Table title="摄像机及屏幕参数">{
+    [{
+        cells: ["_WorldSpaceCameraPos", "float3", "摄像机在世界空间中的位置"], component: ['th']
+    }, {
+        cells: ["_ProjectionParams", "float4", "x=±1, y=Near, z=Far, w=1.0+1.0/Far"], component: ['th']
+    }, {
+        cells: ["_ScreenParams", "float4", "x=width, y=height, z=1.0+1.0/width, w=1.0+1.0/height"], component: ['th']
+    }, {
+        cells: ["_ZBufferParams", "float4", "x=1-Far/Near, y=Far/Near, z=x/Far, w=y/Far, 用于线性化Z缓存的深度值"], component: ['th']
+    }, {
+        cells: ["unity_OrthoParams", "float4", "x=width, y=height, z没有定义, w=1.0(正交)|0.0(透视)"], component: ['th']
+    }, {
+        cells: ["unity_CameraProjection", "float4×4", "摄像机的投影矩阵"], component: ['th']
+    }, {
+        cells: ["unity_CameraInvProjection", "float4×4", "摄像机的投影矩阵的逆矩阵"], component: ['th']
+    }, {
+        cells: ["unity_CameraWorldClipPlanes[6]", "float4", "摄像机的6个裁剪平面在世界空间下的等式, 按: 左右下上近远"], component: ['th']
+    }]}
+</Table>
+
+\--------------------------------------------------------------------------------------------------------
+
+2017后版本变化:
+
+>replaced '_World2Object' with 'unity_WorldToObject'

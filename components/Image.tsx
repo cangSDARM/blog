@@ -7,10 +7,28 @@ const Image: React.FC<{
   ext?: string;
   width?: number;
   height?: number;
-}> = ({ src, ext = "png", width = 3600, height = 3600 }) => {
-  const tSrc = Conf.site.baseUrl + src + "." + ext;
+  alt?: string;
+  style?: React.CSSProperties;
+}> = ({ src, ext, style, alt = src, width = 3600, height = 3600 }) => {
+  const tSrc = `${Conf.site.baseUrl + src}${ext ? "." + ext : ""}`;
+  const [nSize, setNSize] = React.useState([width, height]);
 
-  return <NextImage src={tSrc} alt={src} width={width} height={height} />;
+  return (
+    <NextImage
+      onError={(err) => console.warn("image error: ", err)}
+      onLoad={(e) => {
+        const target = e.currentTarget;
+        setNSize([target.naturalWidth, target.naturalHeight]);
+      }}
+      style={style}
+      src={tSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      sizes={`(max-width: ${nSize[0]}px) 100vw, ${nSize[0]}px`}
+      crossOrigin="anonymous"
+    />
+  );
 };
 
 export default Image;

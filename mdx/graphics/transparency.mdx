@@ -1,0 +1,139 @@
+---
+title: "Graphics Programming(七) —— 透明效果"
+tags: ["graphics"]
+index: 7
+---
+
+export const QuoteList = [
+    "Pass中的 ZWrite Off 用于关闭深度写入",
+    "Min和Max是分量比较, 并分量代入的"
+];
+
+export const ImgList = [
+    "常见的混合类型",
+    "滤波模式"
+];
+
+<Aphorism>无论怎样安排渲染顺序总是会有机会出错</Aphorism>
+
+前置知识
+<Tab>
+    对于<Expansion>不透明(opaque)物体</Expansion>, 深度缓冲(depth buffer|z-buffer)技术解决了遮盖效果
+    <Tab expan>
+        当开启深度测试后, 将根据片元的深度值和已经在深度缓冲中的深度值比较来决定片元是否被遮挡
+        <br/>
+        当开启深度写入后, 深度值低的片元将更新颜色缓冲中的像素值, 并将其深度值更新存储于深度缓冲中
+    </Tab>
+    对于透明物体, 有时必须关闭深度写入(ZWrite)
+</Tab><p></p>
+
+基本原理
+<Tab>
+    <Expansion>透明度测试</Expansion>
+    <Tab expan>
+        透明度测试(Alpha Test): 当片元透明度低于阈值时, 舍弃该片元
+        <br/>
+        只有完全透明或者完全不透明之分
+        <br/>
+        同时不需要关闭深度写入
+    </Tab>
+    <Expansion>透明度混合</Expansion>
+    <Tab expan>
+        透明度混合(Alpha Blending): 使用当前片元的透明度来混合颜色缓冲器中的颜色, 获取新颜色
+        <br/>
+        可以得到真正的半透明效果
+        <br/>
+        "混合时"<Quote id="#1">关闭深度写入</Quote>, 且必须严格控制物体的渲染顺序
+    </Tab>
+    <Expansion>双面渲染</Expansion>
+    <Tab expan>
+        默认情况渲染引擎会自动剔除物体背面的贴图, 导致透明物体看不到内部和背面
+        <br/>
+        需要通过 Cull 命令修改是否剔除(Cull Off|Back|Front)
+        <br/>
+        对于透明度混合来讲, 双面渲染需要严格对待.
+    </Tab>
+</Tab><p></p>
+
+渲染
+<Tab>
+    <Expansion>渲染顺序</Expansion>
+    <Tab expan>
+        一般来说有几个要求:
+        <Tab>
+            1) 先渲染所有不透明物体, 并开启深度测试和深度写入
+            <br/>
+            2) 后把半透明物体按距离远近进行排序, 然后依顺序渲染半透明物体, 并开启深度测试关闭深度写入
+            <br/>
+            3) 模型应该尽量是凸面体
+        </Tab>
+        如果仍有错误渲染, 应拆分模型或者模糊透明通道
+    </Tab>
+    <Expansion>渲染队列</Expansion>
+    <Tab expan>
+        为使得程序员能自主的控渲染, unity使用渲染队列(render queue)标签来辅助渲染
+        <br/>
+        位于SubShader的Tag标签的"Queue"值
+        <Table>{
+            [{
+                cells: ["名称", "索引号", "描述"], component: ['th', 'th', 'th']
+            }, {
+                cells: ["Background", "1000", "该队列会在其它任何队列前进行渲染(通常用于绘制背景)"]
+            }, {
+                cells: ["Geometry", "2000", "默认的队列.(不透明物体使用)"]
+            }, {
+                cells: ["AlphaTest", "2450", "需要透明度测试的队列."]
+            }, {
+                cells: ["Transparent", "3000", "按照从后往前的顺序渲染的队列.(使用了透明度混合的物体使用)"]
+            }, {
+                cells: ["Overlay", "4000", "用于实现叠加效果.(最后渲染的物体使用)"]
+            }]
+        }</Table>
+    </Tab>
+    <Expansion>颜色混合</Expansion>
+    <Tab expan>
+        使用alpha混合颜色缓冲器中的颜色时, 如何混合由 Blend 指令控制
+        <br/>
+        位于Pass代码块中
+        <br/>
+        <Model about="@1">常见的混合效果</Model>
+        <Table>{
+            [{
+                cells: ["Blend Off", "关闭颜色混合"]
+            }, {
+                cells: ["Blend Src混合因子 Dst混合因子", "开启混合并设置混合因子"]
+            }, {
+                cells: ["Blend SrcRGB混合因子 DstRGB混合因子, SrcA混合因子 DstA混合因子", "与上面相似, 只是使用不同的因子混合透明通道"]
+            }, {
+                cells: ["BlendOp Operation", <span>更改颜色混合的运算(Add/Sub/RevSub/<Quote id="#2">Min/Max</Quote>)</span>]
+            }]
+        }</Table>
+        <br/>
+        计算公式: 缓存颜色RGB/A = 混合因子 * 源颜色RGB/A + 混合因子 * 缓存中颜色RGB/A
+        <Table title="混合因子">{
+            [{
+                cells: ["参数", "描述"], component: ['th', 'th']
+            }, {
+                cells: ["One", "因子为1"]
+            }, {
+                cells: ["Zero", "因子为0"]
+            }, {
+                cells: ["SrcColor", "因子为源颜色值"]
+            }, {
+                cells: ["SrcAlpha", "因子为源alpha值"]
+            }, {
+                cells: ["DstColor", "因子为目标颜色值"]
+            }, {
+                cells: ["DstAlpha", "因子为目标alpha值"]
+            }, {
+                cells: ["OneMinusSrcColor", "因子为(1-源颜色)"]
+            }, {
+                cells: ["OneMinusSrcAlpha", "因子为(1-源alpha)"]
+            }, {
+                cells: ["OneMinusDstColor", "因子为(1-目标颜色)"]
+            }, {
+                cells: ["OneMinusDstAlpha", "因子为(1-目标alpha)"]
+            }]
+        }</Table>
+    </Tab>
+</Tab>

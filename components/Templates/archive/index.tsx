@@ -1,8 +1,14 @@
 import React from "react";
+import Resources from "./resources";
 import { useType } from "./useType";
 
-const Archive: React.FC<TemplateProps> = ({ frontmatter, children }) => {
+const Archive: React.FC<TemplateProps> = ({
+  frontmatter,
+  children,
+  compiled,
+}) => {
   const { type, title } = frontmatter;
+  const { headings } = compiled;
 
   const className = useType(type);
 
@@ -10,9 +16,14 @@ const Archive: React.FC<TemplateProps> = ({ frontmatter, children }) => {
     <>
       <div className={className}>
         <h1>{title}</h1>
+        <Resources
+          avatar={frontmatter?.avatar}
+          reference={frontmatter?.reference || undefined}
+          toc={{}}
+        />
         <article>
           {children({
-            Paper: (a: any) => <>{a}</>,
+            Paper: ({ children }: any) => <>{children}</>,
           })}
         </article>
       </div>

@@ -48,13 +48,13 @@ export default injectLayoutContext<{
             </div>
 
             <Collapsible.Content>
-              {posts.map((post: any) => (
+              {posts.map((post) => (
                 <Link
-                  key={post.name}
+                  key={post.url}
                   href={post.url}
                   className={styles.PostItem}
                 >
-                  <Truncate>{post.name}</Truncate>
+                  <Truncate>{post.matter.title}</Truncate>
                 </Link>
               ))}
             </Collapsible.Content>

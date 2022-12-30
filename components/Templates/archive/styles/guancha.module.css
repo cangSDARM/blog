@@ -70,10 +70,10 @@
 .Guancha nav > a {
   color: #656565;
 }
-.Guancha figure, .Guancha figure > span {
+.Guancha [role="figure"], .Guancha [role="figure"] > span {
   margin-left: unset !important;
 }
-.Guancha figcaption {
+.Guancha [role="figcaption"] {
   text-align: left;
   margin-bottom: 20px;
   font-size: 14px;

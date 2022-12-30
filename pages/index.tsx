@@ -25,7 +25,7 @@ export default injectLayoutContext(function () {
               marginTop: `1rem`,
             }}
           >
-            <Image src="/images/doctor-strange-logo" />
+            <Image src="/images/doctor-strange-logo" ext="png" />
           </div>
           <div
             style={{
