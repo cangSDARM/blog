@@ -26,6 +26,7 @@ export type Plugin = {
   writeEntry: PluginWriter;
 };
 
+// TODO: support overwrite 'allow'/'warn'/'reject'
 const writeComp: Writer = ({ outputContent, componentPath, outputAbsPath }) => {
   return writeFile(componentPath(outputAbsPath), outputContent, {
     overwrite: false,
@@ -78,6 +79,8 @@ export async function* process(
   /// TODO: make utils to gather message, make frontend less filter/merge
 
   async function* steps(module: Plugin) {
+    // allow us overwrite module behavior
+    module = Object.assign(module, config?.customPlugin);
     write(writeComp);
     yield await module.writeComp(ctx);
     write(writeEntry);

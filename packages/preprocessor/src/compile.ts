@@ -7,7 +7,7 @@ import remarkMath from 'remark-math';
 import rehypeSlug from 'rehype-slug';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkUnwrapImages from 'remark-unwrap-images';
-import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
+import remarkMdxFrontmatter, { Traveler } from '@allen/remark-mdx-frontmatter';
 import remarkPresetLintConsistent from 'remark-preset-lint-consistent';
 import assert from 'assert';
 
@@ -25,13 +25,23 @@ export async function compileMdx({
   try {
     const fileContents = await readFile(mdAbsPath, { encoding: 'utf-8' });
 
-    const remarks = [
+    let frontmatter: any = undefined;
+
+    const remarks: any[] = [
       remarkPresetLintConsistent,
       remarkHeadings,
       remarkUnwrapImages,
       remarkMath,
       remarkFrontmatter,
-      remarkMdxFrontmatter,
+      [
+        remarkMdxFrontmatter,
+        {
+          nodeTravel: ((data) => {
+            frontmatter = data;
+            return;
+          }) as Traveler,
+        },
+      ],
     ].concat(...remarkPlugins);
     const rehypes: any[] = [
       [
@@ -86,6 +96,7 @@ export async function compileMdx({
     return {
       content: compiled.value.toString(),
       ...compiled.data,
+      frontmatter,
     } as const;
   } catch (e) {
     console.error(`Error while compile mdx at ${mdAbsPath}`);

@@ -7,7 +7,7 @@ export default <Plugin>{
     const {
       compiledResult: { content, error },
     } = ctx;
-    const contents = !!error ? 'return {};' : content;
+    const contents = !!error ? 'export default {};' : content;
     const outputContent = `
 import react from 'react';
 export default function() {
