@@ -1,9 +1,9 @@
 import NodePath from 'path';
-import { unix } from '../utils/path-extra';
-import { Plugin } from '../output';
+import { unix } from '../../utils/path-extra';
+import { Plugin } from '../../output';
 
 export default <Plugin>{
-  writeComp: async (ctx) => {
+  writeComponent: async (ctx) => {
     const {
       compiledResult: { content, error },
     } = ctx;
@@ -16,16 +16,17 @@ ${contents}
 
     return ctx.write(outputContent);
   },
+  writeFrontmatter() {},
   writeEntry: async (ctx) => {
     const {
       compiledResult: { data },
       outputAbsPath,
-      componentPath,
+      handledPaths,
     } = ctx;
     const relativePath = unix(
       NodePath.relative(
         NodePath.dirname(outputAbsPath),
-        componentPath(outputAbsPath)
+        handledPaths['Component']
       )
     );
 

@@ -14,6 +14,9 @@ type PreprocessorConfig = {
   outputOption?: OutConfig;
 };
 
+const DefaultOutputOption: OutConfig = { noCache: false };
+const DefaultInputOption: InputConfig = {};
+
 export default async ({
   input,
   inputOption,
@@ -24,14 +27,15 @@ export default async ({
   const absIn = workspace(input, true);
   const absOut = workspace(output, true);
 
-  // TODO: make caches
-  await rimraf(absOut);
+  inputOption = Object.assign(DefaultInputOption, inputOption);
+  outputOption = Object.assign(DefaultOutputOption, outputOption);
+
+  if (outputOption?.noCache) {
+    await rimraf(absOut);
+  }
   for await (const chunk of ipProcess(absIn, inputOption)) {
     const relative = path.relative(absIn, chunk);
     const out = path.join(absOut, relative);
-    const dir = path.dirname(out);
-
-    await mkdir(dir);
 
     const result = await compileMdx({ mdAbsPath: chunk, ...compileOption });
 

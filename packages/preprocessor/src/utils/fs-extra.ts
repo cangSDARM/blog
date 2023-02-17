@@ -4,10 +4,15 @@ import { isMatch, unix } from './path-extra';
 import { mkdirp } from 'mkdirp';
 
 export type OpenDirOptions = {
-  ignore: string;
+  ignore?: string;
 };
 
-type OpenDirParams = [directory: string, options?: OpenDirOptions];
+type OpenDirParams = [
+  directory: string,
+  options?: OpenDirOptions & {
+    noSubDir?: boolean;
+  }
+];
 
 export const openDir = async function* (
   ...[directory, options]: OpenDirParams
@@ -42,7 +47,7 @@ export const openDir = async function* (
 
       if (file?.isDirectory()) {
         const subDir = join(dir.path, file.name);
-        if (validateGlob(subDir)) {
+        if (validateGlob(subDir) && !options?.noSubDir) {
           needOpen(subDir);
         }
         continue;
@@ -73,20 +78,5 @@ export const writeFile = (
   );
   const flags = !overwrite ? 'wx' : 'w';
 
-  return new Promise<void>((resolve, reject) => {
-    const stream = createWriteStream(path, {
-      encoding: 'utf-8',
-      mode: 0o666,
-      flags,
-      highWaterMark: 128 * 1024, //128kib
-    });
-
-    stream.write(content);
-
-    stream.once('finish', () => {
-      stream.close();
-      resolve();
-    });
-    stream.on('error', reject);
-  });
+  return promises.writeFile(path, content, { flag: flags });
 };

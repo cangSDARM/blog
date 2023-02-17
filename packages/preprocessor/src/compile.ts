@@ -27,6 +27,7 @@ export async function compileMdx({
 
     let frontmatter: any = undefined;
 
+    // TODO: gather all assets src; reference: https://github.com/Pondorasti/remark-img-links
     const remarks: any[] = [
       remarkPresetLintConsistent,
       remarkHeadings,
@@ -38,7 +39,7 @@ export async function compileMdx({
         {
           nodeTravel: ((data) => {
             frontmatter = data;
-            return;
+            return false;
           }) as Traveler,
         },
       ],
