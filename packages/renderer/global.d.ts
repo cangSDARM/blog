@@ -11,3 +11,5 @@ type CompileAst = {
   content: string;
   headings: any[];
 };
+
+type Defined<T> = Exclude<T, undefined | null>;

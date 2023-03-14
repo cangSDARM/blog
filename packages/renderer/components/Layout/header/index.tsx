@@ -20,64 +20,60 @@ const Header: React.FC<{
   const overview = useLC();
 
   return (
-    <NavigationMenu.Root className={styles["nav-root"]}>
-      <NavigationMenu.List className={styles["nav-list"]}>
-        <NavigationMenu.Item>
-          <NavigationMenu.Link
-            className={clsx(styles["nav-trigger"], styles["nav-logo"])}
-            asChild
-          >
-            <Link href={"/"}>
-              <h3>Allen Lee@Blog</h3>
-            </Link>
-          </NavigationMenu.Link>
-        </NavigationMenu.Item>
+    <section className={styles["nav-root"]}>
+      <Link className={styles["nav-logo"]} href={"/"}>
+        <h3>Allen Lee@Blog</h3>
+      </Link>
+      <NavigationMenu.Root className={styles["nav-menus"]}>
+        <NavigationMenu.List>
+          {topic && (
+            <NavigationMenu.Item>
+              <NavigationMenu.Trigger className={styles["nav-trigger"]} asChild>
+                <Button appearance="subtle">
+                  {_.capitalize(topic)}
+                  <RxCaretDown aria-hidden />
+                </Button>
+              </NavigationMenu.Trigger>
+              <NavigationMenu.Content className={styles["nav-surface"]}>
+                <Preview imgSrc={imgSrc} fileList={fileList} />
+              </NavigationMenu.Content>
+            </NavigationMenu.Item>
+          )}
 
-        {topic && (
           <NavigationMenu.Item>
             <NavigationMenu.Trigger className={styles["nav-trigger"]} asChild>
               <Button appearance="subtle">
-                {_.capitalize(topic)}
-                <RxCaretDown className="CaretDown" aria-hidden />
+                Overview <RxCaretDown aria-hidden />
               </Button>
             </NavigationMenu.Trigger>
             <NavigationMenu.Content className={styles["nav-surface"]}>
-              <Preview imgSrc={imgSrc} fileList={fileList} />
+              <ul className={styles["overviews"]}>
+                {overview.map((item: any) => {
+                  return (
+                    <li key={item.name}>
+                      <Link href={"/tags/" + item.name}>
+                        <span>{item.name}</span>
+                        <span data-layer="count">
+                          {item.posts?.length || 0}
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             </NavigationMenu.Content>
           </NavigationMenu.Item>
-        )}
 
-        <NavigationMenu.Item>
-          <NavigationMenu.Trigger className={styles["nav-trigger"]} asChild>
-            <Button appearance="subtle">
-              Overview <RxCaretDown className="CaretDown" aria-hidden />
-            </Button>
-          </NavigationMenu.Trigger>
-          <NavigationMenu.Content className={styles["nav-surface"]}>
-            <ul>
-              {overview.map((item: any) => {
-                return (
-                  <li key={item.name} className={styles.tags}>
-                    <Link href={"/tags/" + item.name}>
-                      <span>{item.name}</span>
-                      <span data-layer="count">{item.posts?.length || 0}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </NavigationMenu.Content>
-        </NavigationMenu.Item>
+          <NavigationMenu.Indicator className={styles["nav-indicator"]}>
+            <i />
+          </NavigationMenu.Indicator>
+        </NavigationMenu.List>
 
-        <NavigationMenu.Indicator className={styles["nav-indicator"]}>
-          <div className={styles["nav-arrow"]} />
-        </NavigationMenu.Indicator>
-      </NavigationMenu.List>
-
-      <NavigationMenu.Viewport
-        className={clsx(styles["nav-viewport"], surfaceStyle)}
-      />
-    </NavigationMenu.Root>
+        <NavigationMenu.Viewport
+          className={clsx(styles["nav-viewport"], surfaceStyle)}
+        />
+      </NavigationMenu.Root>
+    </section>
   );
 };
 

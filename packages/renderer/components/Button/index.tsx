@@ -4,7 +4,7 @@ import styles from "./style.module.scss";
 
 // eslint-disable-next-line react/display-name
 const Button = React.forwardRef<
-  any,
+  HTMLButtonElement,
   React.PropsWithChildren<
     React.DetailedHTMLProps<
       React.ButtonHTMLAttributes<HTMLButtonElement>,
