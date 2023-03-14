@@ -3,7 +3,7 @@ $view-height: 328px;
 $arrow-margin: 6px;
 $arrow-size: 8px;
 
-$view-port-background: var(--colorNeutralBackground1);
+$view-port-background: var(--colorNeutralBackground6);
 
 .nav-root {
   width: 100%;
@@ -98,7 +98,7 @@ $view-port-background: var(--colorNeutralBackground1);
   position: absolute;
   display: flex;
   justify-content: center;
-  top: 100%;
+  // top: 100%;
   right: 0;
   perspective: 2000px;
   margin-top: $arrow-margin;

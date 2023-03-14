@@ -4,13 +4,12 @@ tags: ["archive"]
 type: "docs.godotengine.org"
 avatar: "https://docs.godotengine.org/zh_CN/stable/_static/docs_logo.png"
 reference: "Godot（4月1日）|https://docs.godotengine.org/zh_CN/stable/tutorials/io/encrypting_save_games.html#"
-index: 14
 ---
 
 <input id="gd" name="la" type="radio" checked readOnly />
 <input id="cs" name="la" type="radio" readOnly />
 
-<div class="navgator">
+<div className="navgator">
 
 - Docs »
 - I/O »
@@ -35,7 +34,7 @@ No, we definitely do not want that to happen, so let's see how to encrypt savega
 
 The class [File](#) can open a file at a location and read/write data (integers, strings and variants). It also supports encryption. To create an encrypted file, a passphrase must be provided, like this:
 
-<div class="sphinx-tabs">
+<div className="sphinx-tabs">
 <div>
 <label for="gd">GDScript</label>
 <label for="cs">C#</label>
@@ -59,7 +58,7 @@ f.Close();
 
 This will make the file unreadable to users, but will still not prevent them from sharing savefiles. To solve this, use the device unique id or some unique user identifier, for example:
 
-<div class="sphinx-tabs">
+<div className="sphinx-tabs">
 <div>
 <label for="gd">GDScript</label>
 <label for="cs">C#</label>

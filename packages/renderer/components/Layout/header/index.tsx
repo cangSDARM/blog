@@ -7,7 +7,6 @@ import Surface, { useSurfaceStyle } from "@/components/Surface";
 import styles from "./style.module.scss";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import Preview from "./preview";
-import ListItem from "./item";
 import Link from "next/link";
 import { useLC } from "../context";
 
@@ -17,7 +16,7 @@ const Header: React.FC<{
   topic?: string;
 }> = ({ imgSrc, topic = "", fileList = [] }) => {
   const surfaceStyle = useSurfaceStyle();
-  const overview = useLC();
+  const { overview } = useLC();
 
   return (
     <section className={styles["nav-root"]}>

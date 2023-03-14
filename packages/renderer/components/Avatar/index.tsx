@@ -11,13 +11,18 @@ const Avatar: React.FC<{
 }> = ({ src = "", children = src, className, appearance }) => (
   <RAvatar.Root
     className={clsx(
-      styles.AvatarRoot,
+      styles["avatar-root"],
       className,
-      appearance === "circular" && styles.Circular
+      appearance === "circular" && styles["circular"]
     )}
+    role="img"
   >
-    <RAvatar.Image className={styles.AvatarImage} src={src} alt={children} />
-    <RAvatar.Fallback className={styles.AvatarFallback} delayMs={400}>
+    <RAvatar.Image
+      className={styles["avatar-image"]}
+      src={src}
+      alt={children}
+    />
+    <RAvatar.Fallback className={styles["avatar-fallback"]} delayMs={400}>
       {children}
     </RAvatar.Fallback>
   </RAvatar.Root>

@@ -1,7 +1,8 @@
 import Avatar from "@/components/Avatar";
+import Surface from "@/components/Surface";
 import Link from "next/link";
 import React from "react";
-import mainStyles from "./index.module.scss";
+import mainStyles from "./style.module.scss";
 // import HeadingView from "./headingView";
 
 const Resources: React.FC<{ avatar: string; reference: string; toc: any }> = ({
@@ -12,7 +13,7 @@ const Resources: React.FC<{ avatar: string; reference: string; toc: any }> = ({
   const [refTitle, refLink] = reference.split("|");
 
   return reference ? (
-    <div className={mainStyles.references}>
+    <Surface appearance="minimum" className={mainStyles.references}>
       <div>
         <Avatar
           appearance="circular"
@@ -34,7 +35,7 @@ const Resources: React.FC<{ avatar: string; reference: string; toc: any }> = ({
         </nav>
       </div>
       {/* <HeadingView toc={toc?.items ?? []} /> */}
-    </div>
+    </Surface>
   ) : (
     <></>
   );

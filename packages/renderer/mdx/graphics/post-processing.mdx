@@ -93,7 +93,7 @@ export const ImgList = [
         <br/>
         使用快速深度重建技术, 将首先对<Quote id="#2">视锥体射线</Quote>进行插值, 用该射线*处理后的深度值+摄像机坐标 = 该像素在世界空间的坐标
         <br/>
-        该技术基于坐标可以通过对另一坐标的偏移来求取的思想: worldPos = _WorldSpaceCameraPos + <Quote class="Quote" id="#3">linearDepth * interpolatedRay</Quote>
+        该技术基于坐标可以通过对另一坐标的偏移来求取的思想: worldPos = _WorldSpaceCameraPos + <Quote className="Quote" id="#3">linearDepth * interpolatedRay</Quote>
         <br/>
         雾效实现需要一个系数f, 来作为颜色和雾的混合系数. 在unity内置中, 有三种: 线性, 指数, 指数平方
         <br/>

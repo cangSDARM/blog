@@ -82,7 +82,7 @@ function readPosts(dir: string, root = true) {
 }
 
 const post: PostAst[] = [];
-const collections: string[] = [DEFAULT_COLLECTION];
+const collections: string[] = [];
 readPosts(MDX_DIR);
 
 export function getAllCollections() {
@@ -93,11 +93,19 @@ export function getAllPosts() {
   return post;
 }
 
+let overviews: {
+  posts: PostAst[];
+  name: string;
+}[] = [];
 export function collectionOverview() {
-  return getAllCollections().map((coll) => ({
+  if (overviews.length > 0) return overviews;
+
+  overviews = getAllCollections().map((coll) => ({
     posts: getPostInCollection(coll),
     name: coll,
   }));
+
+  return overviews;
 }
 
 const postInCollectionMap = new Map<string, PostAst[]>();
@@ -108,9 +116,12 @@ export function getPostInCollection(collection: string) {
 
   const result = post
     .filter((p) => p.collection === collection)
-    .sort((a, b) => (a.matter.index || 0) - (b.matter.index || 0))
     .sort((a, b) =>
       compareAsc(new Date(a.matter.date), new Date(b.matter.date))
+    )
+    .sort((a, b) => (a.matter.title || "").localeCompare(b.matter.title || ""))
+    .sort(
+      (a, b) => (a.matter.index || Infinity) - (b.matter.index || Infinity)
     );
 
   postInCollectionMap.set(collection, result);

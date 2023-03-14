@@ -1,6 +1,8 @@
 import React from "react";
 
-const LayoutContext = React.createContext<any>({ overview: [] });
+const LayoutContext = React.createContext<{ overview: any[] }>({
+  overview: [],
+});
 
 export const LCProvider: React.FC<
   React.PropsWithChildren<{
@@ -8,7 +10,9 @@ export const LCProvider: React.FC<
   }>
 > = ({ overview, children }) => {
   return (
-    <LayoutContext.Provider value={overview}>{children}</LayoutContext.Provider>
+    <LayoutContext.Provider value={{ overview }}>
+      {children}
+    </LayoutContext.Provider>
   );
 };
 

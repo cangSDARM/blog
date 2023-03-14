@@ -15,11 +15,16 @@ const Layout: React.FC<
         <Header imgSrc="" />
       </header>
       <main
-        style={{
-          backgroundColor:
+        ref={(ref) => {
+          ref?.style?.setProperty(
+            "--theme-color",
             theme === "dark"
               ? "var(--colorNeutralBackground1)"
-              : "var(--colorNeutralBackgroundInverted)",
+              : "var(--colorNeutralBackgroundInverted)"
+          );
+        }}
+        style={{
+          backgroundColor: "var(--theme-color)",
           overflowX: "hidden",
           overflowY: "auto",
           width: "100vw",

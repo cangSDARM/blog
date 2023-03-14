@@ -7,14 +7,21 @@ export function useSurfaceStyle() {
 }
 
 const Surface = React.forwardRef<
-  any,
+  HTMLDivElement,
   React.PropsWithChildren<
-    React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+      appearance?: "primary" | "soft" | "minimum";
+    }
   >
->(({ children, className, ...props }, forwardRef) => {
+>(({ children, appearance = "primary", className, ...props }, forwardRef) => {
   return (
     <section
-      className={clsx(styles["surface"], className)}
+      className={clsx(
+        styles["surface"],
+        appearance === "soft" && styles["soft-surface"],
+        appearance === "minimum" && styles["minimum-surface"],
+        className
+      )}
       {...props}
       ref={forwardRef}
     >

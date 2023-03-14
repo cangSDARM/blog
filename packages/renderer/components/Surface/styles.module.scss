@@ -8,3 +8,13 @@
   background-color: var(--colorNeutralBackground1);
   color: var(--colorNeutralForeground1);
 }
+
+.soft-surface {
+  box-shadow: var(--shadow8);
+  border-radius: var(--borderRadiusSmall);
+}
+
+.minimum-surface {
+  box-shadow: var(--shadow2);
+  border-radius: var(--borderRadiusSmall);
+}

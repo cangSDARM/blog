@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { promises } from "fs";
 import { compile } from "@mdx-js/mdx";
 import remarkHeadings from "@vcarl/remark-headings";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -8,15 +8,18 @@ import rehypeSlug from "rehype-slug";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
+import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 
 export async function compileMdx(fullPath: string) {
   try {
-    const fileContents = readFileSync(fullPath, "utf-8");
+    const fileContents = await promises.readFile(fullPath, "utf-8");
 
     const compiled = await compile(fileContents, {
       outputFormat: "function-body",
       development: false,
+      jsx: false,
       remarkPlugins: [
+        remarkPresetLintConsistent,
         remarkHeadings,
         remarkUnwrapImages,
         remarkMath,
