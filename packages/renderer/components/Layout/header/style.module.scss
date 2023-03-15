@@ -8,7 +8,7 @@ $view-port-background: var(--colorNeutralBackground6);
 .nav-root {
   width: 100%;
   height: 100%;
-  padding: 0 var(--spacingHorizontalXL);
+  padding: 0 var(--spacingXL);
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -19,10 +19,10 @@ $view-port-background: var(--colorNeutralBackground6);
 .nav-menus {
   position: relative;
   margin-left: auto;
-  padding: var(--spacingHorizontalXS);
+  padding: var(--spacingXS);
 
   & > :not(:first-child) {
-    margin-left: var(--spacingHorizontalS);
+    margin-left: var(--spacingS);
   }
   & > :first-child {
     margin-right: auto;
@@ -186,10 +186,10 @@ $view-port-background: var(--colorNeutralBackground6);
   > li {
     flex: 1;
     border-radius: var(--borderRadiusLarge);
-    font-size: var(--fontSizeBase400);
+    font-size: var(--fontSizeBaseMedium);
     font-weight: var(--fontWeightSemibold);
     color: var(--colorBrandForeground1);
-    padding: var(--spacingVerticalS);
+    padding: var(--spacingS);
     display: inline-block;
 
     &:hover {
@@ -202,7 +202,7 @@ $view-port-background: var(--colorNeutralBackground6);
 
     [data-layer="count"] {
       float: right;
-      margin-left: var(--spacingHorizontalL);
+      margin-left: var(--spacingL);
       width: 25px;
       height: 25px;
       display: inline-flex;
@@ -224,7 +224,7 @@ $view-port-background: var(--colorNeutralBackground6);
   margin: 0;
   position: relative;
   height: $view-height;
-  padding: var(--spacingHorizontalL);
+  padding: var(--spacingL);
 
   display: grid;
   grid-template-columns: 1fr 0.75fr;
@@ -279,16 +279,16 @@ $view-port-background: var(--colorNeutralBackground6);
   text-decoration: none;
   user-select: none;
   border-radius: var(--borderRadiusLarge);
-  font-size: var(--fontSizeBase300);
+  font-size: var(--fontSizeBaseSmall);
   line-height: 1;
-  height: calc(($view-height - var(--spacingHorizontalL) * 2) / 3);
+  height: calc(($view-height - var(--spacingL) * 2) / 3);
 
   &:hover {
     background: rgba(255 255 255 / 0.08);
   }
 
   a {
-    padding: var(--spacingHorizontalS);
+    padding: var(--spacingS);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -297,14 +297,14 @@ $view-port-background: var(--colorNeutralBackground6);
   p {
     width: 100%;
     line-height: 1.4;
-    font-size: var(--fontSizeBase300);
+    font-size: var(--fontSizeBaseSmall);
   }
 
   title {
     line-height: 1.2;
-    font-size: var(--fontSizeBase400);
+    font-size: var(--fontSizeBaseMedium);
     font-weight: var(--fontWeightSemibold);
     color: var(--colorBrandForegroundLink);
-    margin-bottom: var(--spacingHorizontalM);
+    margin-bottom: var(--spacingM);
   }
 }

@@ -1,25 +1,4 @@
 :root {
-  --borderRadiusNone: 0;
-  --borderRadiusSmall: 2px;
-  --borderRadiusMedium: 4px;
-  --borderRadiusLarge: 6px;
-  --borderRadiusCircular: 100%;
-  --fontSizeBase100: 10px;
-  --fontSizeBase200: 12px;
-  --fontSizeBase300: 14px;
-  --fontSizeBase400: 16px;
-  --fontSizeBase500: 20px;
-  --fontSizeBase600: 24px;
-  --fontSizeHero700: 28px;
-  --fontSizeHero800: 32px;
-  --lineHeightBase100: 14px;
-  --lineHeightBase200: 16px;
-  --lineHeightBase300: 20px;
-  --lineHeightBase400: 22px;
-  --lineHeightBase500: 28px;
-  --lineHeightBase600: 32px;
-  --lineHeightHero700: 36px;
-  --lineHeightHero800: 40px;
   --fontFamilyBase: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
     BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   --fontFamilyMonospace: Consolas, "Courier New", Courier, monospace;
@@ -29,30 +8,38 @@
   --fontWeightMedium: 500;
   --fontWeightSemibold: 600;
   --fontWeightBold: 700;
-  --strokeWidthThin: 1px;
-  --strokeWidthThick: 2px;
-  --strokeWidthThicker: 3px;
-  --strokeWidthThickest: 4px;
-  --spacingHorizontalNone: 0;
-  --spacingHorizontalXXS: 2px;
-  --spacingHorizontalXS: 4px;
-  --spacingHorizontalSNudge: 6px;
-  --spacingHorizontalS: 8px;
-  --spacingHorizontalMNudge: 10px;
-  --spacingHorizontalM: 12px;
-  --spacingHorizontalL: 16px;
-  --spacingHorizontalXL: 20px;
-  --spacingHorizontalXXL: 24px;
-  --spacingVerticalNone: 0;
-  --spacingVerticalXXS: 2px;
-  --spacingVerticalXS: 4px;
-  --spacingVerticalSNudge: 6px;
-  --spacingVerticalS: 8px;
-  --spacingVerticalMNudge: 10px;
-  --spacingVerticalM: 12px;
-  --spacingVerticalL: 16px;
-  --spacingVerticalXL: 20px;
-  --spacingVerticalXXL: 24px;
+  --fontSizeBaseXSmall: 12px;
+  --fontSizeBaseSmall: 14px;
+  --fontSizeBaseMedium: 16px;
+  --fontSizeBaseXMedium: 18px;
+  --fontSizeBaseLarge: 20px;
+  --fontSizeBaseXLarge: 24px;
+  --fontSizeHeroSmall: 28px;
+  --fontSizeHeroMedium: 32px;
+  --fontSizeHeroLarge: 36px;
+  --lineHeightBaseSmall: 0.8em;
+  --lineHeightBase: 1.05em;
+  --lineHeightBaseLarge: 1.25em;
+  --lineHeightFixed300: 20px;
+  --lineHeightFixed400: 22px;
+  --lineHeightFixed500: 28px;
+  --lineHeightFixed600: 32px;
+  --lineHeightFixed700: 36px;
+  --lineHeightFixed800: 40px;
+}
+:root {
+  --spacingNone: 0;
+  --spacingXXS: 2px;
+  --spacingXS: 4px;
+  --spacingSNudge: 6px;
+  --spacingS: 8px;
+  --spacingMNudge: 10px;
+  --spacingM: 12px;
+  --spacingL: 16px;
+  --spacingXL: 20px;
+  --spacingXXL: 24px;
+}
+:root {
   --durationFastest: 50ms;
   --durationFast: 150ms;
   --durationNormal: 200ms;
@@ -67,6 +54,22 @@
   --curveEasyEaseMax: cubic-bezier(0.8, 0, 0.1, 1);
   --curveEasyEase: cubic-bezier(0.33, 0, 0.67, 1);
   --curveLinear: cubic-bezier(0, 0, 1, 1);
+}
+:root {
+  --borderRadiusNone: 0;
+  --borderRadiusSmall: 2px;
+  --borderRadiusMedium: 4px;
+  --borderRadiusLarge: 6px;
+  --borderRadiusCircular: 100%;
+  --strokeWidthThin: 1px;
+  --strokeWidthThick: 2px;
+  --strokeWidthThicker: 3px;
+  --strokeWidthThickest: 4px;
+}
+:root {
+  --scrollbarWidth: 6px;
+}
+:root {
   --colorNeutralForeground1: #ffffff;
   --colorNeutralForeground1Hover: #ffffff;
   --colorNeutralForeground1Pressed: #ffffff;
@@ -137,7 +140,6 @@
   --colorNeutralBackgroundDisabled: #141414;
   --colorNeutralBackgroundInvertedDisabled: rgba(255, 255, 255, 0.1);
   --colorBackgroundOverlay: rgba(0, 0, 0, 0.5);
-  --colorScrollbarOverlay: rgba(255, 255, 255, 0.6);
   --colorBrandBackground: #115ea3;
   --colorBrandBackground2: #0c3b5e;
   --colorBrandBackgroundHover: #0f6cbd;

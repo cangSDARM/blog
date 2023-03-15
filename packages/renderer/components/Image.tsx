@@ -20,6 +20,7 @@ const Image: React.FC<{
         const target = e.currentTarget;
         setNSize([target.naturalWidth, target.naturalHeight]);
       }}
+      data-originsrc={src}
       style={style}
       src={tSrc}
       alt={alt}

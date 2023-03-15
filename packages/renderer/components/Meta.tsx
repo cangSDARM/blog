@@ -11,6 +11,7 @@ const Meta: React.FC<{
 
   return (
     <Head>
+      <meta charSet="UTF-8" />
       <title>{ogTitle}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta key="og:title" property="og:title" content={ogTitle} />
@@ -26,7 +27,7 @@ const Meta: React.FC<{
       />
       <meta property="og:type" content="website" />
       <meta property="twitter:card" content="summary_large_image" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       {meta.map((m) => (
         <meta
           name={m.name}

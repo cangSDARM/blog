@@ -14,11 +14,11 @@
   border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
   font-family: var(--fontFamilyBase);
   outline-style: none;
-  padding: 5px var(--spacingHorizontalM);
+  padding: 5px var(--spacingM);
   border-radius: var(--borderRadiusMedium);
-  font-size: var(--fontSizeBase300);
+  font-size: var(--fontSizeBaseSmall);
   font-weight: var(--fontWeightSemibold);
-  line-height: var(--lineHeightBase300);
+  line-height: var(--lineHeightFixed300);
   transition-duration: var(--durationFast);
   transition-property: background, border, color;
   transition-timing-function: var(--curveEasyEase);

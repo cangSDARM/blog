@@ -9,11 +9,11 @@
   justify-content: center;
 
   h1 {
-    font-size: var(--fontSizeHero800);
+    font-size: var(--fontSizeHeroMedium);
     position: relative;
 
     span {
-      padding: var(--spacingHorizontalS);
+      padding: var(--spacingS);
       font-size: 1.2em;
       font-weight: var(--fontWeightMedium);
       display: inline-block;

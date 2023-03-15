@@ -20,8 +20,15 @@ type PageProps = {
   compiled: CompileAst;
 };
 
-const MdxImage = (props: any) => {
+const MdxImage: React.FC<
+  React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >
+> = (props) => {
   const tSrc = React.useMemo(() => {
+    if (!props.src) return "";
+
     const rep = /^.+(\/images\/.*)$/giu.exec(props.src);
 
     if (rep) {
@@ -51,6 +58,7 @@ const MdxImage = (props: any) => {
           rel="noopener"
           style={{ display: "block" }}
         >
+          {/* @ts-ignore */}
           <Image {...props} src={tSrc} ext={""} />
         </Link>
       </span>

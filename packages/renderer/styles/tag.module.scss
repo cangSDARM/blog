@@ -28,8 +28,8 @@
 .IconButton {
   font-family: inherit;
   border-radius: 100%;
-  height: var(--fontSizeBase600);
-  width: var(--fontSizeBase600);
+  height: var(--fontSizeBaseXLarge);
+  width: var(--fontSizeBaseXLarge);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -52,15 +52,15 @@
 .Text {
   user-select: none;
   color: var(--colorNeutralForeground2);
-  font-size: var(--fontSizeBase300);
-  line-height: var(--lineHeightBase500);
+  font-size: var(--fontSizeBaseSmall);
+  line-height: var(--lineHeightFixed500);
 }
 
 .PostItem {
   background-color: var(--colorNeutralBackground2);
   border-radius: var(--borderRadiusMedium);
   margin: 10px 0;
-  padding: var(--spacingHorizontalMNudge);
+  padding: var(--spacingMNudge);
   box-shadow: var(--shadow4);
   display: block;
   transition: all 50ms;

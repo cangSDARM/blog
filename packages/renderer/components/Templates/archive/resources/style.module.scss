@@ -21,15 +21,15 @@
 }
 
 $screen-lg: 1080px;
-$avatar-size: calc(var(--fontSizeBase600) * 2);
+$avatar-size: calc(var(--fontSizeBaseXLarge) * 2);
 
 .references {
   position: fixed;
   margin: auto;
   bottom: 40px;
-  padding: var(--spacingVerticalXS) var(--spacingHorizontalMNudge);
-  background-color: var(--theme-color);
-  right: var(--spacingHorizontalXXL);
+  padding: var(--spacingXS) var(--spacingMNudge);
+  background-color: var(--colorNeutralBackground1);
+  right: var(--spacingXXL);
   z-index: 999;
   border-bottom-right-radius: var(--borderRadiusLarge);
 
@@ -44,11 +44,11 @@ $avatar-size: calc(var(--fontSizeBase600) * 2);
     > nav {
       display: flex;
       flex-direction: column;
-      margin-right: calc($avatar-size - var(--spacingHorizontalS));
+      margin-right: calc($avatar-size - var(--spacingS));
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
 
-      font-size: var(--fontSizeBase300);
+      font-size: var(--fontSizeBaseSmall);
     }
 
     a {
