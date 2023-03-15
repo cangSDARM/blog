@@ -19,7 +19,7 @@ const Header: React.FC<{
   const { overview } = useLC();
 
   return (
-    <section className={styles["nav-root"]}>
+    <section className={styles["nav-root"]} data-theme="dark">
       <Link className={styles["nav-logo"]} href={"/"}>
         <h3>Allen Lee@Blog</h3>
       </Link>

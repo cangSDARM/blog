@@ -1,0 +1,13 @@
+@import "./common/index.scss";
+@import "./dark/index.scss";
+@import "./light/index.scss";
+
+:root {
+  @include common;
+}
+[data-theme="dark"] {
+  @include dark-theme;
+}
+[data-theme="light"] {
+  @include light-theme;
+}

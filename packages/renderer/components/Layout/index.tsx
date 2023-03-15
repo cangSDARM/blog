@@ -1,8 +1,6 @@
 import React from "react";
 import { LCProvider } from "./context";
 import Header from "./header";
-import weblight from "@/styles/fluent.weblight.module.scss";
-import clsx from "clsx";
 
 const HeaderHeight = 80;
 
@@ -17,6 +15,7 @@ const Layout: React.FC<
         <Header imgSrc="" />
       </header>
       <main
+        data-theme={theme}
         style={{
           backgroundColor: "var(--colorNeutralBackground1)",
           overflowX: "hidden",
@@ -24,7 +23,6 @@ const Layout: React.FC<
           width: "100vw",
           height: `calc(100vh - ${HeaderHeight}px)`,
         }}
-        className={clsx(theme === "light" && weblight["root"])}
       >
         {children}
       </main>

@@ -5,6 +5,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import rehypeSlug from "rehype-slug";
+import rehypePrism from "rehype-prism-plus";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
@@ -61,6 +62,7 @@ export async function compileMdx(fullPath: string) {
             },
           },
         ],
+        [rehypePrism, { ignoreMissing: true }],
         rehypeKatex,
       ],
     });

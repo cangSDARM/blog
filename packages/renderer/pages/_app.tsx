@@ -1,4 +1,3 @@
-import "@/styles/katex/katex.min.css";
 import "@/styles/global.scss";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";

@@ -1,27 +1,8 @@
-@use "./reset.scss";
-@use "./fluent.scss";
+@import "./reset.scss";
+@import "./theme/index.scss";
+@import "./katex/katex.min.css";
 @import url("https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap");
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--colorNeutralStrokeAccessible);
-  border-radius: var(--borderRadiusLarge);
-  border-style: solid;
-  border-color: var(--colorTransparentBackground);
-  &:hover {
-    background-color: var(--colorNeutralStrokeAccessibleHover);
-  }
-  &:active {
-    background-color: var(--colorNeutralStrokeAccessibleSelected);
-  }
-  &:focus-within {
-    background-color: var(--colorNeutralStrokeAccessiblePressed);
-  }
-}
-::-webkit-scrollbar {
-  width: var(--scrollbarWidth);
-  background-color: var(--colorTransparentStroke);
-}
 
 body,
 html,

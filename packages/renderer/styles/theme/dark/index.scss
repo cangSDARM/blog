@@ -1,0 +1,7 @@
+@import "./fluent.webdark.scss";
+@import './prismplus.dark.scss';
+
+@mixin dark-theme {
+  @extend .fluent-web_dark;
+  @extend .prismplus-dark;
+}

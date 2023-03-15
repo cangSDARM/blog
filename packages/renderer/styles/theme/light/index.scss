@@ -1,0 +1,7 @@
+@import './prismplus.light.scss';
+@import "./fluent.weblight.scss";
+
+@mixin light-theme {
+  @extend .fluent-web_light;
+  @extend .prismplus-light;
+}

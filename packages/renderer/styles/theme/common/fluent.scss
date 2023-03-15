@@ -1,0 +1,106 @@
+@mixin fluent-font {
+  --fontFamilyBase: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  --fontFamilyMonospace: Consolas, "Courier New", Courier, monospace;
+  --fontFamilyNumeric: Bahnschrift, "Segoe UI", "Segoe UI Web (West European)",
+    -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  --fontWeightRegular: 400;
+  --fontWeightMedium: 500;
+  --fontWeightSemibold: 600;
+  --fontWeightBold: 700;
+  --fontSizeBaseXSmall: 12px;
+  --fontSizeBaseSmall: 14px;
+  --fontSizeBaseMedium: 16px;
+  --fontSizeBaseXMedium: 18px;
+  --fontSizeBaseLarge: 20px;
+  --fontSizeBaseXLarge: 24px;
+  --fontSizeHeroSmall: 28px;
+  --fontSizeHeroMedium: 32px;
+  --fontSizeHeroLarge: 36px;
+  --lineHeightBaseSmall: 0.8em;
+  --lineHeightBase: 1.05em;
+  --lineHeightBaseLarge: 1.25em;
+  --lineHeightFixed300: 20px;
+  --lineHeightFixed400: 22px;
+  --lineHeightFixed500: 28px;
+  --lineHeightFixed600: 32px;
+  --lineHeightFixed700: 36px;
+  --lineHeightFixed800: 40px;
+}
+@mixin fluent-spacing {
+  --spacingNone: 0;
+  --spacingXXS: 2px;
+  --spacingXS: 4px;
+  --spacingSNudge: 6px;
+  --spacingS: 8px;
+  --spacingMNudge: 10px;
+  --spacingM: 12px;
+  --spacingL: 16px;
+  --spacingXL: 20px;
+  --spacingXXL: 24px;
+}
+@mixin fluent-animation {
+  --durationFastest: 50ms;
+  --durationFast: 150ms;
+  --durationNormal: 200ms;
+  --durationSlow: 300ms;
+  --durationSlowest: 400ms;
+  --curveAccelerateMax: cubic-bezier(1, 0, 1, 1);
+  --curveAccelerateMid: cubic-bezier(0.7, 0, 1, 0.5);
+  --curveAccelerateMin: cubic-bezier(0.8, 0, 1, 1);
+  --curveDecelerateMax: cubic-bezier(0, 0, 0, 1);
+  --curveDecelerateMid: cubic-bezier(0.1, 0.9, 0.2, 1);
+  --curveDecelerateMin: cubic-bezier(0.33, 0, 0.1, 1);
+  --curveEasyEaseMax: cubic-bezier(0.8, 0, 0.1, 1);
+  --curveEasyEase: cubic-bezier(0.33, 0, 0.67, 1);
+  --curveLinear: cubic-bezier(0, 0, 1, 1);
+}
+@mixin fluent-decorator {
+  --borderRadiusNone: 0;
+  --borderRadiusSmall: 2px;
+  --borderRadiusMedium: 4px;
+  --borderRadiusLarge: 6px;
+  --borderRadiusCircular: 100%;
+  --strokeWidthThin: 1px;
+  --strokeWidthThick: 2px;
+  --strokeWidthThicker: 3px;
+  --strokeWidthThickest: 4px;
+}
+@mixin fluent-scrollbar {
+  $scrollbarSize: 6px;
+  $scrollbarRadius: 6px;
+
+  $scrollbarThumbBackground: #adadad;
+  $scrollbarThumbBackgroundHover: #bdbdbd;
+  $scrollbarThumbBackgroundPressed: #b3b3b3;
+  $scrollbarThumbBackgroundSelected: #479ef5;
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $scrollbarThumbBackground;
+    border-radius: $scrollbarRadius;
+    border-style: solid;
+    border-color: transparent;
+    &:hover {
+      background-color: $scrollbarThumbBackgroundHover;
+    }
+    &:active {
+      background-color: $scrollbarThumbBackgroundSelected;
+    }
+    &:focus-within {
+      background-color: $scrollbarThumbBackgroundPressed;
+    }
+  }
+  ::-webkit-scrollbar {
+    height: $scrollbarSize;
+    width: $scrollbarSize;
+    background-color: transparent;
+  }
+}
+
+.fluent-common {
+  @include fluent-font;
+  @include fluent-spacing;
+  @include fluent-animation;
+  @include fluent-decorator;
+  @include fluent-scrollbar;
+}

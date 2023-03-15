@@ -1,4 +1,3 @@
-import Surface from "@/components/Surface";
 import Link from "next/link";
 import styles from "@/styles/404.module.scss";
 
