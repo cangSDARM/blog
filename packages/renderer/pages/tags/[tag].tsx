@@ -54,7 +54,7 @@ export default injectLayoutContext<{
                   href={post.url}
                   className={styles.PostItem}
                 >
-                  <Truncate>{post.matter.title}</Truncate>
+                  <Truncate>{post.title}</Truncate>
                 </Link>
               ))}
             </Collapsible.Content>

@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  collectionOverview,
   getAllPosts,
-  getPostBySlug,
+  collectionOverview,
   PostAst,
+  getPostBySlug,
 } from "@/lib/api";
 import { compileMdx } from "@/lib/compile";
 import useMdxRenderer from "@/hooks/useMdxRenderer";
@@ -14,6 +14,7 @@ import _ from "lodash";
 import useTemplateRender from "@/components/Templates/useTemplate";
 import Link from "next/link";
 import styles from "@/styles/collection.slug.module.scss";
+import { allPosts } from "contentlayer/generated";
 
 type PageProps = {
   post: PostAst;
@@ -104,6 +105,7 @@ export async function getStaticProps({ params }: any) {
   const overview = collectionOverview();
 
   if (!post) {
+    console.warn("not found", params, post);
     return {
       notFound: true,
     };
@@ -116,14 +118,12 @@ export async function getStaticProps({ params }: any) {
       post,
       compiled,
       overview,
-    } as PageProps,
+    },
   };
 }
 
 export function getStaticPaths() {
-  const posts = getAllPosts();
-
-  const paths = posts.map((p) => {
+  const paths = getAllPosts().map((p) => {
     return {
       params: { slug: p.slug, collection: p.collection },
     };

@@ -1,3 +1,5 @@
+import { withContentlayer } from "next-contentlayer";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -12,4 +14,4 @@ const nextConfig = {
   basePath: "/blog",
 };
 
-module.exports = nextConfig;
+export default withContentlayer(nextConfig);
