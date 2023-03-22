@@ -1,13 +1,13 @@
-import NodePath from 'path';
-import { unix } from '../../utils/path-extra';
-import { Plugin } from '../../output';
+import NodePath from "path";
+import { unix } from "../utils/path-extra";
+import { Writer, WriterCtx } from "./types";
 
-export default <Plugin>{
-  writeComponent: async (ctx) => {
+export class NextWriter extends Writer {
+  async writeComponent(ctx: WriterCtx) {
     const {
       compiledResult: { content, error },
     } = ctx;
-    const contents = !!error ? 'export default {};' : content;
+    const contents = !!error ? "export default {};" : content;
     const outputContent = `
 import react from 'react';
 function Component() {
@@ -16,29 +16,20 @@ ${contents}
 export default Component;`;
 
     return ctx.write(outputContent);
-  },
-  writeFrontmatter: async (ctx) => {
-    const {
-      compiledResult: { data },
-    } = ctx;
+  }
 
-    const outputContent = `
-${JSON.stringify(data, null, 2)}`;
-
-    return ctx.write(outputContent);
-  },
-  writeEntry: async (ctx) => {
+  async writeEntry(ctx: WriterCtx) {
     const { handledPaths, outputAbsPath } = ctx;
     const componentRelativePath = unix(
       NodePath.relative(
         NodePath.dirname(outputAbsPath),
-        handledPaths['Component']
+        handledPaths["Component"]
       )
     );
     const frontmatterRelativePath = unix(
       NodePath.relative(
         NodePath.dirname(outputAbsPath),
-        handledPaths['Frontmatter']
+        handledPaths["Frontmatter"]
       )
     );
 
@@ -56,5 +47,16 @@ export default Entry;
 `;
 
     return ctx.write(outputContent);
-  },
-};
+  }
+
+  async writeFrontmatter(ctx: WriterCtx) {
+    const {
+      compiledResult: { data },
+    } = ctx;
+
+    const outputContent = `
+${JSON.stringify(data, null, 2)}`;
+
+    return ctx.write(outputContent);
+  }
+}

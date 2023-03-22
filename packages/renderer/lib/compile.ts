@@ -4,12 +4,14 @@ import remarkHeadings from "@vcarl/remark-headings";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import rehypeSlug from "rehype-slug";
-import rehypePrism from "rehype-prism-plus";
+import rehypePrismPlus from "rehype-prism-plus";
 import remarkFrontmatter from "remark-frontmatter";
+import remarkSqueezeParagraphs from "remark-squeeze-paragraphs";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
+import rehypeSlug from "./rehype-slug";
+import remarkUnwrapUnnecessaryParagraph from "./remark-unwrap-unnecessary-paragraph";
 
 export async function compileMdx(fullPath: string) {
   try {
@@ -18,11 +20,14 @@ export async function compileMdx(fullPath: string) {
     const compiled = await compile(fileContents, {
       outputFormat: "function-body",
       development: false,
+      useDynamicImport: true,
       jsx: false,
       remarkPlugins: [
         remarkPresetLintConsistent,
-        remarkHeadings,
+        remarkSqueezeParagraphs,
         remarkUnwrapImages,
+        remarkUnwrapUnnecessaryParagraph,
+        remarkHeadings,
         remarkMath,
         remarkFrontmatter,
         remarkMdxFrontmatter,
@@ -62,7 +67,7 @@ export async function compileMdx(fullPath: string) {
             },
           },
         ],
-        [rehypePrism, { ignoreMissing: true }],
+        [rehypePrismPlus, { ignoreMissing: true }],
         rehypeKatex,
       ],
     });

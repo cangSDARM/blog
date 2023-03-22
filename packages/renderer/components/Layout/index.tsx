@@ -11,9 +11,12 @@ const Layout: React.FC<
 > = ({ children, theme = "dark" }) => {
   return (
     <>
-      <header style={{ height: HeaderHeight, position: "relative" }}>
-        <Header imgSrc="" />
-      </header>
+      <Header
+        imgSrc=""
+        style={{
+          height: HeaderHeight,
+        }}
+      />
       <main
         data-theme={theme}
         style={{

@@ -17,12 +17,12 @@ export const QuoteList = [
   "由于后置测试中被舍弃的片元会浪费前面的性能, 因此GPU通常会判断片元着色器和提前测试(Early-Z)是否冲突来决定是否使用提前测试. 如果冲突将禁用提前测试开启后置测试",
   "在OpenGL中是glDrawElements, DirectX中是DrawIndexedPrimitive",
   "现代渲染管线也称为可编程管线. 在较旧的GPU上称为固定函数流水线(Fixed-Function Pipeline), 这是一种配置管线(只提供开关功能)",
-  "此部分内容会在第四部分(编写shader的数学基础)中完整叙述"
+  "此部分内容会在第四部分(编写shader的数学基础)中完整叙述",
 ];
 
 ## <Quote id="#12">现代渲染管线</Quote>分为三个主要阶段:
-<br/>
-<Tab />
+
+<br />
 
 [应用程序阶段](#应用程序阶段:) --> [几何阶段](#几何阶段:) --> [光栅阶段](#光栅阶段:)
 
@@ -30,77 +30,96 @@ export const QuoteList = [
 <Anchor>应用程序阶段:</Anchor>
 <Tab>
 
-主要和CPU,内存打交道. 该阶段末端, 渲染所需的数据(渲染图元rendering primitives)通过<Quote id="#1">数据总线</Quote>传送到GPU
+主要和 CPU,内存打交道. 该阶段末端, 渲染所需的数据(渲染图元 rendering primitives)通过<Quote id="#1">数据总线</Quote>传送到 GPU
 
-1. 将渲染图元读取到显存中: 从硬盘HDD --> 内存RAM --> 显存VRAM
+1. 将渲染图元读取到显存中: 从硬盘 HDD --> 内存 RAM --> 显存 VRAM
 2. <Expansion>确定网格怎样被渲染</Expansion>
-<Tab expan>
-    在Unity中, 通常是使用MeshRender来将信息传递给GPU.<br/>
-    特别的, 在3D模型中:
-    <Tab>
-        skin mesh render: 带蒙皮的骨骼<br/>
-        mesh filter/ mesh render: 将哪个mesh信息传递给GPU/ 没有骨骼的模型
-    </Tab>
-</Tab>
-3. <Expansion><Quote id="#11">调用Draw Call</Quote></Expansion>: CPU 通知 GPU 渲染
-<Tab expan>
-    CPU向一个队列"命令缓冲区"push命令, 而GPU从其中pull命令. 这样实现了CPU和GPU的并行工作<br/>
-    通常性能的优化都会减少Draw Call的个数
-</Tab>
+   <Tab expan>
+     在Unity中, 通常是使用MeshRender来将信息传递给GPU.<br />
+     特别的, 在3D模型中:
+     <Tab>
+       skin mesh render: 带蒙皮的骨骼<br />
+       mesh filter\/ mesh render: 将哪个mesh信息传递给GPU\/ 没有骨骼的模型
+     </Tab>
+   </Tab>
+3. <Expansion>
+     <Quote id="#11">调用Draw Call</Quote>
+   </Expansion>
+   : CPU 通知 GPU 渲染
+   <Tab expan>
+     CPU向一个队列"命令缓冲区"push命令, 而GPU从其中pull命令.<br />
+     这样实现了CPU和GPU的并行工作<br />
+     通常性能的优化都会减少Draw Call的个数
+   </Tab>
 
 </Tab>
 
 <Anchor>几何阶段:</Anchor>
 <Tab>
 
-主要和GPU打交道. 该阶段末端, 得到经过变换和投影之后的顶点坐标, 颜色及纹理坐标
+主要和 GPU 打交道. 该阶段末端, 得到经过变换和投影之后的顶点坐标, 颜色及纹理坐标
 
 1. <Expansion>顶点着色器</Expansion>: 实现顶点空间变换, 顶点着色, 光照等(可编程)
-<Tab expan>
-    它的输入来自于CPU. 每个顶点都会调用一次顶点着色器.<br/>
-    顶点着色器本身本可以创建和销毁任何顶点, 而且<Quote id="#6">顶点顶点之间是相互独立的</Quote>.<br/>
-    它最基本且必须完成的工作是: 将顶点坐标从 模型空间 转换到 <Quote id="#7">齐次裁剪坐标系</Quote> 下
-</Tab>
+   <Tab expan>
+     它的输入来自于CPU. 每个顶点都会调用一次顶点着色器.<br />
+     顶点着色器本身本可以创建和销毁任何顶点, 而且
+     <Quote id="#6">顶点顶点之间是相互独立的</Quote>.<br />
+     它最基本且必须完成的工作是: 将顶点坐标从 模型空间 转换到 <Quote id="#7">
+       齐次裁剪坐标系
+     </Quote> 下
+   </Tab>
 2. <Expansion>曲面细分着色器</Expansion>: 用于细分图元(可选着色器, 可编程)
-<Tab expan>
-    很遗憾, 此部分并没有学到.
-</Tab>
-3. <Expansion>几何着色器</Expansion>: 执行逐图元的着色(Per-Primitive)或产生更多图元(可选着色器, 可编程)
-<Tab expan>
-    很遗憾, 此部分并没有学到.
-</Tab>
+   <Tab expan>很遗憾, 此部分并没有学到.</Tab>
+3. <Expansion>几何着色器</Expansion>:
+   执行逐图元的着色(Per-Primitive)或产生更多图元(可选着色器, 可编程)
+   <Tab expan>很遗憾, 此部分并没有学到.</Tab>
 4. <Expansion>裁剪</Expansion>:<Quote id="#2">视锥裁剪</Quote>(可配置)
-<Tab expan>
-    确认视锥(即选择投影类型)并裁剪<br/>
-    裁剪并不一定是通过GPU来运算. 也可以<Quote id="#8">通过CPU运算</Quote>后直接跳过该步骤.
-</Tab>
+   <Tab expan>
+     确认视锥(即选择投影类型)并裁剪<br />
+     裁剪并不一定是通过GPU来运算. 也可以<Quote id="#8">通过CPU运算</Quote>
+     后直接跳过该步骤.
+   </Tab>
 5. <Expansion>屏幕映射</Expansion>: 将CVV 转换为Clip and Project space
-<Tab expan>
-    屏幕映射(Screen Mapping)并不会处理深度值Z.<br/>
-    值得注意的是, OpenGL的坐标系将"屏幕的左下角"当作原点(0,0); 而DirectX的坐标系将"屏幕的左上角"当作原点(0,0)
-</Tab>
-附录: <Expansion><Quote id="#13">坐标空间</Quote></Expansion>: 依照先后顺序
-<Tab expan>
-    Object space物体坐标系
-    <Quote id="#3">--></Quote>
-    World space世界坐标系
-    <Quote id="#4">--></Quote>
-    View space观察坐标系
-    <Quote id="#5">--></Quote>
-    Project space屏幕坐标系
-    
-    <Table>{
-        [{
-            cells: ["Object space", "模型建立时得到的坐标. 与其它物体没有任何参照关系"], component: ['th']
-        }, {
-            cells: ["World space", "以一个固定的坐标原点经行参照确定物体位置"], component: ['th']
-        }, {
-            cells: ["View space", "以Camera为原点, 组成的正交坐标系"], component: ['th']
-        }, {
-            cells: ["Project space", "屏幕坐标系"], component: ['th']
-        }]
-    }</Table>
-</Tab>
+   <Tab expan>
+     屏幕映射(Screen Mapping)并不会处理深度值Z.<br />
+     值得注意的是, OpenGL的坐标系将"屏幕的左下角"当作原点(0,0);
+     而DirectX的坐标系将"屏幕的左上角"当作原点(0,0)
+   </Tab>
+   附录: <Expansion>
+     <Quote id="#13">坐标空间</Quote>
+   </Expansion>: 依照先后顺序
+   <Tab expan>
+     Object space物体坐标系
+     <Quote id="#3">--></Quote>
+     World space世界坐标系
+     <Quote id="#4">--></Quote>
+     View space观察坐标系
+     <Quote id="#5">--></Quote>
+     Project space屏幕坐标系
+     <Table>
+       {[
+         {
+           cells: [
+             "Object space",
+             "模型建立时得到的坐标. 与其它物体没有任何参照关系",
+           ],
+           component: ["th"],
+         },
+         {
+           cells: ["World space", "以一个固定的坐标原点经行参照确定物体位置"],
+           component: ["th"],
+         },
+         {
+           cells: ["View space", "以Camera为原点, 组成的正交坐标系"],
+           component: ["th"],
+         },
+         {
+           cells: ["Project space", "屏幕坐标系"],
+           component: ["th"],
+         },
+       ]}
+     </Table>
+   </Tab>
 
 </Tab>
 
@@ -109,48 +128,62 @@ export const QuoteList = [
 基于几何阶段输出的数据, 雾化, 透明及为pixel正确配色. 经行单个像素的操作, 每个pixel的信息存储在颜色缓冲器(color buffer 或frame buffer)中
 
 1. <Expansion>三角形设置</Expansion>: 计算光栅化一个三角网格所需的信息
-<Tab expan>
-    上一阶段输出的是"三角网格的顶点"即每条边的两个端点.
-    如果需要得到三角网格对pixel的覆盖情况, 需要计算每条边的像素坐标.<br />
-    三角形设置(Triangle Setup)通过计算三角形边界的表示形式来确定每条边的坐标
-</Tab>
+   <Tab expan>
+     上一阶段输出的是"三角网格的顶点"即每条边的两个端点.
+     如果需要得到三角网格对pixel的覆盖情况, 需要计算每条边的像素坐标.
+     <br />
+     三角形设置(Triangle Setup)通过计算三角形边界的表示形式来确定每条边的坐标
+   </Tab>
 2. <Expansion>三角形遍历</Expansion>
-<Tab expan>
-    <Quote id="#9">三角形遍历</Quote>(Triangle Traversal)确定每个三角网格所覆盖的pixel,
-    并使用顶点信息对覆盖区域进行差值<br />
-    遍历完成后的输出就称之为片元(fragment), 包含了深度值Z, 法线,
-    纹理等信息, 可以说是"收集完全但未计算的像素信息"
-</Tab>
+   <Tab expan>
+     <Quote id="#9">三角形遍历</Quote>(Triangle
+     Traversal)确定每个三角网格所覆盖的pixel, 并使用顶点信息对覆盖区域进行差值
+     <br />
+     遍历完成后的输出就称之为片元(fragment), 包含了深度值Z, 法线, 纹理等信息,
+     可以说是"收集完全但未计算的像素信息"
+   </Tab>
 3. <Expansion>片元着色器</Expansion>: 实现逐片元的着色(Per-Fragment)(可编程)
-<Tab expan>
-    这一阶段包含许多的渲染技术. 最重要的就是纹理采样(将贴图,
-    法线等颜色信息给片元)<br />
-    但它仅能影响单个片元, 无法将结果发送给它周围的pixel.(法线信息除外)
-</Tab>
+   <Tab expan>
+     这一阶段包含许多的渲染技术. 最重要的就是纹理采样(将贴图,
+     法线等颜色信息给片元)
+     <br />
+     但它仅能影响单个片元, 无法将结果发送给它周围的pixel.(法线信息除外)
+   </Tab>
 4. <Expansion>逐片元操作</Expansion>: 片元的可见性, 深度缓冲, 颜色混合等(可配置)
-<Tab expan>
-    在OpenGL中称为逐片元操作(Per-Fragment Operations),
-    在DirectX中称为输出合并阶段(Output-Merger)
-    <br />
-    需要经过<Expansion><Quote id="#10">两个测试</Quote></Expansion>,
-    来决定片元的可见性问题
-    <Tab expan>
-    模板测试 --> 深度测试
-        <Table>{
-            [{
-                cells: ["模板测试", "通常用于限制渲染的区域. 也可以用来渲染阴影, 轮廓渲染等"], component: ['th']
-            }, {
-                cells: ["深度测试", "通常用于视野深度计算"], component: ['th']
-            }]
-        }</Table>
-    </Tab>
-    之后需要经行混合(Blend)操作,
-    决定此次操作和前一次操作的关系(实现不透明(全覆盖)或半透明(局部覆盖))
-</Tab>
+   <Tab expan>
+     在OpenGL中称为逐片元操作(Per-Fragment Operations),
+     在DirectX中称为输出合并阶段(Output-Merger)
+     <br />
+     需要经过
+     <Expansion>
+       <Quote id="#10">两个测试</Quote>
+     </Expansion>
+     , 来决定片元的可见性问题
+     <Tab expan>
+       模板测试 --> 深度测试
+       <Table>
+         {[
+           {
+             cells: [
+               "模板测试",
+               "通常用于限制渲染的区域. 也可以用来渲染阴影, 轮廓渲染等",
+             ],
+             component: ["th"],
+           },
+           {
+             cells: ["深度测试", "通常用于视野深度计算"],
+             component: ["th"],
+           },
+         ]}
+       </Table>
+     </Tab>
+     之后需要经行混合(Blend)操作,
+     决定此次操作和前一次操作的关系(实现不透明(全覆盖)或半透明(局部覆盖))
+   </Tab>
 5. <Expansion>屏幕图像</Expansion>
-<Tab expan>
-    使用通常所说的双缓冲技术(Double Buffering). 前置缓冲(front
-    buffer)和后置缓冲(frame buffer|back buffer)交替显示
-</Tab>
+   <Tab expan>
+     使用通常所说的双缓冲技术(Double Buffering). 前置缓冲(front
+     buffer)和后置缓冲(frame buffer|back buffer)交替显示
+   </Tab>
 
 </Tab>

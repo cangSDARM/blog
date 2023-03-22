@@ -1,13 +1,13 @@
-import NodePath from 'path';
-import { unix } from '../../utils/path-extra';
-import { Plugin } from '../../output';
+import NodePath from "path";
+import { unix } from "../utils/path-extra";
+import { WriterCtx, Writer } from "./types";
 
-export default <Plugin>{
-  writeComponent: async (ctx) => {
+export class VanillaWriter extends Writer {
+  async writeComponent(ctx: WriterCtx) {
     const {
       compiledResult: { content, error },
     } = ctx;
-    const contents = !!error ? 'export default {};' : content;
+    const contents = !!error ? "export default {};" : content;
     const outputContent = `
 import react from 'react';
 export default function() {
@@ -15,9 +15,9 @@ ${contents}
 }`;
 
     return ctx.write(outputContent);
-  },
-  writeFrontmatter() {},
-  writeEntry: async (ctx) => {
+  }
+
+  async writeEntry(ctx: WriterCtx) {
     const {
       compiledResult: { data },
       outputAbsPath,
@@ -26,7 +26,7 @@ ${contents}
     const relativePath = unix(
       NodePath.relative(
         NodePath.dirname(outputAbsPath),
-        handledPaths['Component']
+        handledPaths["Component"]
       )
     );
 
@@ -39,5 +39,5 @@ export default Object.assign(result, rest, { MdxComponent, });
 `;
 
     return ctx.write(outputContent);
-  },
-};
+  }
+}

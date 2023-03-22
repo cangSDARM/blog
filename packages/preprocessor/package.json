@@ -29,5 +29,8 @@
     "remark-unwrap-images": "^3.0.1",
     "rimraf": "^4.1.2",
     "tsup-node": "^0.1.0"
+  },
+  "dependencies": {
+    "hast-util-to-string": "^2.0.0"
   }
 }

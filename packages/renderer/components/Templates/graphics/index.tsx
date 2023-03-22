@@ -31,15 +31,9 @@ const shotCodes = {
   TableCell,
   hr: (props: any) => <hr className={styles.hrStyle} {...props} />,
   a: (props: any) => <a className={styles.aStyle} {...props} />,
-  th: (props: any) => <th className={styles.thStyle} {...props} />,
-  td: (props: any) => <th className={styles.tdStyle} {...props} />,
 };
 
-const Graphics: React.FC<TemplateProps> = ({
-  frontmatter,
-  children,
-  compiled,
-}) => {
+const Graphics: TemplateComponent = ({ frontmatter, children, compiled }) => {
   const { title } = frontmatter;
 
   return (
@@ -66,5 +60,7 @@ const Graphics: React.FC<TemplateProps> = ({
     </>
   );
 };
+
+Graphics.rootStyle = styles.mainStyle;
 
 export default Graphics;

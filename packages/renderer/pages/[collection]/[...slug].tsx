@@ -8,6 +8,7 @@ import {
 import { compileMdx } from "@/lib/compile";
 import useMdxRenderer from "@/hooks/useMdxRenderer";
 import Image from "@/components/Image";
+import clsx from "clsx";
 import Layout, { injectLayoutContext } from "@/components/Layout";
 import Meta from "@/components/Meta";
 import _ from "lodash";
@@ -72,7 +73,7 @@ export default injectLayoutContext(function Page({
   compiled: { content, ...compiled },
 }: PageProps) {
   const [Component, frontmatter] = useMdxRenderer({ code: content });
-  const [Renderer] = useTemplateRender(post.collection);
+  const [Renderer, rootStyle] = useTemplateRender(post.collection);
 
   return (
     <>
@@ -81,7 +82,7 @@ export default injectLayoutContext(function Page({
         titleTemplate={`%s | ${_.capitalize(post.collection)}`}
       />
       <Layout theme="light">
-        <div className={styles.Root}>
+        <div className={clsx(styles.Root, rootStyle)}>
           <Renderer frontmatter={frontmatter} compiled={compiled}>
             {(components) => (
               <Component

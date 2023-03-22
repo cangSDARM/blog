@@ -6,7 +6,9 @@ import { displayComment, displayExpansion } from "./utils";
 
 export const Dialog = (props: any) => <div {...props}></div>;
 export const TableBody = (props: any) => <tbody {...props}></tbody>;
-export const TableCell = (props: any) => <td {...props}></td>;
+export const TableCell = ({ component: Comp = "td", ...props }: any) => (
+  <Comp {...props} />
+);
 export const TableHead = (props: any) => <td {...props}></td>;
 export const TableRow = (props: any) => <tr {...props}></tr>;
 export const STable = (props: any) => <table {...props}></table>;

@@ -3,8 +3,8 @@ import { Dir, promises, createWriteStream } from 'fs';
 import { isMatch, unix } from './path-extra';
 import { mkdirp } from 'mkdirp';
 
-export type OpenDirOptions = {
-  ignore?: string;
+export interface OpenDirOptions {
+  ignore: string;
 };
 
 type OpenDirParams = [

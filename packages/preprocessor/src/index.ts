@@ -1,47 +1,44 @@
-import { compileMdx, CompileConfig } from './compile';
-import { mkdir } from './utils/fs-extra';
-import path from 'path';
-import { InputConfig, process as ipProcess } from './input';
-import { workspace } from './utils/path-extra';
-import { process as opProcess, OutConfig } from './output';
-import { rimraf } from 'rimraf';
+import { compileMdx } from "./compile";
+import path from "path";
+import { process as beforeCompileProcess } from "./before";
+import { workspace } from "./utils/path-extra";
+import { process as afterCompileProcess } from "./after";
+import { rimraf } from "rimraf";
+import { Option } from "./option";
+import * as ExtraPlugins from "./unified";
+import { NextWriter, VanillaWriter } from "./writer";
 
 type PreprocessorConfig = {
   input: string;
   output?: string;
-  inputOption?: InputConfig;
-  compileOption?: CompileConfig;
-  outputOption?: OutConfig;
+  option: Option;
 };
 
-const DefaultOutputOption: OutConfig = { noCache: false };
-const DefaultInputOption: InputConfig = {};
+const Writers = { NextWriter, VanillaWriter };
+
+export { Option, ExtraPlugins, Writers };
 
 export default async ({
   input,
-  inputOption,
-  output = 'dist',
-  compileOption,
-  outputOption,
+  output = "dist",
+  option,
 }: PreprocessorConfig) => {
   const absIn = workspace(input, true);
   const absOut = workspace(output, true);
 
-  inputOption = Object.assign(DefaultInputOption, inputOption);
-  outputOption = Object.assign(DefaultOutputOption, outputOption);
-
-  if (outputOption?.noCache) {
+  if (!option.hasCache) {
     await rimraf(absOut);
   }
-  for await (const chunk of ipProcess(absIn, inputOption)) {
+  for await (const chunk of beforeCompileProcess(absIn, option)) {
     const relative = path.relative(absIn, chunk);
     const out = path.join(absOut, relative);
+    option.mdAbsPath = chunk;
 
-    const result = await compileMdx({ mdAbsPath: chunk, ...compileOption });
+    const result = await compileMdx(option);
 
-    for await (const _ of opProcess(out, result, outputOption)) {
+    for await (const _ of afterCompileProcess(out, result, option)) {
       //
     }
   }
-  console.log('end');
+  console.log("end");
 };
