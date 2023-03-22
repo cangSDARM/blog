@@ -1,15 +1,28 @@
-const worker = require("./dist/index");
-const path = require("path");
-const remarkUnwrapImages = require("remark-unwrap-images");
-const remarkMath = require("remark-math");
-const rehypeSlug = require("rehype-slug");
-const rehypeAutolinkHeadings = require("rehype-autolink-headings");
-const rehypeKatex = require("rehype-katex");
-const rehypePrismPlus = require("rehype-prism-plus");
+import worker, {
+  ExtraPlugins,
+  Writers,
+  Option as WOption,
+} from "./dist/index.js";
+import { fileURLToPath } from "url";
+import path from "path";
+import remarkUnwrapImages from "remark-unwrap-images";
+import remarkMath from "remark-math";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeKatex from "rehype-katex";
+import rehypePrismPlus from "rehype-prism-plus";
+
+function fileDirName(meta) {
+  const __filename = fileURLToPath(meta.url);
+
+  const __dirname = path.dirname(__filename);
+
+  return { __dirname, __filename };
+}
+const { __dirname } = fileDirName(import.meta);
 
 const renderer = path.join(__dirname, "../renderer");
-const ExtraPlugins = worker.ExtraPlugins;
-const Option = new worker.Option(new worker.Writers.NextWriter());
+const Option = new WOption(new Writers.NextWriter());
 
 Option.setIgnorePathPatten("*haskell/**");
 Option.addPlugin("remark", ExtraPlugins.remarkUnwrapUnnecessaryParagraph);
@@ -49,8 +62,17 @@ Option.addPlugin("rehype", [
     },
   },
 ]);
-Option.addPlugin("rehype", [rehypePrismPlus, { ignoreMissing: true }]);
 Option.addPlugin("rehype", rehypeKatex);
+Option.addPlugin("rehype", [
+  (op) => {
+    try {
+      return rehypePrismPlus(op);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  { ignoreMissing: true },
+]);
 
 worker
   .default({

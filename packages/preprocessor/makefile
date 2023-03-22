@@ -18,7 +18,7 @@ MdxRmf = remark-mdx-frontmatter
 Dist = dist
 Build = build
 Source = src/index.ts
-Entry = main.js
+Entry = main.mjs
 
 define rimraf
 	$(call node_exec,rimraf $(1))
@@ -49,6 +49,6 @@ build:
 	echo
 
 start:
-	node $(Entry)
+	node --experimental-modules $(Entry)
 
 serve: build start

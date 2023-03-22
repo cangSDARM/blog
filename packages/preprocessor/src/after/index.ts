@@ -3,17 +3,19 @@ import { writeFile } from "../utils/fs-extra";
 import { CompileResult } from "../compile";
 import assert from "assert";
 import { mkdir } from "../utils/fs-extra";
+import { Log } from "../utils/log";
 import { dirname } from "path";
 import type { WriterCtx, Writer } from "../writer";
 
 export interface IAfterConfig {
-  type: "vanilla" | "nextjs" | "custom";
-  plugin: Writer;
+  writer: Writer;
 }
+
+export const afterLog = new Log();
 
 const preWrite = (ctx: WriterCtx, cfgBag: { For: string; ext: string }) => {
   ctx.getPath = (base) => base + cfgBag.ext;
-  ctx.write = async (content: string) => {
+  ctx.write = async (content) => {
     content = content.trim();
     const writePath = ctx.getPath(base(ctx.outputAbsPath));
 
@@ -30,7 +32,7 @@ export async function* process(
   compiled: CompileResult,
   config: IAfterConfig
 ) {
-  assert.ok(compiled);
+  afterLog.assertOk(compiled);
 
   const { content, ...restResult } = compiled;
   const ctx: WriterCtx = {
@@ -72,6 +74,9 @@ export async function* process(
     }
   }
 
-  assert.ok(config.plugin);
-  yield* procedure(config?.plugin);
+  afterLog.assertOk(config.writer);
+  yield* procedure(config?.writer);
+  await afterLog.log(outputAbsPath, {
+    outputFiles: ctx.handledPaths,
+  });
 }

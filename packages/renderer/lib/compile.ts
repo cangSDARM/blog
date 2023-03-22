@@ -10,7 +10,7 @@ import remarkSqueezeParagraphs from "remark-squeeze-paragraphs";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
-import rehypeSlug from "./rehype-slug";
+import rehypeSlug from "rehype-slug";
 import remarkUnwrapUnnecessaryParagraph from "./remark-unwrap-unnecessary-paragraph";
 
 export async function compileMdx(fullPath: string) {

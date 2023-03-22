@@ -10,6 +10,7 @@ export type WriterCtx = {
   handledPaths: Record<string, string>;
   /** get current path to write. you can rewrite this to overwrite default ext or file path. */
   getPath: (base: string) => string;
+  /** write content to the file. */
   write: (content: string) => WriteResult;
 };
 

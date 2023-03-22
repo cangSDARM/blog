@@ -1,8 +1,16 @@
 import { openDir, OpenDirOptions } from "../utils/fs-extra";
+import { Log } from "../utils/log";
 
-export async function* process(input: string, options?: IBeforeConfig) {
-  for await (const filePath of openDir(input, options)) {
-    yield filePath;
+export const beforeLog = new Log();
+
+export async function* process(input: string, ctx: IBeforeConfig) {
+  try {
+    for await (const filePath of openDir(input, ctx)) {
+      yield filePath;
+    }
+  } catch (e: any) {
+    beforeLog.fail(`Error while processing ${input}.\n`, e);
+    throw e;
   }
 }
 

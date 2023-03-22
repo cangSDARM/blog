@@ -26,9 +26,16 @@ export default async ({
   const absIn = workspace(input, true);
   const absOut = workspace(output, true);
 
+  console.log("enabled plugins:", {
+    remark: option.remarkPlugins,
+    rehype: option.rehypePlugins,
+    recma: option.recmaPlugins,
+  });
+
   if (!option.hasCache) {
     await rimraf(absOut);
   }
+
   for await (const chunk of beforeCompileProcess(absIn, option)) {
     const relative = path.relative(absIn, chunk);
     const out = path.join(absOut, relative);
@@ -40,5 +47,6 @@ export default async ({
       //
     }
   }
+  option.printInfo();
   console.log("end");
 };

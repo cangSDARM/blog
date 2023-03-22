@@ -20,6 +20,8 @@ export default Component;`;
 
   async writeEntry(ctx: WriterCtx) {
     const { handledPaths, outputAbsPath } = ctx;
+    ctx.getPath = (base) => base + ".jsx";
+
     const componentRelativePath = unix(
       NodePath.relative(
         NodePath.dirname(outputAbsPath),
@@ -37,12 +39,14 @@ export default Component;`;
 import Content from "./${componentRelativePath}";
 import Frontmatter from "./${frontmatterRelativePath}";
 import react from 'react';
+
 const { ['default']: MdxComponent, ...rest } = Content(react);
 
 function Entry() {
   console.log(Frontmatter);
   return <MdxComponent />;
 }
+
 export default Entry;
 `;
 

@@ -18,7 +18,6 @@ function remarkUnwrapUnnecessaryParagraph() {
           parent &&
           isNeedClearParagraph(parent)
         ) {
-          // console.log(node.children);
           splice.apply(parent.children, [index, 1, ...(node.children || [])]);
         }
       }

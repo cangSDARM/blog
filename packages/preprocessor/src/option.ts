@@ -1,49 +1,55 @@
-import { IBeforeConfig } from "./before";
-import { ICompileConfig } from "./compile";
-import { IAfterConfig } from "./after";
+import { IBeforeConfig, beforeLog } from "./before";
+import { ICompileConfig, compileLog } from "./compile";
+import { IAfterConfig, afterLog } from "./after";
 import { Pluggable } from "unified";
 import remarkHeadings from "@vcarl/remark-headings";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter, { Traveler } from "@allen/remark-mdx-frontmatter";
+import { Log, Report } from "./utils/log";
+import { pathLog } from "./utils/path-extra";
 
-class Report {
-  error(...args: any[]) {
-    console.error(...args);
-  }
-}
+const DefaultRemarkPlugins: ICompileConfig["remarkPlugins"] = [
+  remarkPresetLintConsistent,
+  remarkHeadings,
+  remarkFrontmatter,
+  [
+    remarkMdxFrontmatter,
+    {
+      name: "frontmatter",
+      action: ((name, data) => {
+        return ["vfile-data", data];
+      }) as Traveler,
+    },
+  ],
+];
 
 export class Option implements IBeforeConfig, IAfterConfig, ICompileConfig {
-  type: "vanilla" | "nextjs" | "custom" = "vanilla";
   remarkPlugins: ICompileConfig["remarkPlugins"];
   rehypePlugins: ICompileConfig["rehypePlugins"];
   recmaPlugins: ICompileConfig["recmaPlugins"];
 
   private _ignoringPath: string;
   private _mdAbsPath: string = "";
-  private cache: boolean = true;
-  private reporter = new Report();
-  private fileWriter: IAfterConfig["plugin"];
+  private _cache: boolean = true;
+  private _fileWriter: IAfterConfig["writer"];
+  private _log: Log;
 
-  constructor(fileWriter: IAfterConfig["plugin"]) {
-    this.remarkPlugins = [
-      remarkPresetLintConsistent,
-      remarkHeadings,
-      remarkFrontmatter,
-      [
-        remarkMdxFrontmatter,
-        {
-          name: "frontmatter",
-          action: ((name, data) => {
-            return ["vfile-data", data];
-          }) as Traveler,
-        },
-      ],
-    ];
+  constructor(fileWriter: IAfterConfig["writer"]) {
+    this._log = new Log();
+    this.remarkPlugins = DefaultRemarkPlugins;
     this.rehypePlugins = [];
     this.recmaPlugins = [];
     this._ignoringPath = "";
-    this.fileWriter = fileWriter;
+    this._fileWriter = fileWriter;
+  }
+
+  printInfo() {
+    console.log("before:", beforeLog.getMassages());
+    console.log("compile:", compileLog.getMassages());
+    console.log("path:", pathLog.getMassages());
+    console.log("after:", afterLog.getMassages());
+    console.log("context:", this._log.getMassages());
   }
 
   addPlugin(For: "remark" | "rehype" | "recma", plugin: Pluggable) {
@@ -58,12 +64,12 @@ export class Option implements IBeforeConfig, IAfterConfig, ICompileConfig {
         this.recmaPlugins.push(plugin);
         break;
       default:
-        this.reporter.error("type", For, "not supported");
+        this._log.fail("type", For, "not supported");
     }
   }
 
-  get plugin() {
-    return this.fileWriter;
+  get writer() {
+    return this._fileWriter;
   }
 
   set mdAbsPath(path: string) {
@@ -74,7 +80,7 @@ export class Option implements IBeforeConfig, IAfterConfig, ICompileConfig {
   }
 
   get defaultPlugins() {
-    return [this.remarkPlugins, this.rehypePlugins];
+    return [DefaultRemarkPlugins, [], []];
   }
 
   setIgnorePathPatten(patten: string) {
@@ -85,12 +91,12 @@ export class Option implements IBeforeConfig, IAfterConfig, ICompileConfig {
   }
 
   enableCache() {
-    this.cache = true;
+    this._cache = true;
   }
   disableCache() {
-    this.cache = false;
+    this._cache = false;
   }
   get hasCache() {
-    return !!this.cache;
+    return !!this._cache;
   }
 }

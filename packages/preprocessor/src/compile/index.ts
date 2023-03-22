@@ -1,6 +1,8 @@
 import { readFile } from "fs/promises";
+import { Log, Report } from "../utils/log";
 import { compile, CompileOptions } from "@mdx-js/mdx";
-import assert from "assert";
+
+export const compileLog = new Log();
 
 export interface ICompileConfig {
   remarkPlugins: Defined<CompileOptions["remarkPlugins"]>;
@@ -9,12 +11,9 @@ export interface ICompileConfig {
   mdAbsPath: string;
 }
 
-export async function compileMdx({
-  remarkPlugins,
-  rehypePlugins,
-  recmaPlugins,
-  mdAbsPath,
-}: ICompileConfig) {
+export async function compileMdx(config: ICompileConfig) {
+  const { remarkPlugins, rehypePlugins, recmaPlugins, mdAbsPath } = config;
+
   try {
     const fileContents = await readFile(mdAbsPath, { encoding: "utf-8" });
 
@@ -27,14 +26,14 @@ export async function compileMdx({
       recmaPlugins,
     });
 
-    assert.ok(compiled);
+    compileLog.assertOk(compiled);
 
     return {
       content: compiled.value.toString(),
       ...compiled.data,
     } as const;
   } catch (e) {
-    console.error(`Error while compile mdx at ${mdAbsPath}`);
+    compileLog.fail(`Error while compile: ${mdAbsPath}`);
     throw e;
   }
 }
