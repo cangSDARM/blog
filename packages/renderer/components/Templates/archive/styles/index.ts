@@ -1,5 +1,5 @@
 //@ts-nocheck
-export { Bilibili as bilibili } from "./bilibili.module.css";
+export { Bilibili as bilibili } from "./bilibili.module.scss";
 export { Douban as douban } from "./douban.module.css";
 export { Godot as godot } from "./godot.module.css";
 export { Guancha as guancha } from "./guancha.module.css";

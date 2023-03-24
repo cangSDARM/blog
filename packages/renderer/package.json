@@ -26,6 +26,7 @@
     "lodash": "^4.17.21",
     "next": "13.1.1",
     "next-sitemap": "^3.1.43",
+    "plaiceholder": "^2.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
@@ -37,7 +38,8 @@
     "remark-mdx-frontmatter": "^2.1.1",
     "remark-preset-lint-consistent": "^5.1.1",
     "remark-squeeze-paragraphs": "^5.0.1",
-    "remark-unwrap-images": "^3.0.1"
+    "remark-unwrap-images": "^3.0.1",
+    "sharp": "^0.31.3"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
@@ -46,6 +48,7 @@
     "@types/react-dom": "^18.0.10",
     "eslint": "^8.30.0",
     "eslint-config-next": "^13.1.1",
-    "sass": "^1.57.1"
+    "sass": "^1.57.1",
+    "unist-util-visit": "^4.1.2"
   }
 }

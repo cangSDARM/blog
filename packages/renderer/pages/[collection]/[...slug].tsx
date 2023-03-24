@@ -27,23 +27,8 @@ const MdxImage: React.FC<
     HTMLImageElement
   >
 > = (props) => {
-  const tSrc = React.useMemo(() => {
-    if (!props.src) return "";
-
-    const rep = /^.+(\/images\/.*)$/giu.exec(props.src);
-
-    if (rep) {
-      console.warn(
-        "please replace the src of the image with the beginning of /images"
-      );
-      return rep[1];
-    }
-
-    return props.src;
-  }, [props.src]);
-
   return (
-    <span role="figure">
+    <figure role="figure">
       <span
         className="gatsby-resp-image-wrapper"
         style={{
@@ -54,17 +39,17 @@ const MdxImage: React.FC<
         }}
       >
         <Link
-          href={tSrc}
+          href={props.src || "/"}
           target="_blank"
           rel="noopener"
           style={{ display: "block" }}
         >
           {/* @ts-ignore */}
-          <Image {...props} src={tSrc} ext={""} />
+          <Image {...props} src={props.src || ""} ext={""} />
         </Link>
       </span>
-      <span role="figcaption">{props.title || props.alt}</span>
-    </span>
+      <figcaption role="figcaption">{props.title || props.alt}</figcaption>
+    </figure>
   );
 };
 

@@ -1,4 +1,5 @@
 import { promises } from "fs";
+import path from "path";
 import { compile } from "@mdx-js/mdx";
 import remarkHeadings from "@vcarl/remark-headings";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -12,6 +13,7 @@ import remarkUnwrapImages from "remark-unwrap-images";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import rehypeSlug from "rehype-slug";
 import remarkUnwrapUnnecessaryParagraph from "./remark-unwrap-unnecessary-paragraph";
+import rehypeImageProcess from "./rehype-image-process";
 
 export async function compileMdx(fullPath: string) {
   try {
@@ -33,6 +35,28 @@ export async function compileMdx(fullPath: string) {
         remarkMdxFrontmatter,
       ],
       rehypePlugins: [
+        [
+          rehypeImageProcess,
+          {
+            srcTransform: (src: string) => {
+              // Check if the image is external (remote)
+              const isExternal = src.startsWith("http");
+
+              if (!isExternal) {
+                const rep = /^.+(\/images\/.*)$/giu.exec(src);
+
+                if (rep) {
+                  console.warn(
+                    "please replace the src of the image with the beginning of /images"
+                  );
+                  return rep[1];
+                }
+              }
+
+              return src;
+            },
+          },
+        ],
         rehypeSlug,
         [
           rehypeAutolinkHeadings,

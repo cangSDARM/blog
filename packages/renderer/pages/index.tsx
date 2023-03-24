@@ -3,6 +3,7 @@ import Meta from "@/components/Meta";
 import Layout, { injectLayoutContext } from "@/components/Layout";
 import puns from "@/row/pun";
 import { collectionOverview } from "@/lib/api";
+import Logo from "@/public/images/doctor-strange-logo.png";
 
 export default injectLayoutContext(function () {
   return (
@@ -25,7 +26,7 @@ export default injectLayoutContext(function () {
               marginTop: `1rem`,
             }}
           >
-            <Image src="/images/doctor-strange-logo" ext="png" />
+            <Image.Static src={Logo} alt="doctor" />
           </div>
           <div
             style={{

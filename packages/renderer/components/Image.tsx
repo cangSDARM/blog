@@ -7,29 +7,32 @@ const Image: React.FC<{
   ext?: string;
   width?: number;
   height?: number;
-  alt?: string;
   style?: React.CSSProperties;
-}> = ({ src, ext, style, alt = src, width = 3600, height = 3600 }) => {
+  alt?: string;
+}> & { Static: typeof NextImage } = ({
+  src,
+  ext,
+  style,
+  width = 3000,
+  height = 3000,
+  ...props
+}) => {
   const tSrc = `${Conf.site.baseUrl + src}${ext ? "." + ext : ""}`;
-  const [nSize, setNSize] = React.useState([width, height]);
 
   return (
     <NextImage
-      onError={(err) => console.warn("image error: ", err)}
-      onLoad={(e) => {
-        const target = e.currentTarget;
-        setNSize([target.naturalWidth, target.naturalHeight]);
-      }}
-      data-originsrc={src}
+      onError={(err) => console.warn("image error: ", src, err)}
       style={style}
       src={tSrc}
-      alt={alt}
       width={width}
       height={height}
-      sizes={`(max-width: ${nSize[0]}px) 100vw, ${nSize[0]}px`}
       crossOrigin="anonymous"
+      alt={props.alt || tSrc}
+      {...props}
     />
   );
 };
+
+Image.Static = NextImage;
 
 export default Image;

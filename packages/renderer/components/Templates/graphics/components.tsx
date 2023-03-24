@@ -9,7 +9,7 @@ export const TableBody = (props: any) => <tbody {...props}></tbody>;
 export const TableCell = ({ component: Comp = "td", ...props }: any) => (
   <Comp {...props} />
 );
-export const TableHead = (props: any) => <td {...props}></td>;
+export const TableHead = (props: any) => <thead {...props}></thead>;
 export const TableRow = (props: any) => <tr {...props}></tr>;
 export const STable = (props: any) => <table {...props}></table>;
 
@@ -144,13 +144,10 @@ export const Model: React.FC<React.PropsWithChildren<{ about: string }>> = ({
           setCurr(false);
         }}
         scroll="body"
-        PaperProps={{
-          style: { maxWidth: "unset" },
-        }}
       >
         <Image
           alt="缩小"
-          src={`images/graphics/${path}`}
+          src={`/images/graphics/${path}`}
           ext={"png"}
           style={{
             objectFit: "none",

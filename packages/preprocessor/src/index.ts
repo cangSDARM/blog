@@ -41,6 +41,7 @@ export default async ({
     const out = path.join(absOut, relative);
     option.mdAbsPath = chunk;
 
+    // TODO: extends to other type file
     const result = await compileMdx(option);
 
     for await (const _ of afterCompileProcess(out, result, option)) {
