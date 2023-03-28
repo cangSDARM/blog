@@ -74,10 +74,10 @@
   text-shadow: none;
   color: rgb(26, 26, 26);
 }
-.ZhiHu_Zhuanlan *[class="gatsby-resp-image-wrapper"] {
+.ZhiHu_Zhuanlan *[class="resp-image-wrapper"] {
   margin: 0 auto !important;
 }
-.ZhiHu_Zhuanlan *[class="gatsby-resp-image-wrapper"] + [role="figcaption"] {
+.ZhiHu_Zhuanlan *[class="resp-image-wrapper"] + [role="figcaption"] {
   margin-top: 0.66667em;
   padding: 0 1em;
   font-size: 0.9em;

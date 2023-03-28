@@ -8,5 +8,4 @@ export type RehypeNode = Node & {
 
 export const forEach = ([] as any[]).forEach;
 
-export const isJsxElement = (node: Node) =>
-  node.type === "mdxJsxFlowElement" || node.type === "mdxJsxTextElement";
+export const isJsxElement = (node: Node) => node.type?.startsWith("mdxJsx");

@@ -22,7 +22,7 @@
   font-family: Microsoft YaHei, -apple-system, PingFang SC, Droid Sans Fallback,
     Droid Sans, HYQiHei, Arial, Helvetica Neue, Hiragino Sans GB, sans-serif;
 
-  *[class="gatsby-resp-image-wrapper"] {
+  *[class="resp-image-wrapper"] {
     margin: 0 auto !important;
   }
   a {
@@ -152,7 +152,7 @@
       margin-bottom: 20px;
       display: block;
 
-      span[class="gatsby-resp-image-wrapper"] {
+      span[class="resp-image-wrapper"] {
         max-width: 214px;
         background-color: transparent;
         display: inline-block;

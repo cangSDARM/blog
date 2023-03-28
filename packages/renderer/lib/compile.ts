@@ -1,5 +1,4 @@
 import { promises } from "fs";
-import path from "path";
 import { compile } from "@mdx-js/mdx";
 import remarkHeadings from "@vcarl/remark-headings";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -12,7 +11,7 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import rehypeSlug from "rehype-slug";
-import remarkUnwrapUnnecessaryParagraph from "./remark-unwrap-unnecessary-paragraph";
+import remarkDropUnnecessaryParagraph from "./remark-drop-unnecessary-paragraph";
 import rehypeImageProcess from "./rehype-image-process";
 
 export async function compileMdx(fullPath: string) {
@@ -28,7 +27,7 @@ export async function compileMdx(fullPath: string) {
         remarkPresetLintConsistent,
         remarkSqueezeParagraphs,
         remarkUnwrapImages,
-        remarkUnwrapUnnecessaryParagraph,
+        remarkDropUnnecessaryParagraph,
         remarkHeadings,
         remarkMath,
         remarkFrontmatter,

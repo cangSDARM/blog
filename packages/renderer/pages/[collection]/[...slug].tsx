@@ -30,7 +30,7 @@ const MdxImage: React.FC<
   return (
     <figure role="figure">
       <span
-        className="gatsby-resp-image-wrapper"
+        className="resp-image-wrapper"
         style={{
           display: "flex",
           alignItems: "center",
