@@ -7,7 +7,7 @@ index: 2
 
 ### For Http
 
-![FQDN](../../images/network/fqdn.webp)
+![FQDN](/images/network/fqdn.webp)
 
 FQDN 总长度不超过 255 个字符，两个 . 之间的字符不超过 63 个
 
@@ -16,7 +16,7 @@ FQDN 总长度不超过 255 个字符，两个 . 之间的字符不超过 63 个
 ### 应用层协议原理
 
 应用程序由通信进程对组成。每对中的两个进程互相发送报文。进程通过**套接字(socket)**向网络发送或请求报文
-![application_layer](../../images/network/application_layer.webp)
+![application_layer](/images/network/application_layer.webp)
 套接字是同一台主机内应用层和运输层之间的接口
 
 SSL 是在应用层实现的，是对 TCP 的一种加强
@@ -61,7 +61,7 @@ DNS 服务器存储了**资源记录(Resource Record, RR)**，RR 提供了主机
 - 若 Type=MX, 则 Value 是别名为 Name 的邮件服务器的规范化主机名
 
 DNS 只有查询和回答这两种报文，其格式相同
-![dns_message](../../images/network/dns_message.webp)
+![dns_message](/images/network/dns_message.webp)
 DNS 查询可以通过`nslookup`命令手动查询
 
 DNS 中 RR 的增删由**注册登记机构(registrar)**控制，其由[因特网名字和地址分配机构(Internet Corporation for Assigned Names and Numbers, ICANN)](https://www.internic.net)授权

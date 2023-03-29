@@ -7,7 +7,7 @@ index: 5
 
 ## 路由选择算法
 
-![a_net_abstract_model](../../images/network/a_net_abstract_model.webp)
+![a_net_abstract_model](/images/network/a_net_abstract_model.webp)
 **路由选择算法(routing algorithm)**的目的是确定网络中一个源到目的地之间的最低开销路径
 
 通常划分为
@@ -42,7 +42,7 @@ BGP 还用于实现**IP 任播(anycast)服务**。该服务通常处于 DNS 中�
 
 ## SDN 软件定义网络
 
-![sdn](../../images/network/sdn.webp)
+![sdn](/images/network/sdn.webp)
 通用转发表，通过*匹配+动作*的范式，对协议栈多个首部内容进行*匹配*，从而做到转发、负载均衡、防火墙等*动作*，是一般化的“分组交换机”
 
 通用转发表经典标准为 OpenFlow，其表称为**流表(flow table)**
@@ -54,12 +54,12 @@ SDN 采用可编程的网络，使得可以通过 SDN 控制器的 API 来定义
 **因特网控制报文协议(ICMP)**用于端系统和路由器之间沟通网络层的信息，典型用途是差错报告
 
 ICMP 是作为 IP 载荷所承载，但其位于网络层
-![icmp_messages_type](../../images/network/icmp_messages_type.webp)
+![icmp_messages_type](/images/network/icmp_messages_type.webp)
 在 ICMPv6 中，添加了 IPv6 所需的类型和编码，如“分组太大”等
 
 ## 网络管理和 SNMP
 
-![network_managed](../../images/network/network_managed.webp)
+![network_managed](/images/network/network_managed.webp)
 **被管设备(managed device)**中的每个**被管对象(managed object, 如网卡/协议内容等)**通过**网络管理代理(network management agent)**与**管理服务器**通信，之后被存储在**管理信息库(Management Information Base, MIB)**中
 
 MIB 对象由数据描述语言 SMI(Structure of Management Information)所定义，收集在 MIB 模块中
@@ -67,4 +67,4 @@ MIB 对象由数据描述语言 SMI(Structure of Management Information)所定�
 代理和服务器之间使用**网络管理协议(network management protocol)**通信，典型的如**简单网络管理协议(Simple Network Management Protocol, SNMP)**
 
 SNMP 是应用层协议其报文通常称为协议数据单元(PDU)，基于 UDP，通常有两种模式：① 请求响应，服务器请求，代理响应；② 异常陷阱，代理指示异常
-![pdu_of_snmp](../../images/network/pdu_of_snmp.webp)
+![pdu_of_snmp](/images/network/pdu_of_snmp.webp)

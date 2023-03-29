@@ -1,10 +1,11 @@
 import clsx from "clsx";
 import React, { Fragment, useState } from "react";
 import Image from "@/components/Image";
+import * as Dialog from "@radix-ui/react-dialog";
 import styles from "./style.module.scss";
+import Conf from "@/conf";
 import { displayComment, displayExpansion } from "./utils";
 
-export const Dialog = (props: any) => <div {...props}></div>;
 export const TableBody = (props: any) => <tbody {...props}></tbody>;
 export const TableCell = ({ component: Comp = "td", ...props }: any) => (
   <Comp {...props} />
@@ -14,14 +15,69 @@ export const TableRow = (props: any) => <tr {...props}></tr>;
 export const STable = (props: any) => <table {...props}></table>;
 
 let QueryList: any[] = [];
-let ImgList: any[] = [];
 
 export const CommentList = function <T extends any[]>(list: T) {
   QueryList = list;
 };
 
-export const ModelList = function <T extends any[]>(list: T) {
-  ImgList = list;
+type ModalImageState =
+  | {
+      src: string;
+      width: number;
+      height: number;
+    }
+  | undefined;
+export const ModalContext = React.createContext({
+  load: async (about: string) => undefined as ModalImageState,
+});
+
+const useModalContext = (about: string) => {
+  const [curImageState, setCurImageState] = React.useState<ModalImageState>();
+  const { load } = React.useContext(ModalContext);
+
+  React.useEffect(() => {
+    load(about).then(setCurImageState);
+  }, [about, load]);
+
+  return curImageState;
+};
+
+export const ModalContextProvider: React.FC<
+  React.PropsWithChildren<{
+    images: string[];
+  }>
+> = ({ children, images }) => {
+  const ImageLists = React.useMemo(() => images, [images]);
+
+  return (
+    <ModalContext.Provider
+      value={{
+        load: async (about) => {
+          if (typeof window === "undefined") return;
+
+          const imageSrc = ImageLists[parseInt(about.replace("@", "")) - 1];
+          const realSrc = `/images/graphics/${imageSrc}.png`;
+
+          const image = new window.Image();
+          image.src = Conf.site.baseUrl + realSrc;
+
+          return new Promise((resolve, reject) => {
+            image.onload = function (e) {
+              const target = e.target as HTMLImageElement;
+              resolve({
+                src: realSrc,
+                width: target.naturalWidth,
+                height: target.naturalHeight,
+              });
+            };
+            image.onerror = reject;
+          });
+        },
+      }}
+    >
+      {children}
+    </ModalContext.Provider>
+  );
 };
 
 export const Table: React.FC<React.PropsWithChildren<{ title: string }>> = ({
@@ -126,35 +182,35 @@ export const Model: React.FC<React.PropsWithChildren<{ about: string }>> = ({
   children,
 }) => {
   const [curr, setCurr] = useState(false);
-  const path = ImgList[parseInt(about.replace("@", "")) - 1];
+  const imageState = useModalContext(about);
 
   return (
-    <div
-      className={styles.model}
-      onClick={function () {
-        setCurr(true);
+    <Dialog.Root
+      open={curr}
+      onOpenChange={(open) => {
+        setCurr(open);
       }}
     >
-      {children}
-      <Dialog
-        open={curr}
-        id={`model${about}`}
-        onClose={(e: React.MouseEvent) => {
-          e.stopPropagation();
-          setCurr(false);
-        }}
-        scroll="body"
-      >
-        <Image
-          alt="缩小"
-          src={`/images/graphics/${path}`}
-          ext={"png"}
-          style={{
-            objectFit: "none",
-          }}
-        />
-      </Dialog>
-    </div>
+      <Dialog.Trigger asChild>
+        <span className={styles.ModelTrigger}>{children}</span>
+      </Dialog.Trigger>
+      <Dialog.Portal id={`model${about}`}>
+        <Dialog.Overlay className={styles.ModalOverlay} data-theme="dark" />
+        <Dialog.Content className={styles.ModalContent} data-theme="dark">
+          {imageState ? (
+            <Image
+              alt={imageState.src}
+              src={imageState.src}
+              height={imageState.height}
+              width={imageState.width}
+              style={{ maxWidth: "unset" }}
+            />
+          ) : (
+            <></>
+          )}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 };
 

@@ -38,8 +38,12 @@ export async function returnProps(src: string) {
 
 async function addProps(node: RehypeNode, options: Option) {
   try {
+    if (!node.properties) {
+      node.properties = {};
+    }
+
     const transformedSrc =
-      node.properties.src || options.srcTransform?.(node.properties.src);
+      options.srcTransform?.(node.properties.src) || node.properties.src;
 
     // return the new props we'll need for our image
     const { width, height, blurDataURL } = await returnProps(transformedSrc);

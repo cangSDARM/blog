@@ -18,7 +18,7 @@ index: 3
 DNS 协议运行在 UDP 之上
 
 UDP 可以实现可靠传输的，但是在应用层实现。如 Chrome 的 QUIC(快速 UDP 因特网连接)
-![udp_message](../../images/network/udp_message.webp)
+![udp_message](/images/network/udp_message.webp)
 UDP 首部只有 4 个字段，共 64bit, 8 字节
 
 - 长度字段指明 UDP 报文段的总字节数(首部+数据)
@@ -29,14 +29,14 @@ UDP 协议里，应用程序的客户端让运输层自动的(且透明的)分�
 ### 可靠数据传输原理
 
 **比较复杂，笔记没用。看书！！！**
-![reliable_data_transmission_mechanism&its_use](../../images/network/reliable_data_transmission_mechanism&its_use.webp)
+![reliable_data_transmission_mechanism&its_use](/images/network/reliable_data_transmission_mechanism&its_use.webp)
 
 ### TCP
 
 TCP 是面向连接、全双工、点对点的协议
 
 TCP 报文段的长度受限于**最大报文段长度(Maximum Segment Size, MSS)**，而 MSS 通常根据主机的**最大链路帧长度(AKA 最大传输单元 Maximum Transmission Unit, MTU)**来设置。如底层以太网协议和 PPP 链路层协议 MTU=1500 字节，MSS 典型值就是 1460 字节(加首部 40 字节，共 1500)。
-![tcp_message](../../images/network/tcp_message.webp)
+![tcp_message](/images/network/tcp_message.webp)
 TCP 首部共有 20 字节，但可变
 
 - 序号和确认号用来实现可靠数据传输(各 32bit)
@@ -52,7 +52,7 @@ TCP 是**有序**传输的，对于失序的报文段会整理成序再发给应
 TCP 的初始序号可以随机选择，以减少将仍在网络上的旧连接的报文段，误认为是新连接的报文段的可能性(防止和旧连接使用同一端口)
 
 TCP 在收到三次**冗余 ACK**（同一 ACK 回复）时，会触发**快速重传(fast retransmit)**，即在该报文段的定时器过期之前就重传
-![fast_retransmission](../../images/network/fast_retransmission.webp)
+![fast_retransmission](/images/network/fast_retransmission.webp)
 TCP 提供**流量控制服务(flow-control service)**，以消除发送端使得接收端缓存溢出的可能。发送端需要控制`LastByteSent - LastByteAcked ≤ rwnd`，其中，rwnd 是首部的接收窗口字段，rwnd=RcvBuffer - [LastByteRcvd - LastByteRead]。在 rwnd 为 0 时，发送端会一直发送只有一字节数据的报文段，直到返回非 0 的 rwnd 值。
 
 TCP 通过三次握手，四次挥手工作。SYN 洪泛攻击可以通过设置 SYN cookie 来防御
@@ -62,7 +62,7 @@ TCP 通过三次握手，四次挥手工作。SYN 洪泛攻击可以通过设置
 #### 拥塞控制(congestion control)
 
 用于减少网络环境对连接的影响(如突然过载或拥塞)。即`LastByteSent - LastByteAcked ≤ min{ rwnd, cwnd }`，其中，cwnd 代表拥塞窗口通过**TCP 拥塞控制算法(TCP comgestion control algorithm)**来控制：
-![tcp_congestion_control](../../images/network/tcp_congestion_control.webp)
+![tcp_congestion_control](/images/network/tcp_congestion_control.webp)
 初始状态为 A，sshresh 为一阈值
 
 **慢启动**指：TCP 连接起初会限制连接的最大速度，如果数据成功传输，会随着时间的推移提高传输的速度。限制了一个 TCP 端点在任意时刻可以传输的分组数。

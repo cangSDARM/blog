@@ -44,14 +44,14 @@ TCP(Transmission Control Protocol, 传输控制协议)/IP(Internet Protocol, 网
 **接入网**指将端系统物理连接到其**边缘路由器(edge router)**的网络
 
 宽带住宅接入的类型：**数字用户线(Digital Subscriber Line, DSL)**和**电缆因特网接入(cable Internet access)**、**光纤到户(Fiber To The Home, FTTH)**、卫星链路(如 StarBand、HughesNet 等)
-![dsl_internet_connect](../../images/network/dsl_internet_connect.webp)
-![hybrid_fiber_coax_system](../../images/network/hybrid_fiber_coax_system.webp)
+![dsl_internet_connect](/images/network/dsl_internet_connect.webp)
+![hybrid_fiber_coax_system](/images/network/hybrid_fiber_coax_system.webp)
 几种接入通常都是不对称的，下行速率普遍高于上传速率。而且电缆因特网会共享广播媒体，造成网络拥挤和缩水的传输速率
 
 电缆数据体系结构和协议通过**电缆服务接口规范(Data-Over-Cable Service Interface Streture, DOCSIS)**定义，以避免信号碰撞
 
 光纤分为两种分布体系结构：主动光纤网络(Active Optical Network, AON)和被动光纤网络(Passive Optical Network, PON)。AON 本质上就是交换因特网
-![ftth_internet_connect_pon](../../images/network/ftth_internet_connect_pon.webp)
+![ftth_internet_connect_pon](/images/network/ftth_internet_connect_pon.webp)
 企业或家庭通过以太网(局域网 LAN 技术之一)、WiFi(IEEE 802.11)、3G 无线网或 LTE(Long-Tern Evolution, 长期演进)接入
 
 ## 网络核心
@@ -72,11 +72,11 @@ TCP(Transmission Control Protocol, 传输控制协议)/IP(Internet Protocol, 网
 电路交换网络中，链路的电路通过**频分复用(Frequency-Division Multiplexing, FDM)**或**时分复用(Time-Division Multiplexing, TDM)**实现的。
 对于 FDM，链路的频谱由所有连接共享，每条连接专用一个频段。该频段的宽度（Hz）称为**带宽(band-width)**；
 对于 TDM，时间被划分为固定期间的帧。每个帧又被划分为固定数量的时隙。每条连接指定的时隙传输
-![tdm_timeslot](../../images/network/tdm_timeslot.webp)
+![tdm_timeslot](/images/network/tdm_timeslot.webp)
 
 ### 网络的网络
 
-![isp_connection](../../images/network/isp_connection.webp)
+![isp_connection](/images/network/isp_connection.webp)
 **存在点(Ponit of Presence, PoP)**提供上级 ISP 向下级 ISP 的连接入口，一个 PoP 是一台或多台服务器的群组
 
 任何 ISP 可以选择**多宿**，即可以与多个提供商 ISP 连接，
@@ -90,7 +90,7 @@ TCP(Transmission Control Protocol, 传输控制协议)/IP(Internet Protocol, 网
 
 ### 时延
 
-![router_delay](../../images/network/router_delay.webp)
+![router_delay](/images/network/router_delay.webp)
 传输时延指一个分组被路由器处理的时延；传播时延指一个分组从一个路由器传播到另一路由器的时延；
 比率*La/R*(L 指平均分组比特数, a 指分组到达队列的平均速率, R 指传输速率)称为**流量强度(traffic intensity)**。若>1，则队列趋向于无限增加，排队时延趋向无穷大
 
@@ -105,5 +105,5 @@ TCP(Transmission Control Protocol, 传输控制协议)/IP(Internet Protocol, 网
 ## 协议层次及服务模型
 
 网络设计者以**分层(layer)**的方式组织协议及实现这些协议的网络硬件和软件。某层向上一层提供的服务，即**服务模型(service model)**。各层的所有协议被称为**协议栈(protocol stack)**。因特网协议栈中，对于 OSI(开放系统互联)参考模型多出的两层由开发者自行处理
-![service_model](../../images/network/service_model.webp)
-![layers](../../images/network/layers.webp)
+![service_model](/images/network/service_model.webp)
+![layers](/images/network/layers.webp)

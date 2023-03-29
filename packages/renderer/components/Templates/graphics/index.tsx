@@ -6,7 +6,7 @@ import {
   CommentList,
   Expansion,
   Model,
-  ModelList,
+  ModalContextProvider,
   Quote,
   Tab,
   Table,
@@ -37,7 +37,6 @@ const Graphics: TemplateComponent = ({ frontmatter, children, compiled }) => {
   const { title, ImgList, QuoteList } = frontmatter;
 
   CommentList(QuoteList);
-  ModelList(ImgList);
 
   return (
     <>
@@ -51,13 +50,15 @@ const Graphics: TemplateComponent = ({ frontmatter, children, compiled }) => {
             {title}
           </a>
         </h1>
+        <ModalContextProvider images={ImgList}>
+          {children(shotCodes)}
+        </ModalContextProvider>
         {/* <Indexing
           slug={fields.slug}
           data={allMdx?.edges}
           className={styles.indexingStyle}
         />
         <TagsList tags={frontmatter.tags} className={styles.taglistsStyle} /> */}
-        {children(shotCodes)}
         <div id="Comment" className={styles.Comment} />
       </div>
     </>

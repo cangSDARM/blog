@@ -16,7 +16,7 @@ index: 8
 对称加密技术有两种类型：**流密码(stream cipher)**和**块密码(block cipher)**
 
 块密码将加密报文分为 k 块，每块被单独加密。其通常使用函数模拟随机排列表生成，如**DES(Data Encryption Standard)**、**3DES**、**ADS(Advanced Encryption Standard)**
-![block_cipher_sample](../../images/network/block_cipher_sample.webp)
+![block_cipher_sample](/images/network/block_cipher_sample.webp)
 由于块密码采用函数，因此输入总对应同一输出，因此需要引入随机值，但随机需要传输更多比特，因此有**密码块链接(Cipher Block Chaining, CBC)技术**
 
 - 发送加密内容前，发送方生成随机的 k 比特**初始向量(Initialization Vector, IV)**(c(0))，以明文方式发送
@@ -56,7 +56,7 @@ index: 8
 ## 传输层安全性: SSL
 
 **SSL(Secure Socket Layer, 安全套接字层)**是 TCP 的一个强化版本，SSL3 的一个稍加修改的版本称为**运输层安全性(Transport Layer Security, TLS)**
-![ssl](../../images/network/ssl.webp)
+![ssl](/images/network/ssl.webp)
 SSL 具有三个阶段
 
 1. 握手。
@@ -70,7 +70,7 @@ SSL 具有三个阶段
     - 客户端发送所有握手报文的一个 MAC，服务端也同样发送所有握手报文的一个 MAC(防止篡改之前的握手环节报文)
 3. 数据传输
     - SSL 将数据流分割为*记录*，用"数据+MAC 密钥+序号(防止重排序)"生成 MACs，并加密"记录+对应 MACs"，然后填充给 TCP 传输
-   ![ssl_format](../../images/network/ssl_format.webp)
+   ![ssl_format](/images/network/ssl_format.webp)
    SSL 关闭要么超时，要么使用类型字段表明终止(不使用 TCP FIN，防止**截断攻击(truncation attack)**)。该字段为明文，但使用 MAC 验证
 
 ## 网络层安全性: IPsec 和虚拟专用网
@@ -82,7 +82,7 @@ SSL 具有三个阶段
 在发送 IPsec 前，端系统需要建立一个网络层的单工逻辑连接称为**安全关联(Security Association, SA)**。其维护了如 SA 的 32 比特索引(**安全参数索引(Security Parameter Index, SPI)**)、初始地址及目标地址、加密类型和密钥。所有的 SA 被维护于**安全关联数据库(Security Association Database, SAD)**中
 
 SA 可由人工生成或使用**因特网密钥交换(Internet Key Exchange, IKE)**协议生成
-![ipsec_message_esp_format](../../images/network/ipsec_message_esp_format.webp)
+![ipsec_message_esp_format](/images/network/ipsec_message_esp_format.webp)
 
 ## 无线传输安全: WEP
 

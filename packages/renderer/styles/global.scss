@@ -1,8 +1,11 @@
 @import "./reset.scss";
 @import "./theme/index.scss";
 @import "./katex/katex.min.css";
-@import url("https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap");
+
+html {
+  font-family: var(--fontFamilyBase);
+}
 
 body,
 html,
