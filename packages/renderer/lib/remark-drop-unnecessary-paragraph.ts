@@ -81,7 +81,7 @@ const remarkDropParagraph: Plugin<[RemarkDropParagraphOption?], Root> = (
 
     if (isParagraph && parent && typeof index === "number") {
       if (isNeedCleanInnerParagraph(parent)) {
-        splice.apply(parent.children, [index, 1, node.children || []]);
+        splice.apply(parent.children, [index, 1, ...(node.children || [])]);
 
         return [SKIP, index];
       }

@@ -21,7 +21,6 @@ const Image: React.FC<{
 
   return (
     <NextImage
-      onError={(err) => console.warn("image error: ", src, err)}
       style={style}
       src={tSrc}
       width={width}
