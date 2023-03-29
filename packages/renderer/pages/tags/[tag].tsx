@@ -1,9 +1,5 @@
-import {
-  collectionOverview,
-  getAllCollections,
-  getPostInCollection,
-  PostAst,
-} from "@/lib/api";
+import { collectionOverview, getTagsInCollection } from "@/lib/api";
+import { compareAsc } from "date-fns";
 import React from "react";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { RxRowSpacing, RxCross2 } from "react-icons/rx";
@@ -13,9 +9,24 @@ import Layout, { injectLayoutContext } from "@/components/Layout";
 import Link from "next/link";
 import Truncate from "@/components/Truncate";
 
+function postSort(posts: Tag[]) {
+  const result = posts
+    .sort((a, b) =>
+      compareAsc(new Date(a.matter?.date), new Date(b.matter?.date))
+    )
+    .sort((a, b) =>
+      (a.matter?.title || "").localeCompare(b.matter?.title || "")
+    )
+    .sort(
+      (a, b) => (a.matter?.index || Infinity) - (b.matter?.index || Infinity)
+    );
+
+  return result;
+}
+
 export default injectLayoutContext<{
   tag: string;
-  posts: PostAst[];
+  posts: Tag[];
 }>(function Page({ tag, posts }) {
   const [open, setOpen] = React.useState(false);
 
@@ -48,13 +59,13 @@ export default injectLayoutContext<{
             </div>
 
             <Collapsible.Content>
-              {posts.map((post) => (
+              {postSort(posts).map((post) => (
                 <Link
                   key={post.url}
                   href={post.url}
                   className={styles.PostItem}
                 >
-                  <Truncate>{post.matter.title}</Truncate>
+                  <Truncate>{post.matter?.title}</Truncate>
                 </Link>
               ))}
             </Collapsible.Content>
@@ -69,7 +80,7 @@ export async function getStaticProps({ params }: any) {
   const { tag } = params;
   const overview = collectionOverview();
 
-  const posts = getPostInCollection(tag);
+  const posts = getTagsInCollection(tag);
 
   if (!posts || posts.length === 0) {
     return {
@@ -87,10 +98,10 @@ export async function getStaticProps({ params }: any) {
 }
 
 export function getStaticPaths() {
-  const collection = getAllCollections();
+  const overview = collectionOverview();
 
-  const paths = collection.map((coll) => ({
-    params: { tag: coll },
+  const paths = overview.map((over) => ({
+    params: { tag: over.name },
   }));
 
   return {

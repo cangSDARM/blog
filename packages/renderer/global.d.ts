@@ -1,3 +1,14 @@
+type Overview = {
+  length: number;
+  name: string;
+};
+
+type Tag = {
+  collection: string;
+  url: string;
+  matter: Frontmatter;
+};
+
 type MdxComponents = Record<string, React.ReactComponentElement>;
 
 type MdxComponent = React.ExoticComponent<{

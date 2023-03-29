@@ -1,12 +1,12 @@
 import React from "react";
 
-const LayoutContext = React.createContext<{ overview: any[] }>({
+const LayoutContext = React.createContext<{ overview: Overview[] }>({
   overview: [],
 });
 
 export const LCProvider: React.FC<
   React.PropsWithChildren<{
-    overview: any;
+    overview: Overview[];
   }>
 > = ({ overview, children }) => {
   return (

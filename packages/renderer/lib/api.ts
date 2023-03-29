@@ -13,7 +13,9 @@ export type PostAst = {
   matter: Frontmatter;
 };
 
-const MDX_DIR = join(process.cwd(), "mdx");
+const cwdPath = (path: string) => join(process.cwd(), path);
+
+const MDX_DIR = cwdPath("mdx");
 const DEFAULT_COLLECTION = "blog";
 const RESERVED_NAMES = ["tags", "tag", "_debug"];
 const FILE_EXTENSIONS = ["md", "mdx"];
@@ -85,46 +87,48 @@ const post: PostAst[] = [];
 const collections: string[] = [];
 readPosts(MDX_DIR);
 
-export function getAllCollections() {
-  return collections;
-}
-
 export function getAllPosts() {
   return post;
 }
 
-let overviews: {
-  posts: PostAst[];
-  name: string;
-}[] = [];
+let overviews: Overview[] = [];
+
+const staticPosts: Tag[] = [];
+const staticOverviews: Overview[] = [];
+
+staticOverviews[0] = { name: "xargs", length: 0 };
+readdirSync(cwdPath("pages/xargs"), { withFileTypes: true }).forEach(
+  (dirent) => {
+    if (dirent.isDirectory()) return;
+    staticOverviews[0].length += 1;
+    const [name] = fileExt(dirent.name);
+    staticPosts.push({
+      url: "/xargs/" + name,
+      matter: { title: name },
+      collection: "xargs",
+    });
+  }
+);
+
 export function collectionOverview() {
   if (overviews.length > 0) return overviews;
 
-  overviews = getAllCollections().map((coll) => ({
-    posts: getPostInCollection(coll),
-    name: coll,
-  }));
+  overviews = collections
+    .map((coll) => ({
+      length: getTagsInCollection(coll).length,
+      name: coll,
+    }))
+    .concat(staticOverviews);
 
   return overviews;
 }
 
-const postInCollectionMap = new Map<string, PostAst[]>();
-export function getPostInCollection(collection: string) {
-  if (postInCollectionMap.has(collection)) {
-    return postInCollectionMap.get(collection) as PostAst[];
+export function getTagsInCollection(tag: string): Tag[] {
+  const result = post.filter((p) => p.collection === tag);
+
+  if (result.length === 0) {
+    return staticPosts.filter((p) => p.collection === tag);
   }
-
-  const result = post
-    .filter((p) => p.collection === collection)
-    .sort((a, b) =>
-      compareAsc(new Date(a.matter.date), new Date(b.matter.date))
-    )
-    .sort((a, b) => (a.matter.title || "").localeCompare(b.matter.title || ""))
-    .sort(
-      (a, b) => (a.matter.index || Infinity) - (b.matter.index || Infinity)
-    );
-
-  postInCollectionMap.set(collection, result);
 
   return result;
 }

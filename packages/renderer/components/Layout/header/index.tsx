@@ -57,9 +57,7 @@ const Header: React.FC<{
                       <li key={item.name}>
                         <Link href={"/tags/" + item.name}>
                           <span>{item.name}</span>
-                          <span data-layer="count">
-                            {item.posts?.length || 0}
-                          </span>
+                          <span data-layer="count">{item.length || 0}</span>
                         </Link>
                       </li>
                     );
