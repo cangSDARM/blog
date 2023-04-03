@@ -11,8 +11,8 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import rehypeSlug from "rehype-slug";
-import remarkDropUnnecessaryParagraph from "./remark-drop-unnecessary-paragraph";
-import rehypeImageProcess from "./rehype-image-process";
+import remarkDropParagraph from "@allenlee/remark-drop-paragraph";
+import rehypeImageProcess from "@allenlee/rehype-image-process";
 
 export async function compileMdx(fullPath: string) {
   try {
@@ -27,7 +27,7 @@ export async function compileMdx(fullPath: string) {
         remarkPresetLintConsistent,
         remarkSqueezeParagraphs,
         remarkUnwrapImages,
-        remarkDropUnnecessaryParagraph,
+        remarkDropParagraph,
         remarkHeadings,
         remarkMath,
         remarkFrontmatter,

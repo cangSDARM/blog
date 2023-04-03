@@ -1,7 +1,6 @@
 import { readdirSync } from "fs";
 import { join, relative, sep } from "path";
 import matter from "gray-matter";
-import { compareAsc } from "date-fns";
 import _ from "lodash";
 
 export type PostAst = {
@@ -96,19 +95,22 @@ let overviews: Overview[] = [];
 const staticPosts: Tag[] = [];
 const staticOverviews: Overview[] = [];
 
-staticOverviews[0] = { name: "xargs", length: 0 };
-readdirSync(cwdPath("pages/xargs"), { withFileTypes: true }).forEach(
-  (dirent) => {
-    if (dirent.isDirectory()) return;
-    staticOverviews[0].length += 1;
-    const [name] = fileExt(dirent.name);
-    staticPosts.push({
-      url: "/xargs/" + name,
-      matter: { title: name },
-      collection: "xargs",
-    });
-  }
-);
+function getStatics(collection: string) {
+  const idx = staticOverviews.push({ name: collection, length: 0 }) - 1;
+  readdirSync(cwdPath("pages/" + collection), { withFileTypes: true }).forEach(
+    (dirent) => {
+      if (dirent.isDirectory()) return;
+      staticOverviews[idx].length += 1;
+      const [name] = fileExt(dirent.name);
+      staticPosts.push({
+        url: "/" + collection + "/" + name,
+        matter: { title: name },
+        collection: collection,
+      });
+    }
+  );
+}
+getStatics("xargs");
 
 export function collectionOverview() {
   if (overviews.length > 0) return overviews;

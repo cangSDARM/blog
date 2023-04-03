@@ -13,6 +13,8 @@
     "rss": "echo \"no rss generated\""
   },
   "dependencies": {
+    "@allenlee/rehype-image-process": "^0.0.2",
+    "@allenlee/remark-drop-paragraph": "^0.0.3",
     "@mdx-js/mdx": "^2.2.1",
     "@radix-ui/react-avatar": "^1.0.1",
     "@radix-ui/react-collapsible": "^1.0.1",
@@ -26,7 +28,6 @@
     "lodash": "^4.17.21",
     "next": "13.2.4",
     "next-sitemap": "^3.1.43",
-    "plaiceholder": "^2.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
@@ -39,8 +40,7 @@
     "remark-mdx-frontmatter": "^2.1.1",
     "remark-preset-lint-consistent": "^5.1.1",
     "remark-squeeze-paragraphs": "^5.0.1",
-    "remark-unwrap-images": "^3.0.1",
-    "sharp": "^0.31.3"
+    "remark-unwrap-images": "^3.0.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
@@ -51,6 +51,6 @@
     "eslint-config-next": "^13.1.1",
     "prettier": "^2.8.7",
     "sass": "^1.57.1",
-    "unist-util-visit": "^4.1.2"
+    "sharp": "^0.32.0"
   }
 }
