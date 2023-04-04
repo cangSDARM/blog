@@ -1,3 +1,0 @@
-[submodule "packages/remark-mdx-frontmatter"]
-	path = packages/remark-mdx-frontmatter
-	url = git@github.com:cangSDARM/remark-mdx-frontmatter.git

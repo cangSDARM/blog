@@ -5,7 +5,9 @@ import { Pluggable } from "unified";
 import remarkHeadings from "@vcarl/remark-headings";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import remarkFrontmatter from "remark-frontmatter";
-import remarkMdxFrontmatter, { Traveler } from "@allen/remark-mdx-frontmatter";
+import remarkMdxFrontmatter, {
+  Traveler,
+} from "@allenlee/remark-mdx-frontmatter";
 import { Log, Report } from "./utils/log";
 import { pathLog } from "./utils/path-extra";
 
