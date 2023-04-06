@@ -26,6 +26,7 @@ const Layout: React.FC<
           width: "100vw",
           height: `calc(100vh - ${HeaderHeight}px)`,
         }}
+        id="main"
       >
         {children}
       </main>
