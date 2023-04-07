@@ -2,6 +2,7 @@
 @import "./prismplus.dark.scss";
 
 @mixin dark-theme {
-  @extend .fluent-web_dark;
-  @extend .prismplus-dark;
+  @include fluent-web_dark-mixin();
+  @include prism-atom_dark();
+  --color-scheme: 'dark';
 }

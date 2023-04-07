@@ -193,7 +193,11 @@
     content: attr(line);
   }
 }
-.prismplus-dark {
+@mixin prismplus-dark-mixin {
   @include prism-atom_dark;
   @include prismplus-linenumber;
+}
+
+.prismplus-dark {
+  @include prismplus-dark-mixin();
 }

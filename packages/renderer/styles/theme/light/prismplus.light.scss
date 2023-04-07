@@ -468,8 +468,11 @@
     content: attr(line);
   }
 }
-
-.prismplus-light {
+@mixin prismplus-light-mixin {
   @include prism-one_light;
   @include prismplus-linenumber;
+}
+
+.prismplus-light {
+  @include prismplus-light-mixin();
 }

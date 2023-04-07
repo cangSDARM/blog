@@ -1,4 +1,5 @@
-.fluent-web_dark {
+// media query workaround
+@mixin fluent-web_dark-mixin() {
   --colorNeutralForeground1: #ffffff;
   --colorNeutralForeground1Hover: #ffffff;
   --colorNeutralForeground1Pressed: #ffffff;
@@ -118,4 +119,8 @@
   --shadow4Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.25);
   --shadow8Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.25);
   --shadow16Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.fluent-web_dark {
+  @include fluent-web_dark-mixin();
 }

@@ -9,9 +9,13 @@ type Props = {
 const useMdxRenderer = ({
   code,
 }: Props): [Component: MdxComponent, frontmatter: Frontmatter] => {
-  const { default: MdxModuleComponent, ...rest } = runSync(code, runtime) as {
-    default: MdxComponent;
-  };
+  const { default: MdxModuleComponent, ...rest } = React.useMemo(
+    () =>
+      runSync(code, runtime) as {
+        default: MdxComponent;
+      },
+    [code]
+  );
 
   return [MdxModuleComponent, rest as any];
 };

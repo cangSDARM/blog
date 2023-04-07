@@ -8,7 +8,7 @@ const Layout: React.FC<
   React.PropsWithChildren<{
     theme?: "dark" | "light";
   }>
-> = ({ children, theme = "dark" }) => {
+> = ({ children, theme }) => {
   return (
     <>
       <Header

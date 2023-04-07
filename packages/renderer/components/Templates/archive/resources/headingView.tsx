@@ -43,6 +43,8 @@
 //               e.preventDefault();
 //               document.querySelector(nodes.url)?.scrollIntoView({
 //                 behavior: "smooth",
+//                 block: "start",
+//                 inline: "nearest"
 //               });
 //             }}
 //           >

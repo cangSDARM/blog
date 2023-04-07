@@ -34,15 +34,16 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow8);
+  color: var(--colorNeutralForeground3);
 
   &[data-state="closed"] {
-    background-color: var(--colorNeutralForeground3);
+    background-color: var(--colorNeutralBackground3);
   }
   &[data-state="open"] {
-    background-color: var(--colorNeutralForeground3Selected);
+    background-color: var(--colorNeutralBackground3Selected);
   }
   &:hover {
-    background-color: var(--colorNeutralForeground3Hover);
+    background-color: var(--colorNeutralBackground3Hover);
   }
   &:focus {
     box-shadow: var(--shadow4);

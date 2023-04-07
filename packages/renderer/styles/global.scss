@@ -7,6 +7,15 @@ html {
   font-family: var(--fontFamilyBase);
 }
 
+#nprogress {
+  .bar {
+    background-color: var(--colorBrandBackground);
+  }
+  .peg {
+    box-shadow: var(--shadow2Brand);
+  }
+}
+
 body,
 html,
 #__next {

@@ -1,4 +1,5 @@
-.fluent-web_light {
+// media query workaround
+@mixin fluent-web_light-mixin {
   --colorNeutralForeground1: #242424;
   --colorNeutralForeground1Hover: #242424;
   --colorNeutralForeground1Pressed: #242424;
@@ -118,4 +119,8 @@
   --shadow4Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.25);
   --shadow8Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.25);
   --shadow16Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.fluent-web_light {
+  @include fluent-web_light-mixin();
 }

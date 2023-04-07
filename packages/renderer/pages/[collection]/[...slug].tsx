@@ -53,6 +53,30 @@ const MdxImage: React.FC<
   );
 };
 
+const Anchor: React.FC<
+  React.DetailedHTMLProps<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+  >
+> = ({ href = "/", ...props }) => {
+  if (!href.startsWith("/")) {
+    return (
+      <a
+        rel="noopener noreferrer external nofollow"
+        target="_blank"
+        href={href}
+        {...props}
+      ></a>
+    );
+  }
+
+  return (
+    <Link href={href} scroll={false} legacyBehavior>
+      <a {...props}></a>
+    </Link>
+  );
+};
+
 export default injectLayoutContext(function Page({
   post,
   compiled: { content, ...compiled },
@@ -73,6 +97,7 @@ export default injectLayoutContext(function Page({
               <Component
                 components={{
                   img: MdxImage,
+                  a: Anchor,
                   ...components,
                 }}
               />
