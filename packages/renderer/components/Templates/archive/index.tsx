@@ -15,17 +15,19 @@ const Archive: React.FC<TemplateProps> = ({
   return (
     <>
       <div className={className}>
-        <h1>{title}</h1>
-        <Resources
-          avatar={frontmatter?.avatar}
-          reference={frontmatter?.reference || undefined}
-          toc={{}}
-        />
-        <article>
-          {children({
-            Paper: ({ children }: any) => <>{children}</>,
-          })}
-        </article>
+        <div role="article">
+          <h1>{title}</h1>
+          <Resources
+            avatar={frontmatter?.avatar}
+            reference={frontmatter?.reference || undefined}
+            toc={{}}
+          />
+          <article>
+            {children({
+              Paper: ({ children }: any) => <>{children}</>,
+            })}
+          </article>
+        </div>
       </div>
       <div className="empty"></div>
     </>

@@ -8,6 +8,7 @@ import {
   tieba,
   weibo,
   zhihu,
+  github,
 } from "./styles";
 import clsx from "clsx";
 
@@ -20,6 +21,7 @@ const Type = {
   Weibo: "weibo.com",
   Godot: "docs.godotengine.org",
   Guancha: "user.guancha.cn",
+  Github: "www.github.com",
 };
 
 function styleConcat(...typeStyle: string[]) {
@@ -45,6 +47,8 @@ export const useType = (typo: string) => {
       return styleConcat(godot);
     case Type.Guancha:
       return styleConcat(guancha);
+    case Type.Github:
+      return styleConcat(github);
     default:
       console.warn('unknown type "%s" for useType', typo);
       return styleConcat();

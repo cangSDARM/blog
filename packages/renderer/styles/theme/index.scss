@@ -5,7 +5,7 @@
 // TODO ? may switch theme by user: https://blog.skk.moe/post/hello-darkmode-my-old-friend/
 :root {
   @include common;
-  --color-scheme: 'auto';
+  --color-scheme: "auto";
 }
 
 @media screen and (prefers-color-scheme: light) {

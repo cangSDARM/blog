@@ -4,5 +4,5 @@
 @mixin light-theme {
   @include fluent-web_light-mixin();
   @include prismplus-light-mixin();
-  --color-scheme: 'light';
+  --color-scheme: "light";
 }

@@ -20,25 +20,26 @@
   font-weight: 400;
   line-height: 1.8;
   margin-bottom: 20px;
-}
-.JianShu h1 {
-  font-size: 30px;
-  font-weight: 700;
-  word-break: break-word;
-  color: #404040;
-  text-rendering: optimizelegibility;
-}
-.JianShu article {
-  font-weight: 400;
-  line-height: 1.8;
-  margin-bottom: 20px;
-}
-.JianShu article p {
-  margin-bottom: 20px;
-  word-break: break-word;
-  margin-top: 0;
-}
-.JianShu a {
-  color: inherit;
+
+  h1 {
+    font-size: 30px;
+    font-weight: 700;
+    word-break: break-word;
+    color: #404040;
+    text-rendering: optimizeLegibility;
+  }
+  article {
+    font-weight: 400;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    p {
+      margin-bottom: 20px;
+      word-break: break-word;
+      margin-top: 0;
+    }
+  }
+  a {
+    color: inherit;
+  }
 }
 /* 简书 */

@@ -22,6 +22,7 @@ $section-padding: 80px;
     transform-origin: center;
     transform: translate(-50%);
     position: absolute;
+    z-index: 2;
 
     @if $at-bottom {
       bottom: 0;
@@ -34,26 +35,34 @@ $section-padding: 80px;
 
 .Bilibili {
   background-color: #f6f7f9;
-  border-radius: 4px;
   -ms-flex-negative: 0;
-  flex-shrink: 0;
-  padding: 30px $out-padding 40px;
-  width: $full-width;
-  margin-top: 22px;
-  margin-bottom: 12px;
-
-  line-height: 1.6;
-  font-size: 17px;
-  font-weight: 400;
-  color: #212121;
-  text-align: left;
-  letter-spacing: 0;
-  word-wrap: break-word;
-  overflow: hidden;
-  border: none;
-  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: Microsoft YaHei, -apple-system, PingFang SC, Droid Sans Fallback,
     Droid Sans, HYQiHei, Arial, Helvetica Neue, Hiragino Sans GB, sans-serif;
+
+  div[role="article"] {
+    background-color: #ffffff;
+    border-radius: 4px;
+    flex-shrink: 0;
+    padding: 30px $out-padding 40px;
+    width: $full-width;
+    margin-top: 22px;
+    margin-bottom: 12px;
+
+    line-height: 1.6;
+    font-size: 17px;
+    font-weight: 400;
+    color: #212121;
+    text-align: left;
+    letter-spacing: 0;
+    word-wrap: break-word;
+    overflow: hidden;
+    border: none;
+    position: relative;
+  }
 
   *[class="resp-image-wrapper"] {
     margin: 0 auto !important;
@@ -65,7 +74,7 @@ $section-padding: 80px;
     margin-top: 10px;
   }
 
-  & > h1 {
+  h1 {
     padding: 0 80px;
     font-size: 28px;
     color: #222;
@@ -75,7 +84,7 @@ $section-padding: 80px;
     word-wrap: break-word;
   }
 
-  & > article {
+  article {
     padding: 0 80px;
     position: relative;
     display: flow-root;
@@ -93,7 +102,6 @@ $section-padding: 80px;
       margin-bottom: 20px;
       color: #999;
       font-weight: 400;
-      word-spacing: 30px;
       font-size: 13px;
     }
 
@@ -108,11 +116,20 @@ $section-padding: 80px;
 
     & > [class="comment start"] {
       margin-top: 50px;
+      padding-top: 30px;
 
       @include split-line;
 
+      &::after {
+        content: " ";
+        background-color: #f6f7f9;
+        width: 900px;
+        height: 13px;
+        transform: translateX(-$section-padding - $out-padding);
+        display: block;
+      }
+
       & ~ ul {
-        margin-top: 13px;
         transform: translateX(-$section-padding - $out-padding);
         padding: 20px 80px;
         width: $full-width;

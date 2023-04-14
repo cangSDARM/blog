@@ -17,7 +17,11 @@ const Image: React.FC<{
   height = 3000,
   ...props
 }) => {
-  const tSrc = `${Conf.site.baseUrl + src}${ext ? "." + ext : ""}`;
+  const tSrc = React.useMemo(() => {
+    if (src.startsWith("http")) return src;
+
+    return `${Conf.site.baseUrl + src}${ext ? "." + ext : ""}`;
+  }, [src, ext]);
 
   return (
     <NextImage

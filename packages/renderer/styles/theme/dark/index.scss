@@ -4,5 +4,5 @@
 @mixin dark-theme {
   @include fluent-web_dark-mixin();
   @include prism-atom_dark();
-  --color-scheme: 'dark';
+  --color-scheme: "dark";
 }

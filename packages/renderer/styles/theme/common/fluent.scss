@@ -67,8 +67,8 @@
   --strokeWidthThickest: 4px;
 }
 @mixin fluent-scrollbar {
-  $scrollbarSize: 6px;
-  $scrollbarRadius: 6px;
+  --scrollbar-size: 6px;
+  --scrollbar-radius: 6px;
 
   $scrollbarThumbBackground: #adadad;
   $scrollbarThumbBackgroundHover: #bdbdbd;
@@ -77,7 +77,7 @@
 
   ::-webkit-scrollbar-thumb {
     background-color: $scrollbarThumbBackground;
-    border-radius: $scrollbarRadius;
+    border-radius: --scrollbar-radius;
     border-style: solid;
     border-color: transparent;
     &:hover {
@@ -91,8 +91,8 @@
     }
   }
   ::-webkit-scrollbar {
-    height: $scrollbarSize;
-    width: $scrollbarSize;
+    height: var(--scrollbar-size);
+    width: var(--scrollbar-size);
     background-color: transparent;
   }
 }
