@@ -110,7 +110,7 @@ function getStatics(collection: string) {
     }
   );
 }
-getStatics("xargs");
+// getStatics("xargs");
 
 export function collectionOverview() {
   if (overviews.length > 0) return overviews;

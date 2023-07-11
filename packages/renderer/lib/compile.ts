@@ -11,9 +11,7 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import rehypeSlug from "rehype-slug";
-import remarkDropParagraph, {
-  isJsxElement,
-} from "@allenlee/remark-drop-paragraph";
+import remarkDropParagraph from "@allenlee/remark-drop-paragraph";
 import rehypeImageProcess from "@allenlee/rehype-image-process";
 
 export async function compileMdx(fullPath: string) {
@@ -29,15 +27,7 @@ export async function compileMdx(fullPath: string) {
         remarkPresetLintConsistent,
         remarkSqueezeParagraphs,
         remarkUnwrapImages,
-        [
-          remarkDropParagraph,
-          {
-            unwrapTags: (node: any) =>
-              ["div", "aside", "p", "header", "main", "figure"].includes(
-                node.type
-              ) || isJsxElement(node, true),
-          },
-        ],
+        remarkDropParagraph,
         remarkHeadings,
         remarkMath,
         remarkFrontmatter,

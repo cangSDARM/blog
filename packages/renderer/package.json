@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@allenlee/rehype-image-process": "^0.0.2",
-    "@allenlee/remark-drop-paragraph": "^0.0.3",
+    "@allenlee/remark-drop-paragraph": "^0.0.4",
     "@mdx-js/mdx": "^2.2.1",
     "@radix-ui/react-avatar": "^1.0.1",
     "@radix-ui/react-collapsible": "^1.0.1",
