@@ -1,0 +1,202 @@
+.mainStyle {
+  background-color: #293134;
+  min-height: 100%;
+  align-items: flex-start;
+}
+
+.graphicsPost {
+  font-size: 18px;
+  width: auto;
+  font-family: "Source Code Pro", sans-serif;
+  color: #e0e2e4;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+
+  :global {
+    ol {
+      list-style-type: decimal;
+    }
+    h1,
+    h2,
+    h3,
+    h4 {
+      text-rendering: optimizeLegibility;
+      color: inherit;
+      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      font-weight: 700;
+      line-height: 1.1;
+      padding: 0;
+    }
+    h1 {
+      font-size: 2.25rem;
+    }
+    h2 {
+      font-size: 1.62671rem;
+    }
+    h3 {
+      font-size: 1.38316rem;
+    }
+    tr {
+      background-color: #444757;
+    }
+    th,
+    td {
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      display: table-cell;
+      vertical-align: inherit;
+      border-bottom: 1px solid rgb(81, 81, 81);
+      text-align: left;
+      padding: 6px 16px;
+      white-space: nowrap;
+    }
+    td {
+      padding-left: 2em;
+      width: auto;
+    }
+    #Title {
+      font-size: 24px;
+      margin-left: 40px;
+    }
+  }
+}
+
+.indexingStyle {
+  filter: invert(1);
+}
+
+.taglistsStyle {
+  filter: invert(25%) contrast(2);
+}
+.titleStyle {
+  color: inherit;
+}
+
+.hrStyle {
+  height: 12px;
+  background-color: #e0e2e4;
+  border: 0;
+  margin-left: 0;
+  width: 50%;
+}
+.aStyle {
+  color: #a6b9e4;
+  font-weight: bold;
+  text-decoration: none;
+}
+.Comment {
+  @keyframes CommentAnima {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  padding: 8px;
+  position: fixed;
+  bottom: 2%;
+  right: 0;
+  font-size: 18px;
+  background-color: #e0e2e4;
+  color: #293134;
+  margin-left: 45%;
+  animation: CommentAnima 1.5s;
+  z-index: 999;
+}
+
+.ModelTrigger {
+  display: inline-block;
+  cursor: pointer;
+  color: #d9ff00;
+}
+.ModalOverlay {
+  @keyframes overlayShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  background-color: var(--colorNeutralShadowKey);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow var(--durationFast) var(--curveAccelerateMin);
+}
+.ModalContent {
+  @keyframes contentShow {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -48%) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  outline: none;
+  background-color: var(--colorNeutralBackground1);
+  border-radius: var(--borderRadiusMedium);
+  box-shadow: var(--shadow4);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  height: fit-content;
+  max-width: 82vw;
+  max-height: 80vh;
+  padding: var(--spacingL);
+  animation: contentShow var(--durationFast) var(--curveAccelerateMin);
+}
+
+.hide {
+  display: none;
+}
+.aphorism {
+  color: #a6b9e4;
+  font-weight: bold;
+  font-size: 20px;
+}
+.Quote {
+  background-color: #424c4f;
+}
+.Quote:after {
+  content: "☭";
+}
+.Tab {
+  margin-left: 3.5%;
+}
+.Tab[vicinage] + * {
+  margin-left: 3.5%;
+}
+/*---------Expansion Style---------*/
+.Expansion,
+.Imgs {
+  display: inline-block;
+  text-decoration-line: underline;
+  font-family: 文泉驿等宽微米黑, sans-serif, monospace;
+  text-shadow: 1px 1px 1px #830600, 2px 2px 2px #004284;
+}
+.Expansion:hover {
+  cursor: pointer;
+  transition-duration: 0.6s;
+  text-decoration-line: underline overline;
+  letter-spacing: 0.1em;
+  text-shadow: -1px -1px 1px #111, 2px 2px 1px #363636;
+}
+.Expansioned {
+  letter-spacing: 0.1em;
+}
+/*---------End---------*/
+div.hidden {
+  display: none;
+  visibility: hidden;
+}

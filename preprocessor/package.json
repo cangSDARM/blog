@@ -1,0 +1,52 @@
+{
+  "name": "preprocessor",
+  "version": "0.0.1",
+  "files": [
+    "**/*.md",
+    "src/**/*",
+    "dist/**/*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs"
+    }
+  },
+  "types": "./dist/esm/index.d.mts",
+  "scripts": {
+    "build:cjs": "tsc -p tsconfig.cjs.json && echo >dist/cjs/package.json {\"type\":\"commonjs\"}",
+    "build:esm": "tsc -p tsconfig.esm.json && echo >dist/esm/package.json {\"type\":\"module\"}",
+    "build:tsup": "tsup src/index.ts",
+    "build": "npm run build:tsup"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "outDir": "dist/esm",
+    "format": "esm",
+    "dts": true,
+    "noExternal": [],
+    "splitting": false,
+    "target": "node14",
+    "sourcemap": true,
+    "clean": true
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "@types/react": "^18.2.17",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@allenlee/remark-mdx-frontmatter": "^3.1.2",
+    "@mdx-js/mdx": "^2.3.0",
+    "@vcarl/remark-headings": "^0.1.0",
+    "matcher": "^5.0.0",
+    "mkdirp": "^3.0.1",
+    "pretty-format": "^29.6.2",
+    "remark-frontmatter": "^4.0.1",
+    "remark-preset-lint-consistent": "^5.1.2",
+    "rimraf": "^5.0.1",
+    "unified": "^10.1.2"
+  }
+}

@@ -1,0 +1,382 @@
+/* Bilibili */
+@import url("https://fonts.googleapis.com/css2?family=Nova+Square&display=swap");
+
+$full-width: 900px;
+$out-padding: 40px;
+$section-padding: 80px;
+
+@mixin split-line($at-bottom: false) {
+  position: relative;
+
+  $selector: "::before";
+  @if $at-bottom {
+    $selector: "::after";
+  }
+  &#{$selector} {
+    content: "";
+
+    display: block;
+    height: 1px;
+    width: calc($full-width - $out-padding * 2);
+    background: hsla(0, 0%, 59.2%, 0.21);
+    transform-origin: center;
+    transform: translate(-50%);
+    position: absolute;
+    z-index: 2;
+
+    @if $at-bottom {
+      bottom: 0;
+    } @else {
+      top: 0;
+    }
+    left: 50%;
+  }
+}
+
+.Bilibili {
+  background-color: #f6f7f9;
+  -ms-flex-negative: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Microsoft YaHei, -apple-system, PingFang SC, Droid Sans Fallback,
+    Droid Sans, HYQiHei, Arial, Helvetica Neue, Hiragino Sans GB, sans-serif;
+
+  div[role="article"] {
+    background-color: #ffffff;
+    border-radius: 4px;
+    flex-shrink: 0;
+    padding: 30px $out-padding 40px;
+    width: $full-width;
+    margin-top: 22px;
+    margin-bottom: 12px;
+
+    line-height: 1.6;
+    font-size: 17px;
+    font-weight: 400;
+    color: #212121;
+    text-align: left;
+    letter-spacing: 0;
+    word-wrap: break-word;
+    overflow: hidden;
+    border: none;
+    position: relative;
+  }
+
+  *[class="resp-image-wrapper"] {
+    margin: 0 auto !important;
+  }
+  a {
+    color: #fb7299;
+  }
+  ul[role="tree"] {
+    margin-top: 10px;
+  }
+
+  h1 {
+    padding: 0 80px;
+    font-size: 28px;
+    color: #222;
+    margin-bottom: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+
+  article {
+    padding: 0 80px;
+    position: relative;
+    display: flow-root;
+
+    & > [class="header-banner"] {
+      margin: 0 auto 40px;
+      position: relative;
+
+      img {
+        border-radius: 4px;
+      }
+    }
+
+    & > [class="meta"] {
+      margin-bottom: 20px;
+      color: #999;
+      font-weight: 400;
+      font-size: 13px;
+    }
+
+    // as css selector level 4, this could be:
+    // & > :nth-child(1 of :not([class='']):not([class='']))
+    & > [class="header-banner"] + *,
+    & > [class="meta"] + p {
+      padding-top: 40px;
+
+      @include split-line;
+    }
+
+    & > [class="comment start"] {
+      margin-top: 50px;
+      padding-top: 30px;
+
+      @include split-line;
+
+      &::after {
+        content: " ";
+        background-color: #f6f7f9;
+        width: 900px;
+        height: 13px;
+        transform: translateX(-$section-padding - $out-padding);
+        display: block;
+      }
+
+      & ~ ul {
+        transform: translateX(-$section-padding - $out-padding);
+        padding: 20px 80px;
+        width: $full-width;
+        background-color: #fff;
+
+        &::before {
+          display: block;
+          content: "请先登录后发表评论 (・ω・)";
+          height: 64px;
+          margin: 25px $section-padding;
+          background-color: #e5e9ef;
+          text-align: center;
+          font-size: 12px;
+          border-radius: 4px;
+          text-align: center;
+          color: #777;
+          line-height: 64px;
+        }
+
+        > li {
+          padding: 22px 0 14px 0;
+          margin: 0 $section-padding;
+          border-top: 1px solid #e5e9ef;
+          border-bottom: 1px solid #e5e9ef;
+          position: relative;
+
+          &::before {
+            content: " ";
+            position: absolute;
+            left: -60px;
+            width: 40px;
+            height: 40px;
+            display: inline-block;
+            vertical-align: middle;
+            background-color: #ccc;
+            background-image: url(https://i0.hdslb.com/bfs/face/member/noface.jpg);
+            border-radius: 100%;
+          }
+        }
+
+        li {
+          color: #fb7299;
+          position: relative;
+          user-select: text;
+          font-size: 12px;
+          font-weight: bold;
+
+          > em:first-of-type {
+            margin-left: 10px;
+          }
+          em {
+            vertical-align: text-top;
+            font-family: "Nova Square", cursive;
+            color: #ffffff;
+            font-style: normal;
+            font-size: 12px;
+            line-height: 1;
+
+            // simulate zoom
+            scale: 0.6;
+            margin-left: -10px;
+            transform-origin: 100% 50%;
+            & ~ em {
+              margin-left: -6px;
+            }
+
+            display: inline-block;
+            letter-spacing: 4px;
+            font-weight: 800;
+            padding: 0 4px 0 2px;
+            background-color: #ff0000;
+            background-clip: border-box;
+            clip-path: polygon(
+              0% 100%,
+              100% 100%,
+              100% 0%,
+              56% 0%,
+              56% 18%,
+              0% 18%
+            );
+
+            &:not([data-level]) {
+              clip-path: none;
+              background-color: #fb7299;
+            }
+
+            &:not([data-level]),
+            &::after {
+              font-weight: 500;
+              letter-spacing: -2px;
+              font-size: 16px;
+            }
+            &::after {
+              content: attr(data-level);
+            }
+          }
+
+          a {
+            color: #00a1d6;
+            pointer-events: none;
+          }
+
+          ul {
+            margin-top: 8px;
+
+            > :first-child {
+              position: relative;
+              z-index: 2;
+              line-height: 20px;
+              padding: 2px 0;
+              font-size: 14px;
+              text-shadow: none;
+              overflow: hidden;
+              word-wrap: break-word;
+              word-break: break-word;
+              white-space: pre-wrap;
+              font-weight: normal;
+              color: #222;
+            }
+            > :nth-child(2) {
+              color: #99a2aa;
+              line-height: 14px;
+              font-weight: normal;
+              margin-top: 6px;
+              font-size: 12px;
+            }
+            > :nth-child(n + 3) {
+              padding: 10px 0;
+
+              &::before {
+                content: " ";
+                width: 24px;
+                height: 24px;
+                margin-right: 10px;
+                display: inline-block;
+                vertical-align: middle;
+                background-color: #ccc;
+                background-image: url(https://i0.hdslb.com/bfs/face/member/noface.jpg);
+                border-radius: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > :not([class="comment end"]):last-child {
+      padding-bottom: 50px;
+      display: inline-block;
+      width: 100%;
+
+      @include split-line(true);
+    }
+
+    & > p,
+    & > details > p,
+    & > strong > p {
+      margin-bottom: 12px;
+    }
+
+    & > details {
+      margin-bottom: 20px;
+      border: none;
+    }
+
+    & > blockquote {
+      color: #999;
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: center;
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 0 5%;
+    }
+
+    & > figure {
+      position: relative;
+      margin: 20px 0;
+      display: block;
+
+      & [role="figcaption"] {
+        color: #999;
+        font-size: 14px;
+        line-height: 1.5;
+        text-align: center;
+        margin-top: 10px;
+        display: inline-block;
+        width: 100%;
+        visibility: visible;
+      }
+    }
+
+    & > h2 {
+      text-align: center;
+      color: #ee230d;
+      font-weight: 700;
+      line-height: 1.8;
+      font-size: 22px;
+      margin: 20px 0;
+      position: relative;
+
+      &:not(:first-of-type) {
+        padding-top: 20px;
+
+        &::before {
+          content: " ";
+          display: inline-block;
+          height: 1px;
+          width: 260px;
+          background-color: rgba(0, 0, 0, 0.1);
+          border: none;
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+    }
+
+    & > aside {
+      margin-bottom: 20px;
+      display: block;
+
+      [class="resp-image-wrapper"] {
+        max-width: 214px;
+        background-color: transparent;
+        display: inline-block;
+        border: none;
+        position: relative;
+        font-size: 0;
+
+        a {
+          cursor: default;
+          pointer-events: none;
+        }
+      }
+    }
+  }
+
+  & + div[class="empty"] {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    z-index: -999;
+    top: 0;
+    left: 0;
+  }
+}

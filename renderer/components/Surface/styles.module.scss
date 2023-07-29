@@ -1,0 +1,20 @@
+.surface {
+  padding: 16px;
+  box-shadow: var(--shadow16);
+  border-color: var(--colorTransparentStroke);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: var(--borderRadiusMedium);
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+}
+
+.soft-surface {
+  box-shadow: var(--shadow8);
+  border-radius: var(--borderRadiusSmall);
+}
+
+.minimum-surface {
+  box-shadow: var(--shadow2);
+  border-radius: var(--borderRadiusSmall);
+}

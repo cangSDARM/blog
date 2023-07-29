@@ -1,0 +1,86 @@
+.tree[role*="tree"] {
+  margin: 1.4em 0;
+  display: table;
+}
+.label {
+  display: flex;
+}
+.group {
+  margin-top: 1ex !important;
+}
+.labelItem {
+  width: 100%;
+  border-bottom: none !important;
+  color: rgb(26, 26, 26) !important;
+  text-decoration: none;
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+$screen-lg: 1080px;
+$avatar-size: calc(var(--fontSizeBaseXLarge) * 2);
+
+.references {
+  position: fixed;
+  margin: auto;
+  bottom: 40px;
+  padding: var(--spacingXS) var(--spacingMNudge);
+  background-color: var(--colorNeutralBackground1);
+  right: var(--spacingXXL);
+  z-index: 999;
+  border-bottom-right-radius: var(--borderRadiusLarge);
+
+  & > div {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+
+    > nav {
+      display: flex;
+      flex-direction: column;
+      margin-right: calc($avatar-size - var(--spacingS));
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+
+      font-size: var(--fontSizeBaseSmall);
+    }
+
+    a {
+      line-height: 1;
+      color: var(--colorBrandForegroundLink);
+    }
+  }
+
+  @media screen and (min-width: $screen-lg) {
+    top: 120px;
+    bottom: unset;
+    right: unset;
+    left: 72vw;
+    box-shadow: unset;
+
+    & > div {
+      flex-direction: row;
+
+      > nav {
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.2em;
+        max-width: 16vw;
+      }
+    }
+  }
+}
+
+.avatar {
+  position: absolute;
+  right: 0;
+
+  height: $avatar-size;
+  width: $avatar-size;
+}

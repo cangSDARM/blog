@@ -1,0 +1,59 @@
+@import "./reset.scss";
+@import "./theme/index.scss";
+@import "./katex/katex.min.css";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap");
+
+html {
+  font-family: var(--fontFamilyBase);
+}
+
+#nprogress {
+  .bar {
+    background-color: var(--colorBrandBackground);
+  }
+  .peg {
+    box-shadow: var(--shadow2Brand);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body,
+html,
+#__next {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.anchor.after {
+  display: inline-block;
+  padding-left: var(--spacingXS);
+}
+
+.anchor svg {
+  visibility: hidden;
+}
+
+h2:hover .anchor svg,
+h3:hover .anchor svg {
+  visibility: visible;
+}
+
+[role="figure"] {
+  border: 0px solid transparent;
+  display: block;
+  position: relative;
+
+  [role="figcaption"] {
+    display: none;
+    font-size: 0;
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,30 @@
+.archivePost {
+  cursor: default;
+  user-select: none;
+  position: relative;
+
+  figcaption {
+    font-size: 1em;
+    display: inherit;
+    visibility: inherit;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+  h2 {
+    font-size: 1.62671rem;
+  }
+  h3 {
+    font-size: 1.38316rem;
+  }
+  h4 {
+    font-size: 1rem;
+  }
+  h5 {
+    font-size: 0.85028rem;
+  }
+  h6 {
+    font-size: 0.78405rem;
+  }
+}
