@@ -1,75 +1,84 @@
 import React from "react";
+import Clamp from "react-multiline-clamp";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Surface from "@/components/Surface";
-import styles from "./style.module.scss";
 import clsx from "clsx";
+import classes from "./style.module.scss";
 
 const Truncate: React.FC<
   React.PropsWithChildren<
     {
-      align?: "left" | "right" | "center";
       as?: string;
       maxLines?: number;
+      tooltipProps: React.ComponentPropsWithoutRef<typeof Surface>;
+      portalContainInBody?: boolean;
     } & any
   >
 > = ({
   children,
   maxLines = 100,
-  align = "left",
   as: As = "span",
-  ...props
+  tooltipProps = {},
+  portalContainInBody = false,
+  ...restProps
 }) => {
   const [open, setOpen] = React.useState(false);
-  const [truncateWidth, setTruncateWidth] = React.useState(0);
-  const [isTextContent, setIsText] = React.useState(false);
-  const handleTruncate = (ref: HTMLSpanElement | null) => {
-    if (ref) {
-      if (
-        Array.from(ref.childNodes || []).every((node) =>
-          [3, 8].includes(node.nodeType)
-        )
-      ) {
-        // text node, let css handle this
-        setIsText(true);
-      } else {
-        const rect = ref?.clientWidth;
-        const pRect = ref?.parentElement?.clientWidth || 0;
-
-        setTruncateWidth(rect - pRect);
-      }
-    }
-  };
+  // TODO;
+  const [truncated, setTruncated] = React.useState(false);
+  const portalRef = React.useRef<HTMLElement | null>(null);
 
   return (
     <Tooltip.Provider delayDuration={200} skipDelayDuration={100}>
-      <Tooltip.Root
-        open={open}
-        onOpenChange={(open) => truncateWidth > 0 && setOpen(open)}
-      >
+      <Tooltip.Root open={open} onOpenChange={(open) => setOpen(open)}>
         <Tooltip.Trigger asChild>
-          {/** @ts-ignore */}
           <As
-            style={{
-              transform: `translateX(${
-                align === "left"
-                  ? truncateWidth
-                  : align === "right"
-                  ? -truncateWidth
-                  : 0
-              }px)`,
-              WebkitLineClamp: maxLines,
-              lineClamp: maxLines,
+            {...(restProps || {})}
+            ref={(r: HTMLElement | null) => {
+              if (r) {
+                portalRef.current = r.parentNode as HTMLElement;
+              }
             }}
-            className={clsx(isTextContent && styles["wrapper"])}
-            ref={handleTruncate}
-            {...props}
           >
-            {children}
+            <Clamp lines={maxLines} maxLines={maxLines} withTooltip={false}>
+              {children}
+            </Clamp>
           </As>
         </Tooltip.Trigger>
-        <Tooltip.Portal>
+        <Tooltip.Portal
+          container={portalContainInBody ? document.body : portalRef.current}
+        >
           <Tooltip.Content>
-            <Surface>{children}</Surface>
+            <Surface
+              appearance="soft"
+              style={{ padding: "2px 4px" }}
+              {...tooltipProps}
+            >
+              {React.Children.map(children || [], (child) => {
+                if (React.isValidElement<any>(child)) {
+                  return React.cloneElement(child, {
+                    className: clsx(
+                      child?.props?.className,
+                      classes["in-tooltip"]
+                    ),
+                    ["in-tooltip"]: "true",
+                  });
+                }
+                // primitive type
+                if (child) {
+                  return (
+                    <span
+                      className={clsx(
+                        child?.props?.className,
+                        classes["in-tooltip"]
+                      )}
+                      in-tooltip="true"
+                    >
+                      {child}
+                    </span>
+                  );
+                }
+              })}
+            </Surface>
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>

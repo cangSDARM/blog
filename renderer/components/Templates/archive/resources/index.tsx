@@ -3,13 +3,14 @@ import Surface from "@/components/Surface";
 import Link from "next/link";
 import React from "react";
 import mainStyles from "./style.module.scss";
-// import HeadingView from "./headingView";
+import HeadingView from "./headingView";
 
-const Resources: React.FC<{ avatar: string; reference: string; toc: any }> = ({
-  avatar = "",
-  reference = "",
-  toc,
-}) => {
+const Resources: React.FC<{
+  avatar: string;
+  reference: string;
+  toc: TOCItem[];
+  ignoredDepth?: number[];
+}> = ({ avatar = "", reference = "", toc, ignoredDepth = [] }) => {
   const [refTitle, refLink] = reference.split("|");
 
   return reference ? (
@@ -34,7 +35,7 @@ const Resources: React.FC<{ avatar: string; reference: string; toc: any }> = ({
           <Link href={refLink}>{refTitle}</Link>
         </nav>
       </div>
-      {/* <HeadingView toc={toc?.items ?? []} /> */}
+      <HeadingView toc={toc ?? []} ignoredDepth={ignoredDepth as any[]} />
     </Surface>
   ) : (
     <></>

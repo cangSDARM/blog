@@ -1,0 +1,48 @@
+.item-details {
+  summary {
+    position: relative;
+    display: block;
+    cursor: pointer;
+
+    > ::marker,
+    > ::-webkit-details-marker {
+      display: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 1px dotted #000;
+    }
+  }
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &.selected {
+      display: flex;
+    }
+  }
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 4px;
+
+  svg {
+    font-size: 18px;
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    fill: currentcolor;
+    flex-shrink: 0;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  }
+}

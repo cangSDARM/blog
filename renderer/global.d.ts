@@ -1,3 +1,5 @@
+type ArrayItem<T extends any[]> = T extends (infer S)[] ? S : never;
+
 type Overview = {
   length: number;
   name: string;
@@ -17,10 +19,11 @@ type MdxComponent = React.ExoticComponent<{
 
 type Frontmatter = Record<string, any> & { title: string };
 
+type TOCItem = { depth: number; id: string; value?: string, children?: TOCItem[] };
 type CompileAst = {
   /** contains the compiled mdx sources */
   content: string;
-  headings: any[];
+  toc: TOCItem[];
 };
 
 type Defined<T> = Exclude<T, undefined | null>;

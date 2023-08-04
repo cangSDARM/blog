@@ -1,4 +1,4 @@
-import * as RAvatar from "@radix-ui/react-avatar";
+import { Root, Image, Fallback } from "@radix-ui/react-avatar";
 import clsx from "clsx";
 import React from "react";
 import styles from "./style.module.scss";
@@ -9,7 +9,7 @@ const Avatar: React.FC<{
   className?: string;
   appearance?: "circular";
 }> = ({ src = "", children = src, className, appearance }) => (
-  <RAvatar.Root
+  <Root
     className={clsx(
       styles["avatar-root"],
       className,
@@ -17,15 +17,11 @@ const Avatar: React.FC<{
     )}
     role="img"
   >
-    <RAvatar.Image
-      className={styles["avatar-image"]}
-      src={src}
-      alt={children}
-    />
-    <RAvatar.Fallback className={styles["avatar-fallback"]} delayMs={400}>
+    <Image className={styles["avatar-image"]} src={src} alt={children} />
+    <Fallback className={styles["avatar-fallback"]} delayMs={400}>
       {children}
-    </RAvatar.Fallback>
-  </RAvatar.Root>
+    </Fallback>
+  </Root>
 );
 
 export default Avatar;

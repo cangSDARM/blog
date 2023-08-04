@@ -32,9 +32,14 @@ html,
   overflow: hidden;
 }
 
+[data-radix-popper-content-wrapper] {
+  z-index: 999 !important;
+}
+
 .anchor.after {
   display: inline-block;
   padding-left: var(--spacingXS);
+  border: none;
 }
 
 .anchor svg {

@@ -7,8 +7,8 @@ const Archive: React.FC<TemplateProps> = ({
   children,
   compiled,
 }) => {
-  const { type, title } = frontmatter;
-  const { headings } = compiled;
+  const { type, ignoredDepth = [], title } = frontmatter;
+  const { toc } = compiled;
 
   const className = useType(type);
 
@@ -20,7 +20,8 @@ const Archive: React.FC<TemplateProps> = ({
           <Resources
             avatar={frontmatter?.avatar}
             reference={frontmatter?.reference || undefined}
-            toc={{}}
+            toc={toc}
+            ignoredDepth={ignoredDepth}
           />
           <article>
             {children({

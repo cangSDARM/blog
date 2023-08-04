@@ -1,23 +1,56 @@
 .tree[role*="tree"] {
-  margin: 1.4em 0;
-  display: table;
-}
-.label {
-  display: flex;
-}
-.group {
-  margin-top: 1ex !important;
-}
-.labelItem {
-  width: 100%;
-  border-bottom: none !important;
-  color: rgb(26, 26, 26) !important;
-  text-decoration: none;
-  cursor: pointer;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
+  margin: 1.4em 0 1em;
+
+  .label {
+    display: flex;
+  }
+  .group {
+    --zipzag-color: var(--colorNeutralBackground2);
+
+    @mixin biasContent($bias: 0px) {
+      &::before {
+        top: calc(-1px - #{$bias});
+        height: calc($bias + 14px);
+      }
+    }
+
+    > * {
+      margin-left: 4px;
+      padding-left: 10px;
+      border-left: 2px solid var(--zipzag-color);
+      position: relative;
+
+      @include biasContent();
+
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: -2px;
+        width: 10px;
+        border: solid var(--zipzag-color);
+        border-width: 0 0 2px 2px;
+      }
+    }
+    > *:first-child {
+      @include biasContent(9px);
+    }
+    > *:last-child {
+      border-left: 2px solid transparent;
+    }
+  }
+  .selected .labelItem {
+    background-color: #e8eaee;
+    border-radius: 0.25em;
+  }
+  .labelItem {
+    width: 100%;
+    padding: 1px 2px;
+    border-bottom: none !important;
+    color: rgb(26, 26, 26) !important;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 $screen-lg: 1080px;

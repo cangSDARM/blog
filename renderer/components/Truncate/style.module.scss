@@ -1,14 +1,5 @@
-.wrapper {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-break: auto;
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto;
-  word-wrap: normal;
-  overflow-wrap: normal;
+.in-tooltip[in-tooltip] {
+  color: inherit !important;
+  background: inherit !important;
+  text-decoration: inherit !important;
 }

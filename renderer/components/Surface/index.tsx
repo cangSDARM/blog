@@ -1,9 +1,9 @@
 import React from "react";
 import clsx from "clsx";
-import styles from "./styles.module.scss";
+import classes from "./styles.module.scss";
 
 export function useSurfaceStyle() {
-  return styles["surface"];
+  return classes?.["surface"] || "";
 }
 
 const Surface = React.forwardRef<
@@ -17,9 +17,9 @@ const Surface = React.forwardRef<
   return (
     <section
       className={clsx(
-        styles["surface"],
-        appearance === "soft" && styles["soft-surface"],
-        appearance === "minimum" && styles["minimum-surface"],
+        classes["surface"],
+        appearance === "soft" && classes["soft-surface"],
+        appearance === "minimum" && classes["minimum-surface"],
         className
       )}
       {...props}
