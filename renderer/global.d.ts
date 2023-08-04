@@ -27,3 +27,7 @@ type CompileAst = {
 };
 
 type Defined<T> = Exclude<T, undefined | null>;
+
+declare module 'react-multiline-clamp' {
+  export default React.FC<any>;
+}

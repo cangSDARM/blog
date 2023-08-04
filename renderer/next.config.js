@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   webpack: (config, { isServer }) => {
@@ -16,6 +17,7 @@ const nextConfig = {
         hostname: "user-images.githubusercontent.com",
       },
     ],
+    unoptimized: true,
   },
   basePath: "/blog",
 };

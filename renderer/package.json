@@ -6,6 +6,8 @@
     "prestart": "npm run format && npm run lint",
     "start": "next dev",
     "build": "next build",
+    "help": "next export -h",
+    "deploy": "next export --outdir=out && echo EOF > out/.nojekyll",
     "lint": "next lint",
     "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,scss}\"",
     "postbuild": "npm run sitemap && npm run rss",
