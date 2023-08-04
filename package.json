@@ -9,6 +9,7 @@
     "build:renderer": "cd ./renderer && npm run build",
     "build:dep": "npm run install && npm run build:preprocessor && npm run build:mdx-gen",
     "gen:mdx": "cd ./mdx-gen && npm run process",
-    "start": "cd ./renderer && npm run start"
+    "start": "cd ./renderer && npm run start",
+    "deploy": "cd ./renderer && npm run deploy"
   }
 }
