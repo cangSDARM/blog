@@ -13,6 +13,7 @@ import rehypeSlug from "rehype-slug";
 import remarkDropParagraph from "@allenlee/remark-drop-paragraph";
 import rehypeImageProcess from "@allenlee/rehype-image-process";
 import rehypeExtractToc from "@stefanprobst/rehype-extract-toc";
+import remarkGfmAutolinkLiteral from "./remark-autolink-literal";
 
 export async function compileMdx(fullPath: string) {
   try {
@@ -31,6 +32,7 @@ export async function compileMdx(fullPath: string) {
         remarkMath,
         remarkFrontmatter,
         remarkMdxFrontmatter,
+        remarkGfmAutolinkLiteral,
       ],
       rehypePlugins: [
         [

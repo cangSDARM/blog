@@ -33,17 +33,26 @@ html,
 }
 
 [data-radix-popper-content-wrapper] {
-  z-index: 999 !important;
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  // hover (which would be true for a device with a mouse, for instance) or none (which would be true for a tablet being used with touch input)
+  // coarse (for a pointer such as a finger used on a touch screen), fine (a mouse, for example) or none (a device with no pointer)
+
+  [data-radix-popper-content-wrapper] {
+    display: block;
+    z-index: 999 !important;
+  }
 }
 
 .anchor.after {
   display: inline-block;
   padding-left: var(--spacingXS);
   border: none;
-}
 
-.anchor svg {
-  visibility: hidden;
+  svg {
+    visibility: hidden;
+  }
 }
 
 h2:hover .anchor svg,

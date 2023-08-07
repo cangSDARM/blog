@@ -21,13 +21,15 @@ function deepFlatten(TOCs: TOCItem[]) {
   return lgtm;
 }
 
-function getHash(str: string) {
+function getHash(str?: string) {
+  if (!str) return "";
   if (str.startsWith("#")) return str.substring(1);
 
   return str;
 }
 
 function getBanHash(str: string) {
+  if (!str) return "#";
   if (!str.startsWith("#")) return "#" + str;
 
   return str;
@@ -40,7 +42,7 @@ interface HeadingViewProps {
 }
 
 const HeadingView: React.FC<HeadingViewProps> = ({
-  toc,
+  toc = [],
   ignoredDepth = [],
   indexingTitle = "目录",
 }) => {
@@ -69,7 +71,9 @@ const HeadingView: React.FC<HeadingViewProps> = ({
   const renderTreeItem = useCallback(
     (nodes: TOCItem): JSX.Element =>
       (ignoredDepth as unknown as number[]).includes(nodes.depth) ? (
-        <React.Fragment key={nodes.id}>{renderTreeChildren(nodes)}</React.Fragment>
+        <React.Fragment key={nodes.id}>
+          {renderTreeChildren(nodes)}
+        </React.Fragment>
       ) : (
         <TreeItem
           key={nodes.id}

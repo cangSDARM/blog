@@ -19,7 +19,12 @@ type MdxComponent = React.ExoticComponent<{
 
 type Frontmatter = Record<string, any> & { title: string };
 
-type TOCItem = { depth: number; id: string; value?: string, children?: TOCItem[] };
+type TOCItem = {
+  depth: number;
+  id: string;
+  value?: string;
+  children?: TOCItem[];
+};
 type CompileAst = {
   /** contains the compiled mdx sources */
   content: string;
@@ -28,6 +33,6 @@ type CompileAst = {
 
 type Defined<T> = Exclude<T, undefined | null>;
 
-declare module 'react-multiline-clamp' {
+declare module "react-multiline-clamp" {
   export default React.FC<any>;
 }
