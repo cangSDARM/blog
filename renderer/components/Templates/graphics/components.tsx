@@ -194,7 +194,7 @@ export const Model: React.FC<React.PropsWithChildren<{ about: string }>> = ({
       <Dialog.Trigger asChild>
         <span className={styles.ModelTrigger}>{children}</span>
       </Dialog.Trigger>
-      <Dialog.Portal id={`model${about}`}>
+      <Dialog.Portal>
         <Dialog.Overlay className={styles.ModalOverlay} data-theme="dark" />
         <Dialog.Content className={styles.ModalContent} data-theme="dark">
           {imageState ? (

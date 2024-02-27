@@ -20,7 +20,7 @@
     "@mdx-js/mdx": "^2.2.1",
     "@radix-ui/react-avatar": "^1.0.1",
     "@radix-ui/react-collapsible": "^1.0.1",
-    "@radix-ui/react-dialog": "^1.0.3",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-navigation-menu": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.0.2",
     "@stefanprobst/rehype-extract-toc": "^2.2.0",
