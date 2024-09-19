@@ -44,23 +44,27 @@
       a {
         color: #666699;
         text-decoration: none;
+      }
 
-        &::after {
-          zoom: 1;
-          content: " ";
-          font-size: 0;
-          background: -webkit-image-set(
-                url(https://img3.doubanio.com/f/shire/b8f4c3672ef81106701071831e22422a745d3b74/pics/rating_icons/ic_rating_s.png) 1x,
-                url(https://img3.doubanio.com/f/shire/b8f4c3672ef81106701071831e22422a745d3b74/pics/rating_icons/ic_rating_s@2x.png) 2x
-              )
-              no-repeat;
-          display: inline-block;
-          margin: 0 5px;
-          width: 55px;
-          height: 11px;
-          overflow: hidden;
-          cursor: default;
-          pointer-events: none;
+      span[class="rating"] {
+        zoom: 1;
+        content: " ";
+        font-size: 0;
+        background: -webkit-image-set(
+              url(https://img3.doubanio.com/f/shire/b8f4c3672ef81106701071831e22422a745d3b74/pics/rating_icons/ic_rating_s.png) 1x,
+              url(https://img3.doubanio.com/f/shire/b8f4c3672ef81106701071831e22422a745d3b74/pics/rating_icons/ic_rating_s@2x.png) 2x
+            )
+            no-repeat;
+        display: inline-block;
+        margin: 0 5px;
+        width: 55px;
+        height: 11px;
+        overflow: hidden;
+        cursor: default;
+        pointer-events: none;
+
+        &[rate="4"] {
+          background-position: 0 -22px;
         }
       }
     }
