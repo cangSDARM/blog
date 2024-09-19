@@ -23,11 +23,12 @@ function slugPath(path: string) {
   return relative(MDX_DIR, path).replace(sep, "/");
 }
 function fileExt(path: string): [string, string] {
-  const reg = /^(?<name>.*)\.(?<ext>.*)$/giu;
+  const reg = /^(.*)\.(.*)$/giu;
+  //const reg = /^(?<name>.*)\.(?<ext>.*)$/giu;
 
   const result = reg.exec(path);
   if (result) {
-    return [result.groups!.name, result.groups!.ext];
+    return [result[1], result[2]];
   } else {
     return [path, ""];
   }
