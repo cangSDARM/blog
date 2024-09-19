@@ -29,7 +29,7 @@ function styleConcat(...typeStyle: string[]) {
   return clsx(...archivePost, ...typeStyle);
 }
 
-export const useType = (typo: string) => {
+export const useType = (typo: string = "") => {
   switch (typo) {
     case Type.ZhiHu_Zhuanlan:
       return styleConcat(zhihu);

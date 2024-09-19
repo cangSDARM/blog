@@ -7,7 +7,6 @@ import rehypePrismPlus from "rehype-prism-plus";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkSqueezeParagraphs from "remark-squeeze-paragraphs";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
-import remarkUnwrapImages from "remark-unwrap-images";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import rehypeSlug from "rehype-slug";
 import remarkDropParagraph from "@allenlee/remark-drop-paragraph";
@@ -22,12 +21,10 @@ export async function compileMdx(fullPath: string) {
     const compiled = await compile(fileContents, {
       outputFormat: "function-body",
       development: false,
-      useDynamicImport: true,
       jsx: false,
       remarkPlugins: [
         remarkPresetLintConsistent,
         remarkSqueezeParagraphs,
-        remarkUnwrapImages,
         remarkDropParagraph,
         remarkMath,
         remarkFrontmatter,

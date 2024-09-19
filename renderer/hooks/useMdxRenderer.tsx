@@ -11,13 +11,14 @@ const useMdxRenderer = ({
 }: Props): [Component: MdxComponent, frontmatter: Frontmatter] => {
   const { default: MdxModuleComponent, ...rest } = React.useMemo(
     () =>
-      runSync(code, runtime) as {
+      // @ts-expect-error: the automatic react runtime is untyped.
+      runSync(code, { ...runtime, baseUrl: import.meta.url }) as {
         default: MdxComponent;
       },
     [code]
   );
 
-  return [MdxModuleComponent, rest as any];
+  return [MdxModuleComponent, (rest as any).frontmatter];
 };
 
 export default useMdxRenderer;

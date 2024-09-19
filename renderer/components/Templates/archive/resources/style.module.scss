@@ -63,7 +63,7 @@ $avatar-size: calc(var(--fontSizeBaseXLarge) * 2);
   padding: var(--spacingXS) var(--spacingMNudge);
   background-color: var(--colorNeutralBackground1);
   right: var(--spacingXXL);
-  z-index: 999;
+  z-index: 9;
   border-bottom-right-radius: var(--borderRadiusLarge);
 
   & > div {

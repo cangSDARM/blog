@@ -59,7 +59,7 @@ const Anchor: React.FC<
     HTMLAnchorElement
   >
 > = ({ href = "/", ...props }) => {
-  if (!href.startsWith("/")) {
+  if (!["/", "#"].includes(href[0])) {
     return (
       <a
         rel="noopener noreferrer external nofollow"

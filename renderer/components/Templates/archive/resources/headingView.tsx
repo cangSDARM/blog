@@ -90,12 +90,16 @@ const HeadingView: React.FC<HeadingViewProps> = ({
               onClick={(e) => {
                 e.preventDefault();
                 try {
-                  document.querySelector(getBanHash(nodes.id))?.scrollIntoView({
+                  /// use getElementById instated of querySelector.
+                  /// because sometimes some id starts with number, which is'nt a valid css selector
+                  document.getElementById(getHash(nodes.id))?.scrollIntoView({
                     behavior: "smooth",
                     block: "start",
                     inline: "nearest",
                   });
-                } catch {}
+                } catch (e) {
+                  console.error("scroll into view error", e);
+                }
               }}
             >
               {nodes.value}

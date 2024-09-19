@@ -78,7 +78,9 @@ $view-port-background: var(--colorNeutralBackground6);
   height: $arrow-margin;
   top: 100%;
   z-index: 1;
-  transition: width, transform 250ms ease;
+  transition:
+    width,
+    transform 250ms ease;
 
   &[data-state="visible"] {
     animation: fadeIn 200ms ease;
@@ -112,7 +114,10 @@ $view-port-background: var(--colorNeutralBackground6);
   margin-top: $arrow-margin;
   overflow: hidden;
   overflow-y: auto;
-  transition: width, height, 300ms ease;
+  transition:
+    width,
+    height,
+    300ms ease;
   z-index: 99;
   background-color: $view-port-background;
 

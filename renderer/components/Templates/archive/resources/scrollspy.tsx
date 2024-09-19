@@ -38,8 +38,8 @@ const getTarget = (
   target === null
     ? window
     : typeof target === "string" && typeof window !== "undefined"
-    ? document.getElementById(target)
-    : target;
+      ? document.getElementById(target)
+      : target;
 const noop = () => {};
 
 export type ScrollSpyItem = { hash: string };
