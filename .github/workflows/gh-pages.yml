@@ -37,7 +37,7 @@ jobs:
         run: npm --proxy=null --https_proxy=null --strict-ssl=true run install:renderer
 
       - name: Cache buildings 🏗
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: building
         with:
           path: |
