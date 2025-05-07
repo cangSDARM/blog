@@ -6,6 +6,31 @@ import Comment from "./Comment";
 import clsx from "clsx";
 import classes from "./style.module.scss";
 
+const authorPrinter = (author: string, index: number) => (
+  <React.Fragment key={index}>
+    {index !== 0 && "，"}
+    {author}
+  </React.Fragment>
+);
+
+const Author: React.FC<{
+  authors: any;
+}> = ({ authors: p }) => {
+  if (typeof p !== "string") return <></>;
+
+  const [authors, translators] = p.split("|");
+
+  return (
+    <p className={classes.Author}>
+      作者：
+      {authors.split(",").map(authorPrinter)}
+      <i />
+      译者：
+      {translators.split(",").map(authorPrinter)}
+    </p>
+  );
+};
+
 const ShortStory: React.FC<TemplateProps> = ({
   frontmatter,
   children,
@@ -15,7 +40,7 @@ const ShortStory: React.FC<TemplateProps> = ({
     type,
     ignoredDepth = [],
     title,
-    translator = "",
+    authors = [],
     subtitle = "",
   } = frontmatter;
   const { toc } = compiled;
@@ -35,7 +60,7 @@ const ShortStory: React.FC<TemplateProps> = ({
             ignoredDepth={ignoredDepth}
           />
           <article>
-            {translator && <p>译者：{translator}</p>}
+            <Author authors={authors} />
             {children({
               Comment,
             })}

@@ -3,6 +3,18 @@
     filter: opacity(0.25);
     font-size: 1.25rem;
   }
+
+  .Author {
+    display: inline-block;
+    word-wrap: no-wrap;
+
+    i {
+      display: inline-block;
+      color: transparent;
+      width: 1em;
+      height: 1em;
+    }
+  }
 }
 
 .CollapsibleRoot {
