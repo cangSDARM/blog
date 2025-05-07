@@ -1,9 +1,11 @@
 @mixin fluent-font {
-  --fontFamilyBase: "Segoe UI", "Noto Sans SC", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  --fontFamilyBase:
+    "Segoe UI", "Noto Sans SC", -apple-system, BlinkMacSystemFont, Roboto,
+    "Helvetica Neue", sans-serif;
   --fontFamilyMonospace: Consolas, "Courier New", Courier, monospace;
-  --fontFamilyNumeric: Bahnschrift, "Segoe UI", "Segoe UI Web (West European)",
-    -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  --fontFamilyNumeric:
+    Bahnschrift, "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   --fontWeightRegular: 400;
   --fontWeightMedium: 500;
   --fontWeightSemibold: 600;

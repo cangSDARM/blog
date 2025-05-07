@@ -13,10 +13,11 @@ import {
 import clsx from "clsx";
 
 const Type = {
-  ZhiHu_Zhuanlan: "zhuanlan.zhihu.com",
+  ZhiHu_ZhuanLan: "zhuanlan.zhihu.com",
   JianShu: "www.jianshu.com",
   Bilibili: "www.bilibili.com",
   DouBan: "movie.douban.com",
+  DouBanXiaoZu: "douban.com/group",
   TieBa: "tieba.baidu.com",
   Weibo: "weibo.com",
   Godot: "docs.godotengine.org",
@@ -31,13 +32,14 @@ function styleConcat(...typeStyle: string[]) {
 
 export const useType = (typo: string = "") => {
   switch (typo) {
-    case Type.ZhiHu_Zhuanlan:
+    case Type.ZhiHu_ZhuanLan:
       return styleConcat(zhihu);
     case Type.JianShu:
       return styleConcat(jianshu);
     case Type.Bilibili:
       return styleConcat(bilibili);
     case Type.DouBan:
+    case Type.DouBanXiaoZu:
       return styleConcat(douban);
     case Type.TieBa:
       return styleConcat(tieba);

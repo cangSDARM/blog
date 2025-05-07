@@ -4,6 +4,7 @@ import Graphics from "./graphics";
 import Haskell from "./haskell";
 import Math from "./math";
 import Network from "./network";
+import ShortStory from "./shortStory";
 
 const useTemplateRender = (
   collection: string
@@ -11,6 +12,8 @@ const useTemplateRender = (
   switch (collection) {
     case "archive":
       return [Archive];
+    case "sstory":
+      return [ShortStory];
     case "math":
       return [Math];
     case "network":

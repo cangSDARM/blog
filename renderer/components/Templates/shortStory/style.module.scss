@@ -1,0 +1,46 @@
+.Root {
+  [data-sub-title] {
+    filter: opacity(0.25);
+    font-size: 1.25rem;
+  }
+}
+
+.CollapsibleRoot {
+  margin: 0.25rem 0;
+
+  .CollapsibleHeading {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    svg {
+      font-size: 1.25em;
+      margin: 0.25em;
+    }
+    a {
+      filter: opacity(0.3);
+    }
+
+    > :first-child {
+      font-size: 2em;
+      height: 100%;
+      margin-right: 0.25em;
+    }
+    > :last-child {
+      display: flex;
+      line-height: 1;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  .CollapsibleContent {
+    padding: 0.25rem;
+    background-color: #0001;
+    border-left: 1px solid #0002;
+
+    p:not(:first-of-type) {
+      margin-top: 0.5em;
+    }
+  }
+}
