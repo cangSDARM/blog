@@ -22,10 +22,10 @@ const Author: React.FC<{
 
   return (
     <p className={classes.Author}>
-      作者：
+      【作者】
       {authors.split(",").map(authorPrinter)}
       <i />
-      译者：
+      【译者】
       {translators.split(",").map(authorPrinter)}
     </p>
   );
