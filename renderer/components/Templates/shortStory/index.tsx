@@ -1,6 +1,6 @@
 import React from "react";
+import Resources from "@/components/Resources";
 // TODO: fix relative path
-import Resources from "../archive/resources";
 import { useType } from "../archive/useType";
 import Comment from "./Comment";
 import clsx from "clsx";

@@ -1,0 +1,138 @@
+.root {
+  width: 100%;
+  margin-inline: auto;
+  margin-block: 1em;
+  padding-inline: 1em;
+  border: 1px solid #0002;
+  border-radius: 4px;
+
+  .card {
+    border: 1px solid #fffe;
+    margin-block: 1em;
+    padding: 0.25em;
+    position: relative;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    label {
+      display: block;
+    }
+    sub {
+      bottom: 1em;
+    }
+
+    input {
+      margin-left: 0.5em;
+
+      border: 1px solid rgba(25, 25, 25, 0.12);
+      border-radius: 3px;
+      background: rgba(25, 25, 25, 0.12);
+      padding: 2px 12px;
+      outline: none;
+    }
+  }
+
+  .container {
+    height: 300px;
+    position: relative;
+    background-color: #aaa1;
+
+    > [data-mode-cs] {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    }
+
+    > :last-child {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      padding: 0.3em;
+    }
+
+    .leakyBucket {
+      height: 200px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      > :first-child {
+        border: 1px solid #0002;
+        flex: 1 1 auto;
+        position: relative;
+
+        > :first-child {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+
+          > * {
+            height: 0.25em;
+            width: 100%;
+          }
+        }
+
+        > :last-child {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          display: flex;
+          flex-direction: column;
+
+          > * {
+            background: gray;
+            width: 0.5em;
+            height: 0.5em;
+            border-radius: 100%;
+          }
+        }
+      }
+    }
+
+    .tokensBucket {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      > :first-child {
+        border: 1px solid #0002;
+        flex: 1 1 auto;
+        padding: 0.5em;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        > * {
+          position: static;
+          transition-duration: 50ms;
+          display: inline-block;
+        }
+      }
+    }
+
+    .request {
+      z-index: 2;
+      border-radius: 100%;
+      position: absolute;
+      width: 1em;
+      height: 1em;
+
+      transition-property: none;
+      transition-timing-function: ease-in-out;
+      transition-duration: 0ms;
+    }
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px 4px;
+  }
+}

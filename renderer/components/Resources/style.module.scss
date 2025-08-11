@@ -1,0 +1,119 @@
+.tree[role*="tree"] {
+  margin: 1.4em 0 1em;
+
+  .label {
+    display: flex;
+  }
+  .group {
+    --zipzag-color: var(--colorNeutralBackground2);
+
+    @mixin biasContent($bias: 0px) {
+      &::before {
+        top: calc(-1px - #{$bias});
+        height: calc($bias + 14px);
+      }
+    }
+
+    > * {
+      margin-left: 4px;
+      padding-left: 10px;
+      border-left: 2px solid var(--zipzag-color);
+      position: relative;
+
+      @include biasContent();
+
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: -2px;
+        width: 10px;
+        border: solid var(--zipzag-color);
+        border-width: 0 0 2px 2px;
+      }
+    }
+    > *:first-child {
+      @include biasContent(9px);
+    }
+    > *:last-child {
+      border-left: 2px solid transparent;
+    }
+  }
+  .selected .labelItem {
+    background-color: #e8eaee;
+    border-radius: 0.25em;
+  }
+  .labelItem {
+    width: 100%;
+    padding: 1px 2px;
+    border-bottom: none !important;
+    color: rgb(26, 26, 26) !important;
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+$screen-lg: 1080px;
+$avatar-size: calc(var(--fontSizeBaseXLarge) * 2);
+
+.references {
+  position: fixed;
+  margin: auto;
+  bottom: 40px;
+  padding: var(--spacingXS) var(--spacingMNudge);
+  background-color: var(--colorNeutralBackground1);
+  right: var(--spacingXXL);
+  z-index: 9;
+  border-bottom-right-radius: var(--borderRadiusLarge);
+
+  & > div {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+
+    > nav {
+      display: flex;
+      flex-direction: column;
+      margin-right: calc($avatar-size - var(--spacingS));
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+
+      font-size: var(--fontSizeBaseSmall);
+    }
+
+    a {
+      line-height: 1;
+      color: var(--colorBrandForegroundLink);
+    }
+  }
+
+  @media screen and (min-width: $screen-lg) {
+    top: 120px;
+    bottom: unset;
+    right: unset;
+    left: 72vw;
+    box-shadow: unset;
+
+    & > div {
+      flex-direction: row;
+
+      > nav {
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.2em;
+        max-width: 16vw;
+      }
+    }
+  }
+}
+
+.avatar {
+  position: absolute;
+  right: 0;
+
+  height: $avatar-size;
+  width: $avatar-size;
+}

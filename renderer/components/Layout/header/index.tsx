@@ -52,7 +52,7 @@ const Header: React.FC<{
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className={styles["nav-surface"]}>
                 <ul className={styles["overviews"]}>
-                  {overview.map((item: any) => {
+                  {overview.map((item) => {
                     return (
                       <li key={item.name}>
                         <Link href={"/tags/" + item.name}>

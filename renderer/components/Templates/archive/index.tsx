@@ -1,5 +1,5 @@
 import React from "react";
-import Resources from "./resources";
+import Resources from "@/components/Resources";
 import { useType } from "./useType";
 
 const Archive: React.FC<TemplateProps> = ({
