@@ -23,7 +23,7 @@ const Header: React.FC<{
     <header data-theme="dark" className={styles["nav-root"]} style={style}>
       <section className={styles["nav-section"]}>
         <Link className={styles["nav-logo"]} href={"/"}>
-          <h3>Allen Lee@Blog</h3>
+          <h3>Allen Lee@Collections</h3>
         </Link>
         <NavigationMenu.Root className={styles["nav-menus"]}>
           <NavigationMenu.List>

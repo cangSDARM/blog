@@ -294,7 +294,7 @@ const SlidingWindowRateLimiter = () => {
                 position: "absolute",
                 color: "purple",
                 background: "white",
-                top: '2em',
+                top: "2em",
                 left: `${(currentTime - timeOffset) * pixelsPerMs}px`,
                 transform: "translateX(-50%)",
               }}
