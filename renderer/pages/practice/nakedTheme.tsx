@@ -19,16 +19,15 @@ export default injectLayoutContext(function () {
         >
           <ul>
             TODO:
-            <li>1. display format (decimal)</li>
-            <li>2. more format (BF16, TF32, F8, unum)</li>
-            <li>3. bits starting from 0</li>
-            <li>4. number starting from 0.0</li>
+            <li>1. make it as whole web site theme</li>
+            <li>2. more readable</li>
+            <li>3. auto process elements</li>
           </ul>
           <iframe
             style={{ flex: "1 1" }}
-            src="https://evanw.github.io/float-toy/"
+            src="https://secretgeek.github.io/html_wysiwyg/html.html"
           >
-            https://evanw.github.io/float-toy/
+            https://secretgeek.github.io/html_wysiwyg/html.html
           </iframe>
         </div>
       </Layout>

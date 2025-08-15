@@ -1,0 +1,79 @@
+.layers {
+  display: flex;
+  flex-direction: column;
+
+  width: 800px;
+
+  ol {
+    list-style: decimal;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 2em;
+    width: 100%;
+    display: block;
+  }
+
+  li {
+    width: 100%;
+    line-height: 1.8;
+    margin-block-start: 10px;
+    margin-block-end: 10px;
+  }
+
+  input {
+    margin-left: 0.5em;
+    flex: 1 1 auto;
+
+    border-bottom: 1px solid rgba(25, 25, 25, 0.12);
+    border-radius: 3px;
+    padding: 0;
+    line-height: 1em;
+    outline: none;
+
+    min-width: 1ex;
+
+    &[type="number"] {
+      text-align: center;
+      -moz-appearance: textfield; /* Firefox */
+      appearance: textfield;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none; /* Safari */
+        margin: 0;
+      }
+    }
+
+    &:focus {
+      border-color: #3b82f6;
+    }
+  }
+
+  svg {
+    cursor: pointer;
+  }
+
+  label {
+    width: 20em;
+  }
+}
+
+.table {
+  margin-block: 1em;
+  width: 800px;
+
+  $border-color: #6b6b6b;
+
+  border: 1px solid $border-color;
+
+  tr:not(:first-child) {
+    border-top: 1px solid $border-color;
+  }
+  td {
+    text-align: center;
+
+    &:not(:first-child) {
+      border-left: 1px solid $border-color;
+    }
+  }
+}
