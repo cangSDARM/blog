@@ -42,11 +42,11 @@
   --spacingXXL: 24px;
 }
 @mixin fluent-animation {
-  --durationFastest: 50ms;
-  --durationFast: 150ms;
-  --durationNormal: 200ms;
+  --durationFastest: 100ms;
+  --durationFast: 200ms;
+  --durationNormal: 250ms;
   --durationSlow: 300ms;
-  --durationSlowest: 400ms;
+  --durationSlower: 400ms;
   --curveAccelerateMax: cubic-bezier(1, 0, 1, 1);
   --curveAccelerateMid: cubic-bezier(0.7, 0, 1, 0.5);
   --curveAccelerateMin: cubic-bezier(0.8, 0, 1, 1);

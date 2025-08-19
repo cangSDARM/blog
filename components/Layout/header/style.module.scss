@@ -5,11 +5,12 @@ $arrow-size: 8px;
 
 $view-port-background: var(--colorNeutralBackground6);
 
-.nav-root {
+.fluent-nav {
   background-color: var(--colorNeutralBackground2);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow4);
 }
 
 .nav-section {
@@ -120,12 +121,16 @@ $view-port-background: var(--colorNeutralBackground6);
     300ms ease;
   z-index: 99;
   background-color: $view-port-background;
+  animation-duration: var(--durationNormal);
+  animation-composition: accumulate;
 
   &[data-state="open"] {
-    animation: fadeIn 200ms ease;
+    animation-name: fadeIn;
+    animation-timing-function: var(--curveDecelerateMax);
   }
   &[data-state="closed"] {
-    animation: fadeOut 200ms ease;
+    animation-name: fadeOut;
+    animation-timing-function: var(--curveDecelerateMax);
   }
 }
 

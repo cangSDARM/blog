@@ -34,14 +34,14 @@ export default injectLayoutContext(function () {
               paddingLeft: "1em",
               lineHeight: 1.2,
               fontSize: 14,
-              backgroundColor: "#f1f1f1",
+              backgroundColor: "var(--colorNeutralBackground1Hover)",
             }}
           >
             {puns.map((pun) => {
               return (
                 <blockquote
                   style={{
-                    color: "rgba(0,0,0,.5)",
+                    color: "var(--colorNeutralForeground1Hover)",
                     padding: "4px 0 3px",
                   }}
                   key={pun.toString()}

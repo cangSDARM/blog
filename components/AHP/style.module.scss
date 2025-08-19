@@ -29,6 +29,7 @@
     padding: 0;
     line-height: 1em;
     outline: none;
+    position: relative;
 
     min-width: 1ex;
 
@@ -45,7 +46,7 @@
     }
 
     &:focus {
-      border-color: #3b82f6;
+      border-color: var(--colorCompoundBrandStroke);
     }
   }
 
@@ -62,7 +63,7 @@
   margin-block: 1em;
   width: 800px;
 
-  $border-color: #6b6b6b;
+  $border-color: var(--colorNeutralForeground3);
 
   border: 1px solid $border-color;
 

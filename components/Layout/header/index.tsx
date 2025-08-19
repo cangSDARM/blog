@@ -20,7 +20,7 @@ const Header: React.FC<{
   const { overview } = useLC();
 
   return (
-    <header data-theme="dark" className={styles["nav-root"]} style={style}>
+    <header data-theme="dark" className={styles["fluent-nav"]} style={style}>
       <section className={styles["nav-section"]}>
         <Link className={styles["nav-logo"]} href={"/"}>
           <h3>Allen Lee@Collections</h3>
@@ -44,7 +44,7 @@ const Header: React.FC<{
               </NavigationMenu.Item>
             )}
 
-            <NavigationMenu.Item>
+            <NavigationMenu.Item value="overview">
               <NavigationMenu.Trigger className={styles["nav-trigger"]} asChild>
                 <Button appearance="subtle">
                   Overview <RxCaretDown aria-hidden />
