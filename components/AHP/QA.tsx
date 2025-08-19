@@ -48,7 +48,10 @@ const SizeInput: React.FC<{
 const QAGroup: React.FC = () => {
   const [target, setTarget] = useAHPState("target", "");
 
-  const [criteria, setCriteria] = useAHPState("criteria", Array.from<string>({ length: 3 }).fill(""));
+  const [criteria, setCriteria] = useAHPState(
+    "criteria",
+    Array.from<string>({ length: 3 }).fill("")
+  );
   const [methods, setMethods] = useAHPState(
     "methods",
     Array.from<string>({ length: 3 }).fill("")
