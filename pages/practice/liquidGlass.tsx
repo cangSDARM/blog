@@ -2,7 +2,6 @@ import Meta from "@/components/Meta";
 import Layout, { injectLayoutContext } from "@/components/Layout";
 import { collectionOverview } from "@/lib/api";
 import React from "react";
-import FloatToy from "@/components/FloatToy";
 
 export default injectLayoutContext(function () {
   return (
@@ -16,24 +15,19 @@ export default injectLayoutContext(function () {
             justifyContent: "center",
             height: "100%",
             alignItems: "stretch",
-            margin: "0 50px",
           }}
         >
-          <label>
-            Reference:
-            <a href="https://github.com/Sagyam/tools" target="__blank">
-              https://github.com/Sagyam/tools
-            </a>
-          </label>
           <ul>
             TODO:
-            <li>1. display format (decimal)</li>
-            <li>2. more format (BF16, TF32, F8, unum)</li>
-            <li>3. bits starting from 0</li>
-            <li>4. number starting from 0.0</li>
+            <li>1. make it as whole web site theme</li>
+            <li>2. more readable</li>
           </ul>
-
-          <FloatToy />
+          <iframe
+            style={{ flex: "1 1" }}
+            src="https://www.apple.com.cn/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design/"
+          >
+            https://www.apple.com.cn/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design/
+          </iframe>
         </div>
       </Layout>
     </>
