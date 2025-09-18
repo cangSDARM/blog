@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies without Proxy 📁
         # only install when cache miss or package.json changed
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm --proxy=null --https_proxy=null --strict-ssl=true run install
+        run: npm --proxy=null --https_proxy=null --strict-ssl=true install
 
       - name: Cache buildings 🏗
         uses: actions/cache@v4
