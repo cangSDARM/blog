@@ -2,7 +2,7 @@ import React from "react";
 
 /**
  * work like \<Microsoft Office\> format painter.
- * 
+ *
  * note:
  * - bind `paintAreaRef` to paint-area
  * - bind `capture` to the "onPointerDown" of the formattable unit

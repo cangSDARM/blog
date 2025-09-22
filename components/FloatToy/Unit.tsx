@@ -142,6 +142,8 @@ const Unit: React.FC<{
   );
   const hexLength = React.useMemo(() => bytes.length, [bytes]);
 
+  const [startZero, setStartZero] = React.useState(false);
+
   const [parts, setParts] = React.useState({
     sign: 0 | 1,
     fraction: 0,
@@ -151,7 +153,8 @@ const Unit: React.FC<{
   const [inputValue, setInputValue] = React.useState("");
   const [outputValue, setOutputValue] = React.useState("");
 
-  const { paintAreaRef, getInitialFormat, capture, release } = useFormatPainter();
+  const { paintAreaRef, getInitialFormat, capture, release } =
+    useFormatPainter();
 
   const calculateInput = () => {
     setInputValue(toHexString(bytes.slice().reverse()));
@@ -220,13 +223,31 @@ const Unit: React.FC<{
 
   return (
     <>
-      <h2>{title}</h2>
+      <h2>
+        {title}
+
+        <fieldset className={classes.options}>
+          <legend>Options</legend>
+          <label>
+            bits starting from 0
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                setStartZero(e.target.checked);
+              }}
+              checked={startZero}
+            />
+          </label>
+        </fieldset>
+      </h2>
 
       <div className={classes["input-area"]}>
         <section ref={paintAreaRef} className={classes["visualize-section"]}>
           {Array.from({ length: hexLength }).map((_, i) => {
             return Array.from({ length: 8 }).map((_, j) => {
-              const nibbleIndex = (hexLength - i) * 8 - j;
+              const nibbleOffset = startZero ? -1 : 0;
+              const nibbleIndex = (hexLength - i) * 8 - j + nibbleOffset;
+
               const bitIndex = i * 8 + j;
               const signed = !!(
                 (bytes[bytes.length - (bitIndex >> 3) - 1] >>

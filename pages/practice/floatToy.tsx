@@ -3,6 +3,7 @@ import Layout, { injectLayoutContext } from "@/components/Layout";
 import { collectionOverview } from "@/lib/api";
 import React from "react";
 import FloatToy from "@/components/FloatToy";
+import Link from "next/link";
 
 export default injectLayoutContext(function () {
   return (
@@ -20,17 +21,25 @@ export default injectLayoutContext(function () {
           }}
         >
           <label>
-            Reference:
-            <a href="https://github.com/Sagyam/tools" target="__blank">
-              https://github.com/Sagyam/tools
-            </a>
+            Reference:&nbsp;&nbsp;
+            <Link href="https://github.com/evanw/float-toy" target="__blank">
+              https://github.com/evanw/float-toy
+            </Link>
           </label>
           <ul>
             TODO:
-            <li>1. display format (decimal)</li>
-            <li>2. more format (BF16, TF32, F8, unum)</li>
-            <li>3. bits starting from 0</li>
-            <li>4. number starting from 0.0</li>
+            <li>
+              1.{" "}
+              <Link href="https://github.com/shiona/float-toy" target="__blank">
+                display format (decimal)
+              </Link>
+            </li>
+            <li>
+              2.{" "}
+              <Link href="https://github.com/evanw/float-toy/issues/10">
+                more format (BF16, TF32, F8, unum)
+              </Link>
+            </li>
           </ul>
 
           <FloatToy />

@@ -32,6 +32,11 @@ const Title: React.FC = () => {
         </Link>
         &nbsp; floating-point formats.
       </p>
+      <p>
+        Due to the nature of floating-point numbers, there are multiple integers
+        that map to the same 64-bit floating-point number once the integer gets
+        above 2^53. So the display format will be "insufficiently accurate".
+      </p>
     </>
   );
 };
