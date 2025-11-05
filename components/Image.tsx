@@ -31,7 +31,7 @@ const Image: { Static: typeof NextImage } & React.ForwardRefExoticComponent<
   }
 );
 
-Image.displayName = 'Image';
+Image.displayName = "Image";
 Image.Static = NextImage;
 
 export default Image;

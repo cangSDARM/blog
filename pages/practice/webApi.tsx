@@ -3,6 +3,7 @@ import Layout, { injectLayoutContext } from "@/components/Layout";
 import { collectionOverview } from "@/lib/api";
 import React from "react";
 import Image from "@/components/Image";
+import Button from "@/components/Button";
 
 const usePointerLock = (
   onChange?: (event: Event, lockedElement: HTMLElement | null) => void
@@ -81,8 +82,60 @@ const PointerLocker: React.FC = () => {
         }}
         style={{
           perspective: 200,
+          objectFit: "scale-down",
+          background: "floralwhite",
         }}
       />
+    </ApiLabel>
+  );
+};
+
+const useFullscreen = (
+  onChange?: (event: Event, fullscreenElement: HTMLElement | null) => void
+) => {
+  const enabled = () => !!globalThis.document?.fullscreenElement;
+
+  const enter = (ref: HTMLElement, options?: FullscreenOptions) => {
+    return ref.requestFullscreen(options);
+  };
+
+  const exit = () => {
+    document.exitFullscreen();
+  };
+
+  React.useEffect(() => {
+    const listener = (ev: Event) => {
+      onChange?.(ev, document.fullscreenElement as unknown as any);
+    };
+    document.addEventListener("fullscreenchange", listener);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", listener);
+    };
+  }, [onChange]);
+
+  return { enabled, enter, exit };
+};
+
+const Fullscreen: React.FC = () => {
+  const screen = useFullscreen();
+
+  return (
+    <ApiLabel label="fullscreen">
+      <Button
+        onClick={() => {
+          screen.enter(document.querySelector('main')!);
+        }}
+      >
+        Enter
+      </Button>
+      <Button
+        onClick={() => {
+          if (screen.enabled()) screen.exit();
+        }}
+      >
+        Exit
+      </Button>
     </ApiLabel>
   );
 };
@@ -98,9 +151,12 @@ export default injectLayoutContext(function () {
             flexDirection: "column",
             justifyContent: "center",
             height: "100%",
+            gap: "1em",
+            paddingInline: "1em",
           }}
         >
           <PointerLocker />
+          <Fullscreen />
         </div>
       </Layout>
     </>
