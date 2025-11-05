@@ -2,40 +2,36 @@ import Conf from "@/conf";
 import NextImage from "next/image";
 import React from "react";
 
-const Image: React.FC<{
-  src: string;
-  ext?: string;
-  width?: number;
-  height?: number;
-  style?: React.CSSProperties;
-  alt?: string;
-}> & { Static: typeof NextImage } = ({
-  src,
-  ext,
-  style,
-  width = 3000,
-  height = 3000,
-  ...props
-}) => {
-  const tSrc = React.useMemo(() => {
-    if (src.startsWith("http")) return src;
+// @ts-ignore: static defined later
+const Image: { Static: typeof NextImage } & React.ForwardRefExoticComponent<
+  Omit<React.ComponentProps<typeof NextImage>, "alt"> & {
+    src: string;
+    ext?: string;
+    alt?: string;
+  }
+> = React.forwardRef(
+  ({ src, ext, width = 3000, height = 3000, ...props }, ref) => {
+    const tSrc = React.useMemo(() => {
+      if (src.startsWith("http")) return src;
 
-    return `${Conf.site.baseUrl + src}${ext ? "." + ext : ""}`;
-  }, [src, ext]);
+      return `${Conf.site.baseUrl + src}${ext ? "." + ext : ""}`;
+    }, [src, ext]);
 
-  return (
-    <NextImage
-      style={style}
-      src={tSrc}
-      width={width}
-      height={height}
-      crossOrigin="anonymous"
-      alt={props.alt || tSrc}
-      {...props}
-    />
-  );
-};
+    return (
+      <NextImage
+        src={tSrc}
+        width={width}
+        height={height}
+        crossOrigin="anonymous"
+        {...props}
+        ref={ref}
+        alt={props.alt || tSrc}
+      />
+    );
+  }
+);
 
+Image.displayName = 'Image';
 Image.Static = NextImage;
 
 export default Image;

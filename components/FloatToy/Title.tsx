@@ -35,7 +35,8 @@ const Title: React.FC = () => {
       <p>
         Due to the nature of floating-point numbers, there are multiple integers
         that map to the same 64-bit floating-point number once the integer gets
-        above 2^53. So the display format will be "insufficiently accurate".
+        above 2^53. So the display format will be &quot;insufficiently
+        accurate&quot;.
       </p>
     </>
   );

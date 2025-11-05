@@ -57,6 +57,7 @@ export default injectLayoutContext(function () {
                   <li>如果新请求到达时存储桶已满，则会丢弃该请求</li>
                 </ul>
               </li>
+              <li>请求以固定的速率处理，因此它适用于需要稳定流出速率的用例</li>
             </ul>
             <LeakyBucket />
           </Section>
@@ -71,6 +72,7 @@ export default injectLayoutContext(function () {
                   <li>如果没有可用的令牌，则请求将被拒绝或延迟</li>
                 </ul>
               </li>
+              <li>令牌桶允许在短时间内进行突发流量</li>
             </ul>
             <TokenBucket />
           </Section>
@@ -86,6 +88,7 @@ export default injectLayoutContext(function () {
                   </li>
                 </ul>
               </li>
+              <li>窗口边缘的流量激增可能导致超过允许配额的请求被通过</li>
             </ul>
             <FixedWindow />
           </Section>
@@ -99,6 +102,9 @@ export default injectLayoutContext(function () {
                   <li>如果低于限制，则允许并记录请求</li>
                   <li>否则，它将被拒绝</li>
                 </ul>
+              </li>
+              <li>
+                它是实际速率的近似值，因为它假设前一个窗口的请求是均匀分布的(但在4亿个请求中，估计只有0.003%的请求会被错误地允许或限制速率)
               </li>
             </ul>
             <SlidingWindow />
