@@ -124,7 +124,7 @@ const Fullscreen: React.FC = () => {
     <ApiLabel label="fullscreen">
       <Button
         onClick={() => {
-          screen.enter(document.querySelector('main')!);
+          screen.enter(document.querySelector("main")!);
         }}
       >
         Enter

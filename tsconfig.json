@@ -19,5 +19,9 @@
     }
   },
   "include": ["next-env.d.ts", "global.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "mdx": {
+    "checkMdx": true,
+    "plugins": ["remark-math", "remark-frontmatter"]
+  }
 }

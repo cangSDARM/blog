@@ -1,0 +1,25 @@
+.mathPost {
+  max-width: 800px;
+
+  ul {
+    list-style-type: disc;
+    padding-inline-start: 40px;
+  }
+
+  select {
+    border-width: 1px;
+  }
+}
+
+.figure {
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+
+  figcaption {
+    order: 999;
+    font: italic smaller sans-serif;
+    padding: 3px;
+    text-align: center;
+  }
+}

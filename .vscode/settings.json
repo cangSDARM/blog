@@ -6,5 +6,10 @@
     "prismplus",
     "recma",
     "rehype"
-  ]
+  ],
+  "[mdx]": {
+    "editor.tabSize": 2,
+    "editor.indentSize": 2,
+    "editor.defaultFormatter": "unifiedjs.vscode-mdx"
+  },
 }

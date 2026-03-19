@@ -15,6 +15,7 @@ import _ from "lodash";
 import useTemplateRender from "@/components/Templates/useTemplate";
 import Link from "next/link";
 import styles from "@/styles/collection.slug.module.scss";
+import CodeContainer from "@/components/CodeContainer";
 
 type PageProps = {
   post: PostAst;
@@ -98,6 +99,7 @@ export default injectLayoutContext(function Page({
                 components={{
                   img: MdxImage,
                   a: Anchor,
+                  CodeContainer,
                   ...components,
                 }}
               />

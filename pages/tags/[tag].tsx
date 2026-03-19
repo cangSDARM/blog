@@ -28,7 +28,7 @@ export default injectLayoutContext<{
   tag: string;
   posts: Tag[];
 }>(function Page({ tag, posts }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   return (
     <>

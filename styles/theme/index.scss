@@ -10,7 +10,7 @@
 
 @media screen and (prefers-color-scheme: light) {
   :root {
-    @include light-theme;
+    @include light-theme();
   }
 }
 @media screen and (prefers-color-scheme: dark) {
