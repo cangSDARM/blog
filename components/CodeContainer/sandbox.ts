@@ -1,8 +1,8 @@
 const eventTarget = Symbol("containerEventTarget");
-export const contextname = Symbol("contextname");
+const contextname = Symbol("contextname");
 
 type Isolation = {
-  contextname: typeof contextname;
+  [contextname]: string;
 };
 type Context = WindowProxy;
 export type IsolatedContext = Context & Isolation;
@@ -60,13 +60,15 @@ export const initialContext = (
   (context as any)[eventTarget] = new EventTarget();
 };
 
+export const getContextId = (context: IsolatedContext) => context[contextname];
+
 export const emitEvent = <T>(
   context: IsolatedContext,
   event: string,
   detail: T
 ) => {
   (context as any)[eventTarget].dispatchEvent(
-    new CustomEvent((context as any)[contextname] + event, { detail })
+    new CustomEvent(getContextId(context) + event, { detail })
   );
 };
 
@@ -76,7 +78,7 @@ export const onEvent = (
   onevent: (e: CustomEvent) => void
 ) => {
   (context as any)[eventTarget].addEventListener(
-    (context as any)[contextname] + event,
+    getContextId(context) + event,
     onevent
   );
 };

@@ -1,10 +1,15 @@
 import React from "react";
-import { contextname, IsolatedContext } from "./sandbox";
+import { IsolatedContext } from "./sandbox";
+
+type Cleanup = void | (() => void);
 
 export const useContainer = (
-  onfind: (container: IsolatedContext, ref: HTMLElement) => void
+  onfind: (container: IsolatedContext, ref: HTMLElement) => Cleanup
 ) => {
+  let cleanup: Cleanup;
   const container = React.useRef<IsolatedContext | null>(null);
+
+  React.useEffect(() => cleanup, [container]);
 
   return (ref?: HTMLElement | null) => {
     if (!ref) return;
@@ -25,8 +30,7 @@ export const useContainer = (
     }
 
     if (container.current) {
-      (container.current as any)[contextname] = element.id;
-      onfind(container.current, ref);
+      cleanup = onfind(container.current, ref);
     }
   };
 };

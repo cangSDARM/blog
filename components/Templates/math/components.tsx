@@ -15,7 +15,7 @@ export const Selector: React.FC<
   React.DetailedHTMLProps<
     React.SelectHTMLAttributes<HTMLSelectElement>,
     HTMLSelectElement
-  > & { options: any[]; }
+  > & { options: any[] }
 > = ({ options, ...props }) => {
   return (
     <select {...props}>

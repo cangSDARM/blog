@@ -1,21 +1,35 @@
 import ts from "typescript";
-import { IsolatedContext } from "./sandbox";
+import { getContextId, IsolatedContext } from "./sandbox";
 
-export const execute = (
+export const deconstruct = async (
   filename: string,
-  code: string,
   context: IsolatedContext
 ) => {
+  const document = context.document;
+  const script = document.querySelector(`script[filename="${filename}"]`);
+  if (script) {
+    script.remove();
+  }
+};
+
+export const execute = (
+  code: string,
+  config: { filename: string; context: IsolatedContext; nomodule: boolean }
+) => {
   return new Promise<void>((resolve, reject) => {
+    const { context, filename } = config;
     const document = context.document;
-    if (document.querySelector(`script[filename="${filename}"]`)) {
+    const id = getContextId(context) + filename;
+
+    if (document.querySelector(`script[id="${id}"]`)) {
       return resolve();
     }
 
     const script = document.createElement("script");
     script.onerror = reject;
     script.defer = true;
-    script.setAttribute("filename", filename);
+    if (!config.nomodule) script.type = "module";
+    script.id = id;
     script.textContent = `${code}`;
 
     document.body.append(script);
@@ -31,7 +45,7 @@ export const compile = async (code: string) => {
     compilerOptions: {
       target: ts.ScriptTarget.ES2020,
       module: ts.ModuleKind.ESNext,
-      strict: true,
+      strict: false,
       removeComments: true,
       noImplicitAny: true,
     },

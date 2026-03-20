@@ -1,17 +1,17 @@
 ---
-title: "From The Circle to Epicycles"
+title: "Circle to Fourier Series"
 tags: ["math"]
 ---
 
-<CodeContainer.Root />
+Animations written by [Andrei N. Ciobanu](https://www.andreinc.net/2024/04/24/from-the-circle-to-epicycles/) on 24 Apr, 2024
 
-Written by [Andrei N. Ciobanu](https://www.andreinc.net/2024/04/24/from-the-circle-to-epicycles/) on 24 Apr, 2024
+<CodeContainer.Root />
 
 <CodeContainer.DependenciesResolver
   dependencies={["/p5.js/1.11.10/p5.min.js"]}
 />
 
-<CodeContainer.Runner noOutput>
+<CodeContainer.Runner noOutput nomodule>
 
 ```js:common.js
 const theme = {
@@ -19,7 +19,6 @@ const theme = {
     canvasY: 400,
     frameRate: 20,
     frequency: 0.05,
-
     bkgColor: '#FEFEFE',
     lightCircleColor: 'silver',
     circleColor: 'black',
@@ -310,7 +309,6 @@ function Sinusoid(s, vC, vR, angle, ampl, freq, phase, color, tf, tr) {
 }
 
 const SinusoidPrototype = {
-
     draw() {
         // Actual Circle
         this.s.push();
@@ -324,7 +322,6 @@ const SinusoidPrototype = {
         this.s.line(this.vC.x, this.vC.y, this.vR.x, this.vR.y);
         this.s.pop();
     },
-
     update(fromEpi) {
         if (fromEpi!==undefined) {
             this.vC.x = fromEpi.vR.x;
@@ -337,7 +334,6 @@ const SinusoidPrototype = {
 }
 
 Object.assign(Sinusoid.prototype, SinusoidPrototype);
-
 // -- DFT Related
 
 // Complex numbers
@@ -360,7 +356,6 @@ const ComplexPrototype = {
 Object.assign(Complex.prototype, ComplexPrototype);
 
 // DFT
-
 const addDft = (s) => {
     s.dft = (vals) => {
         let coefs = [];
@@ -1684,9 +1679,9 @@ $e$与以下等式等价
 
 $$
 \begin{gather*}
-e=\displaystyle \sum_{n=0}^\infty \frac{1}{n!}=\frac{1}{n!}+\frac{1}{1!}+\frac{2}{2!}+\dots \\
-e=\displaystyle \lim_{x \to \infty} (1+\frac{1}{x})^x \\
-e=\displaystyle \lim_{x \to 0} (1+x)^{\frac{1}{x}}
+e=\sum_{n=0}^\infty \frac{1}{n!}=\frac{1}{n!}+\frac{1}{1!}+\frac{2}{2!}+\dots \\
+e=\lim_{x \to \infty} (1+\frac{1}{x})^x \\
+e=\lim_{x \to 0} (1+x)^{\frac{1}{x}}
 \end{gather*}
 $$
 
@@ -1728,7 +1723,11 @@ $x$同时也表示角度$\theta \in \mathbb{R}$，因此式子也可以写为：
 ### 正弦波
 
 正弦波(sinusoid, 或称正弦曲线)是一种平滑、重复的振荡。
-在物理学和数学中，由以下关于时间的连续函数来定义：$ y(t) = A \cdot \sin(2\pi ft + \varphi) = A \cdot \sin(\omega t + \varphi) $
+由以下关于时间的连续函数来定义：
+
+$$
+y(t) = A \cdot \sin(2\pi ft + \varphi) = A \cdot \sin(\omega t + \varphi)
+$$
 
 - $A$<Selector id="sinusoid_A" defaultValue={1.5} options={[0.5, 1, 1.5, 2]} />：振幅。表示函数偏离零点（即其中心值）的最大距离。从图像上看，它决定了波峰和波谷的高度
 - $f$：频率。表示每秒发生的完整振荡（或称周期）的次数。其单位通常为赫兹(Hz)
@@ -2533,8 +2532,7 @@ y(x) =  \underbrace{\frac{4}{\pi}\sin(\omega x)}_{y_{1}(x)} + \underbrace{\frac{
 $$
 
 注意$y_1(x), y_2(x), y_3(x), \dots, y_k(x), \dots$都是正弦波，且只加入了奇数次频率($1\omega, 3\omega, \dots$)，而且它们的振幅$A$在按比例递减。
-
-- 调整$k$<Selector id="numSins" defaultValue={10} options={[1, 2, 3, 4, 5, 10, 20, 30]} />及$\omega$<Selector id="sinsFreq" defaultValue={1} options={[1, 2, 3]} />就可以拟合方波
+调整$k$<span><Selector id="numSins" defaultValue={10} options={[1, 2, 3, 4, 5, 10, 20, 30]} /></span>及$\omega$<span><Selector id="sinsFreq" defaultValue={1} options={[1, 2, 3]} /></span>就可以拟合方波
 
 <CodeContainer.Runner id="square-wave-sketch">
 
@@ -2671,6 +2669,990 @@ const updateSins = () => {
 };
 document.getElementById('numSins').onchange = updateSins;
 document.getElementById('sinsFreq').onchange = updateSins;
+```
+
+</CodeContainer.Runner>
+
+### 本轮
+
+Epicycle(周转圆, 在另一个圆圈上或周围移动的小圆圈)。
+古希腊天文学家阿波罗尼提出的用来解释地心体系的一种假想的圆圈。
+行星沿本轮绕本轮中心旋转，而本轮中心则沿均轮绕地球运转，用来解释行星视运动的“逆”和“留”等现象
+
+一个简单的正弦波即是对应着圆周运动。
+因此设置参数$k$<span><Selector id="sumEpiSins" defaultValue={3} options={[1, 2, 3, 4, 5, 10, 15, 20, 30]} /></span>及$\omega$<span><Selector id="sumEpiFreq" defaultValue={1} options={[1, 2, 3, 4]} /></span>就能绘制$y_{1 \to k}(x)$本轮
+
+<CodeContainer.Runner id="sum-epi-sketch">
+
+```js:sumEpi.js
+let sumEpiK = 3;
+let sumEpiOmega = 1;
+
+const sumEpi = (s) => {
+    addPaintGrid(s);
+    addLineDashed(s);
+    addShowFps(s);
+    addArrow(s);
+
+    const d = 100;
+    const r = d / 2;
+    const w = 800;
+    const h = 700;
+    const tf = theme.frequency;
+
+    let fBuff;  // the buffer where we plot the two sinusoids
+    let sBuff;  // the buffer where we plot the sum of the two sinusoids
+    let vGf;    // the center of the grid for the sinusoids y1(x), ..., yk(x)
+    let vCf;    // the center of all the circles from the functions grid
+    let vCs;    // the center for grid for the sum
+    let vGs;    // the sum of the grid for the sum of the two sinusoids
+
+    let angl;
+
+    let ykcolors = [
+        "#00CED1", "#B22222",
+        "#FF1493", "#2F4F4F",
+        "#FFA500", "#F4A460",
+        "#ADFF2F", "#4682B4",
+        "#5F9EA0", "#9ACD32",
+        "#FF0000", "#696969",
+        "#8B4513", "#FF6347",
+        "#FFD700", "#000080",
+        "#778899", "#48D1CC",
+        "#FFFF00", "#20B2AA",
+        "#4682B4", "#B0C4DE",
+        "#00CED1", "#B22222",
+        "#FF1493", "#2F4F4F",
+        "#FFA500", "#F4A460",
+        "#ADFF2F", "#4682B4",
+        "#5F9EA0", "#9ACD32",
+        "#FF0000", "#696969",
+        "#8B4513", "#FF6347",
+        "#FFD700", "#000080",
+        "#778899", "#48D1CC",
+        "#FFFF00", "#20B2AA",
+        "#4682B4", "#B0C4DE"
+    ]
+
+    let sinusoids = [];
+    let sinusoidEpy = [];
+    let movingPoints = [];
+    let movingPointEpy;
+    let sinLp = [];
+    let sinEpyLp;
+
+    let canvas;
+
+    s.initConditions = () => {
+        vGf = s.createVector(6 * r, 3 * r);
+        vGs = s.createVector(6 * r, 10 * r);
+        vCf = s.createVector(3 * r, 3 * r);
+        vCs = s.createVector(3 * r, 10 * r);
+
+        if (fBuff) fBuff.remove();
+        fBuff = s.createGraphics(w, 6 * r);
+        s.paintGrid(fBuff, w, 6 * r, vGf, r, 1, {
+            showUnits: true,
+            hideUnitsXNeg: true,
+            showOrigin: true
+        });
+        if (sBuff) sBuff.remove();
+        sBuff = s.createGraphics(w, 6 * r);
+        s.paintGrid(sBuff, w, 6 * r, vGf, r, 1, {
+            showUnits: true,
+            hideUnitsXNeg: true,
+            showOrigin: true
+        });
+
+        // Adding the labels to fBuff
+        fBuff.push();
+        fBuff.textFont(theme.textFont);
+        for (let i = 1; i < sumEpiK + 1; i++) {
+            fBuff.fill(ykcolors[i - 1]);
+            fBuff.text("y" + i + "(x)", 10, i * 15);
+        }
+        fBuff.pop();
+
+        // Initializing sinsuoids
+        for(let i = 0; i < sumEpiK; i++) {
+            sinusoids[i] = new Sinusoid(
+                s, //s
+                vCf, //the center of the center of the sinusoid
+                s.createVector(vCf.x + r, vCf.y), // the current point of the moving radius
+                0, // initial angle
+                4/(s.PI*(2*(i+1)-1)), // ampl
+                (2*(i+1)-1)*sumEpiOmega, // freq
+                0, // phase
+                ykcolors[i], // color
+                tf, // tf
+                r   // tr
+            );
+            movingPoints[i] = s.createVector(vGf.x, sinusoids[i].vR.y);
+            if (i === 0) {
+                sinusoidEpy[i] = new Sinusoid(
+                    s, //s
+                    vCs, //the center of the center of the sinusoid
+                    s.createVector(vCs.x + r, vCs.y), // the current point of the moving radius
+                    0, // initial angle
+                    4/(s.PI*(2*(i+1)-1)), // ampl
+                    (2*(i+1)-1)*sumEpiOmega, // freq
+                    0, // phase
+                    ykcolors[i], // color
+                    tf, // tf
+                    r   // tr
+                );
+            } else {
+                sinusoidEpy[i] = new Sinusoid(
+                        s, 
+                        sinusoidEpy[i-1].vR, 
+                        s.createVector(sinusoidEpy[i-1].vR.x + sinusoidEpy[i-1].ampl, sinusoidEpy[i-1].vR.y), 
+                        0, 
+                        4/(s.PI*(2*(i+1)-1)), 
+                        (2*(i+1)-1)*sumEpiOmega,
+                        0, 
+                        ykcolors[i],
+                        tf, 
+                        r
+                    );  
+            }                 
+        }
+        movingPointEpy = s.createVector(vGs.x, vGs.y);
+
+        // Adding text to the two buffers 
+        fBuff.push();
+        fBuff.fill(theme.textColor);
+        fBuff.text("Concentric circles associated", r, fBuff.height-30);
+        fBuff.text("with each of the sinusoids yk(x)", r, fBuff.height - 15);
+        fBuff.text("Individual sinusoids: y1(x), y2(x), ... , yk(x), side-by-side", vGf.x + r + 5, fBuff.height-30);
+        fBuff.pop();
+        sBuff.push();
+        sBuff.fill(theme.textColor);
+        sBuff.text("The epycicles corresponding to", r, sBuff.height-30);
+        sBuff.text("to the actual sum of the sinusoids", r, sBuff.height-15);
+        sBuff.text("The sum of sinusoids y(x) =  y1(x) + y2(x) +  ... + yk(x) + ...", vGs.x + r + 5, sBuff.height-30);
+        sBuff.pop();
+
+        // Last point for sinusoids
+        for (let i = 0; i < sumEpiK; i++) {
+            sinLp[i] = s.createVector(vGf.x, vGf.y);
+        }
+        sinEpyLp = s.createVector(vGs.x, vGs.y);
+    };
+
+    s.setup = () => {
+        // Create Canvas of given size 
+        canvas = s.createCanvas(w, h);
+        canvas.parent('sum-epi-sketch');
+        s.textFont(theme.textFont);
+        s.frameRate(theme.frameRate);
+        s.initConditions();
+    }
+
+
+    s.draw = () => {
+        s.background(theme.bkgColor);
+        s.image(fBuff, 0, 0);
+        s.image(sBuff, 0, 7 * r);
+        // Individual functions y1(x), y2(x), y3(x)... and so on
+        for (let i = 0; i < sumEpiK; i++) {
+            sinusoids[i].draw();
+            sinusoids[i].update();
+            // Draw moving point(s)
+            fBuff.push();
+            fBuff.stroke(sinusoids[i].color);
+            fBuff.line(movingPoints[i].x, movingPoints[i].y, sinLp[i].x, sinLp[i].y);
+            sinLp[i].x = movingPoints[i].x;
+            sinLp[i].y = movingPoints[i].y;
+            fBuff.pop();
+            // Draw moving circle on s
+            s.push();
+            s.stroke(sinusoids[i].color);
+            s.circle(movingPoints[i].x, movingPoints[i].y, 3);
+            s.pop();
+            // Connect line with from vR to movingPoints[i]
+            s.push();
+            s.stroke(theme.radiusColorLight);
+            s.lineDash(canvas, [3, 3], sinusoids[i].vR.x, sinusoids[i].vR.y, movingPoints[i].x, movingPoints[i].y);
+            s.pop();
+            // Increment moving points
+            movingPoints[i].x += sinusoids[i].tf * r;
+            movingPoints[i].y = sinusoids[i].vR.y;
+        }
+        // The sum of functions y(x) = y1(x), y2(x), y3(x) ... and so on
+        for (let i = 0; i < sumEpiK; i++) {
+            if (i!=0) {
+                sinusoidEpy[i].update(sinusoidEpy[i-1]);
+            } else {
+                sinusoidEpy[i].update();
+            }
+            sinusoidEpy[i].draw();
+            if (i==sumEpiK-1) {
+                // Draw moving points
+                sBuff.push();
+                sBuff.stroke(theme.radiusColor);
+                // sBuff.point(movingPointEpy.x, movingPointEpy.y - 7*r);
+                sBuff.line(movingPointEpy.x, movingPointEpy.y - 7 * r, sinEpyLp.x, sinEpyLp.y - 7 * r);
+                sinEpyLp.x = movingPointEpy.x;
+                sinEpyLp.y = movingPointEpy.y;
+                sBuff.pop();
+                // Draw a moving circle on s
+                s.push();
+                s.circle(movingPointEpy.x, movingPointEpy.y, 3);
+                s.pop();
+                // Connect a tine with the moving point
+                s.push();
+                s.stroke(theme.radiusColorLight);
+                s.lineDash(canvas, [3, 3], sinusoidEpy[i].vR.x, sinusoidEpy[i].vR.y, movingPointEpy.x, movingPointEpy.y);
+                s.pop();
+                // Increment moving point
+                movingPointEpy.x += sinusoidEpy[i].tf * r;
+                movingPointEpy.y = sinusoidEpy[i].vR.y;
+            }
+            s.push();
+            sBuff.stroke(theme.radiusColorLight);
+            sBuff.point(sinusoidEpy[sumEpiK-1].vR.x, sinusoidEpy[sumEpiK-1].vR.y - 7*r);
+            s.pop();
+        }
+        // Reset the sketch once the moving point(s) are exiting the canvas
+        if (movingPoints[0].x > s.width) {
+            s.initConditions();
+        }
+    }
+};
+
+let sumEpiSketch = new p5(sumEpi, 'sum-epi-sketch');
+
+const updateSumEpi = () => {
+    sumEpiK = parseInt(document.getElementById('sumEpiSins').value);
+    sumEpiOmega = parseInt(document.getElementById("sumEpiFreq").value);
+    sumEpiSketch.remove();
+    sumEpiSketch = new p5(sumEpi, 'sum-epi-sketch');
+};
+document.getElementById('sumEpiSins').onchange = updateSumEpi;
+document.getElementById('sumEpiFreq').onchange = updateSumEpi;
+```
+
+</CodeContainer.Runner>
+
+由于每个本轮都对应一个特定的正弦波。
+任何给定时刻，都可以进行简单的向量加法$\vec{u} = \vec{u_1} + \vec{u_2} + \vec{u_3} + \dots + \vec{u_k}$计算出最终的位置
+
+<CodeContainer.Runner id="simple-yx-plot-sketch">
+
+```js:simpleYxPlot.js
+const simpleYxPlot = (s) => {
+
+    addPaintGrid(s);
+    addLineDashed(s);
+    addShowFps(s);
+    addArrow(s);
+
+    const d = 80;
+    const r = d / 2;
+    const w = 800;
+    const h = 300;
+    const tf = theme.frequency;
+
+    let fBuff;  // the buffer where we plot the sum of the two sinusoids
+    let vGf;    // the center of the grid for the sinusoids y1(x), ..., yk(x)
+    let vCf;    // the center of all the circles from the functions grid
+
+    let ykcolors = [
+        "#00CED1", "#B22222",
+        "#FF1493", "#2F4F4F",
+        "#FFA500", "#F4A460",
+    ]
+
+    let sinusoids = [];
+    let movingPointEpy;
+    let lMp;
+
+    let canvas;
+
+    s.initConditions = () => {
+        vCf = s.createVector(3 * r, 4 * r);
+        vGf = s.createVector(6 * r, 4 * r);
+
+        if(fBuff) fBuff.remove();
+        fBuff = s.createGraphics(w, 8 * r);
+        s.paintGrid(fBuff, w, 8 * r, vGf, r, 1, {
+            showUnits: true,
+            hideUnitsXNeg: true,
+            showOrigin: true
+        });
+
+        sinusoids[0] = new Sinusoid(s, vCf, s.createVector(vCf.x + r, vCf.y), 0, 1.4, 1, 1, ykcolors[0], tf, r);
+        sinusoids[1] = new Sinusoid(s, sinusoids[0].vR, s.createVector(sinusoids[0].vR.x + r, sinusoids[0].vR.y), 0, 0.8, 2, 0, ykcolors[1], tf, r);
+        sinusoids[2] = new Sinusoid(s, sinusoids[1].vR, s.createVector(sinusoids[1].vR.x + r, sinusoids[1].vR.y), 0, 0.5, 3, 0, ykcolors[2], tf, r);
+
+        movingPointEpy = s.createVector(vGf.x, sinusoids[2].vR.y);
+        lMp = s.createVector(vGf.x, sinusoids[2].vR.y);
+    };
+
+    s.setup = () => {
+        canvas = s.createCanvas(w, h);
+        canvas.parent('simple-yx-plot-sketch');
+        s.textFont(theme.textFont);
+        s.frameRate(theme.frameRate);
+        s.initConditions();
+    }
+
+    s.draw = () => {
+        s.background(theme.bkgColor);
+        s.image(fBuff, 0, 0);
+        // s.arrow(0, 0, 100, 100);
+        for(let i = 0; i < sinusoids.length; i++) {
+            if (i!==0) {
+                sinusoids[i].update(sinusoids[i-1]);
+            } else {
+                sinusoids[i].update();
+            }
+            sinusoids[i].draw();
+            // Drawing vectors
+            s.push();
+            s.fill(sinusoids[i].color);
+            s.stroke(sinusoids[i].color);
+            s.arrow(sinusoids[i].vC.x, sinusoids[i].vC.y, sinusoids[i].vR.x, sinusoids[i].vR.y);
+            s.pop();
+            // Drawing vectors labels
+            s.push();
+            s.fill(sinusoids[i].color);
+            s.text("u"+(i+1), sinusoids[i].vC.x - (sinusoids[i].vC.x - sinusoids[i].vR.x)/2, sinusoids[i].vC.y - (sinusoids[i].vC.y - sinusoids[i].vR.y)/2);
+            s.pop();
+            // Drawing vector projections as the moving point advances
+            s.push()
+            s.stroke(sinusoids[i].color);
+            s.strokeWeight(2);
+            s.line(movingPointEpy.x+2*i+1, sinusoids[i].vR.y, movingPointEpy.x+2*i+1, sinusoids[i].vC.y);
+            s.pop();
+        }
+        // Drawing the sum vector
+        s.push();
+        s.stroke(theme.radiusColor);
+        s.fill(theme.radiusColor);
+        s.arrow(sinusoids[0].vC.x, sinusoids[0].vC.y, sinusoids[2].vR.x, sinusoids[2].vR.y);
+        s.pop();
+        s.push();
+        s.fill(theme.radiusColor);
+        s.text("u", sinusoids[0].vC.x - (sinusoids[0].vC.x - sinusoids[2].vR.x)/2, sinusoids[0].vC.y - (sinusoids[0].vC.y - sinusoids[2].vR.y)/2  );
+        s.pop();
+
+        // Drawing a moving point / circle
+        s.push();
+        s.fill(theme.radiusColor);
+        s.circle(movingPointEpy.x, movingPointEpy.y, 3);
+        lMp.x = movingPointEpy.x;
+        lMp.y = movingPointEpy.y;
+        movingPointEpy.x += sinusoids[2].tf * r;
+        movingPointEpy.y = sinusoids[2].vR.y;
+        fBuff.line(movingPointEpy.x, movingPointEpy.y, lMp.x, lMp.y);
+        s.pop();
+
+        // Connect the moving point with the suming vector
+        // through a dotted-line
+        s.push();
+        s.stroke(theme.radiusColorLight);
+        s.lineDash(canvas, [3, 3], sinusoids[2].vR.x, sinusoids[2].vR.y, movingPointEpy.x, movingPointEpy.y);
+        s.pop();
+
+        // Drawing horizontal lines through the center of each epicycle
+        s.push();
+        for(let i = 0; i < 3; i++) {
+            s.stroke(sinusoids[i].color);
+            s.lineDash(canvas, [3,3], 0, sinusoids[i].vC.y, fBuff.width, sinusoids[i].vC.y);
+        }
+        s.pop();
+
+        // Draw text 
+        s.push();
+        s.text("u = ", r+5, 7*r - 5);
+        s.fill(sinusoids[0].color);
+        s.text("u1",r+35, 7*r - 5);
+        s.fill(theme.textColor);;
+        s.text("+", r+50, 7*r - 5);
+        s.fill(sinusoids[1].color);
+        s.text("u2",r+60, 7*r - 5);
+        s.fill(theme.textColor);;
+        s.text("+", r+75, 7*r - 5);
+        s.fill(sinusoids[2].color);
+        s.text("u3",r+85, 7*r - 5);
+        s.pop();
+
+        if (movingPointEpy.x > fBuff.width) {
+            s.initConditions();
+        }
+
+        //Drawing the moving point
+        fBuff.push();
+        fBuff.stroke(theme.radiusColorLight);
+        fBuff.point(sinusoids[2].vR.x, sinusoids[2].vR.y);
+        fBuff.pop();
+    }
+};
+
+let simpleYxPlotSketch = new p5(simpleYxPlot, 'simple-yx-plot-sketch');
+```
+
+</CodeContainer.Runner>
+
+### 傅里叶级数
+
+#### 谐波分析
+
+上文已可知，任意周期$T$的波$f(t)$都可以以正弦波累加所得。以式子表示即
+
+$$
+f(t)=A_0+\sum\limits^\infty_{n=1}A_n\sin(n\omega t+\varphi_n)\;\;\;(n=1,2,3,...)
+$$
+
+- 这种展开周期函数的行为被称为：**谐波分析**
+- $A_n$、$\varphi_n$，振幅和相移都是已知常数
+- $A_0$：直流分量，也是已知常数
+- **一次谐波**：$A_1\sin(\omega t+\varphi_1)$
+- **二次谐波**：$A_1\sin(2\omega t+\varphi_2)$
+- **$n$次谐波**：$A_n\sin(n\omega t+\varphi_n)$
+
+#### 傅里叶系数
+
+由三角公式：$\sin(\alpha\pm\beta)=\sin(\alpha)\cos(\beta)\pm\cos(\alpha)\sin(\beta)$，
+变形$n$次谐波：$A_n\sin(n\omega t+\varphi_n)=A_n\sin(\varphi_n)\cos(n\omega t)+A_n\cos(\varphi_n)\sin(n\omega t)$，
+由于$A_n$及$\varphi_n$都是常数，因此
+记：$a_0=2A_0$(统一分母)，$a_n=A_n\cdot\sin(\varphi_n)$，$b_n=A_n\cdot\cos(\varphi_n)$
+
+则谐波分析的$f(t)$可写成：
+
+$$
+f(t)=\frac{a_0}{2}+\sum\limits^\infty_{n=1}\left[a_n\cos(n\omega t)+b_n\sin(n\omega t)\right]
+$$
+
+式子中$f(x)$则是**傅里叶级数**，$a_0$、$a_n$、$b_n$为**傅里叶系数**。
+[推导](https://zhuanlan.zhihu.com/p/41455378)可得：
+
+- $T$：周期。$T=\frac{1}{f}=\frac{2\pi}{\omega}$
+- $a_0=\frac{2}{T}\int_{-\pi}^{\pi}f(t)dt$
+- $a_n=\frac{2}{T}\int_{t_0}^{t_0+T}f(t)\cos(\frac{2\pi}{T}tn)dt$
+- $b_n=\frac{2}{T}\int_{t_0}^{t_0+T}f(t)\sin(\frac{2\pi}{T}tn)dt$
+
+#### 复指数表示
+
+带入欧拉公式，$f(t)$可[变形](https://zhuanlan.zhihu.com/p/659880737)得：
+
+$$
+\begin{gather*}
+f(t) = \sum_{n=-N}^{N}C_{n}e^{in\frac{2\pi}{T}t} \\
+C_n = \begin{cases}
+            \frac{a_0}{2}                   & \text{if } n = 0 \\
+            \frac{1}{2} (a_n - i \cdot b_n) & \text{if } n > 0 \\
+            \frac{1}{2} (a_n + i \cdot b_n) & \text{if } n < 0 \\
+        \end{cases}
+\to C_n = \frac{1}{T}\int_{-\frac{T}{2}}^{\frac{T}{2}} f(t)e^{-in\frac{2\pi}{T}t} dt
+\end{gather*}
+$$
+
+#### 方波的复指数表示
+
+$$
+s(t) = \frac{4}{\pi}\sum_{k=1}^{\infty}\frac{\sin((2k-1)\omega t)}{2k-1}
+$$
+
+在区间$\left[0, 2L\right]$中，$s(t)$可以写作：
+
+$$
+s(t) = 2\left[H(\frac{t}{L})-H(\frac{t}{L}-1)\right] - 1
+$$
+
+其中，$H(x)=\begin{cases} 0 & \text{if } x<0\\ 1 & \text{if } x\geq 0\end{cases}$称为阶跃函数(Heavisde Step Function, 赫维赛德阶跃函数)
+
+<CodeContainer.Runner id="tight-fourier-avg-sketch">
+
+```js:tightFourierAvg.js
+const tightFourierAvg = (s) => {
+    addShowFps(s);
+    addPaintGrid(s);
+    addLineDashed(s);
+    addArrow(s);
+    addPauseLoop(s);
+
+    const d = 150;
+    const r = d / 2;
+    const w = 800;
+    const h = 400;
+    const L = r;
+    const step = r;
+
+    let vG, vC;
+    let buff, buff2;
+
+    let cs = [];
+    let angl = 0;
+
+    s.setup = () => {
+        const canvas = s.createCanvas(w, h);
+        canvas.parent('tight-fourier-avg-sketch');
+        s.textFont(theme.textFont);
+        s.textSize(theme.textSize);
+        s.frameRate(theme.frameRate);
+        vG = s.createVector(w / 2, h / 2);
+        vC = s.createVector(0, h / 2);
+        cs[0] = {
+            vC: s.createVector(vG.x - 4 * r, vG.y),
+            F: s.PI,
+            A: 4 / s.PI * r
+        };
+        for (let i = 1; i < 5; i++) {
+            cs[i] = {
+                vC: s.createVector(cs[i - 1].vC.x + r / 2, cs[i - 1].vC.y - cs[i - 1].A),
+                F: s.PI * (2 * (i + 1) - 1),
+                A: 4 / s.PI / (2 * (i + 1) - 1) * r
+            }
+        }
+
+        if (buff) buff.remove();
+        buff = s.createGraphics(w / 2, h);
+        buff.textFont(theme.textFont);
+        buff.textSize(theme.textSize);
+
+        if (buff2) buff2.remove();
+        buff2 = s.createGraphics(w / 2, h);
+        buff2.textFont(theme.textFont);
+        buff2.textSize(theme.textSize);
+
+        s.paintGrid(buff, w, h, vC, r, 1, {
+            showOrigin: true,
+            showUnits: true,
+            showX: true,
+            showY: true,
+        });
+
+        buff.push();
+        buff.fill(theme.cosineColor);
+        buff.stroke(theme.cosineColor);
+        buff.strokeWeight(2);
+        buff.line(vC.x, vC.y - step, vC.x + L, vC.y - step);
+        buff.line(vC.x + step, vC.y + step, vC.x + 2 * L, vC.y + step);
+        buff.pop();
+
+        // Draw sinusoids
+        buff.push();
+        buff.stroke(theme.sineColor);
+        buff.beginShape(s.LINES);
+        let prev = s.sqf(0);
+        for (let i = 0; i <= 2.01; i += 0.01) {
+            let next = s.sqf(i);
+            buff.vertex(vC.x + i * L, vC.y - prev);
+            buff.vertex(vC.x + i * L, vC.y - next);
+            prev = next;
+        }
+        buff.endShape();
+        buff.pop();
+
+        // Draw some labels
+        buff.push();
+        buff.fill(theme.cosineColor);
+        buff.text("f(x)", vC.x + L + 5, vC.y - step - 5);
+        buff.fill(theme.sineColor);
+        buff.text("∑sᵢ(x)", vC.x + 2 * L + 5, vC.y - 5);
+        buff.pop();
+
+        // draw the rectangle surrounding si(x)
+        buff2.push();
+        buff2.fill(theme.lightGreen);
+        buff2.rect(r - r / 2, vG.y - 1.5 * step, 2 * step + r + 10, 3 * L + 30);
+        buff2.pop();
+
+        // draw the text
+        buff2.push();
+        buff2.text(" The first 5 terms of s(x) in time", r - r / 2, vG.y + 1.5 * step + 20);
+        buff2.pop();
+
+        // labeling each arrow
+        buff2.push();
+        for (let i = 0; i < cs.length; i++) {
+            buff2.text("s" + (i + 1), cs[i].vC.x - 10, cs[0].vC.y - step * 1.3);
+        }
+        buff2.pop();
+
+        buff2.push();
+        buff2.fill(theme.sineColor);
+        buff2.stroke(theme.sineColor);
+        buff2.circle(r - r / 2, vG.y + 1.5 * step + 50, 5);
+        buff2.fill(theme.cosineColor);
+        buff2.stroke(theme.cosineColor);
+        buff2.circle(r - r / 2, vG.y + 1.5 * step + 70, 5);
+        buff2.pop();
+
+        buff2.push();
+        buff2.text(" The sum of the first 5 terms of s(x) in time", r - r / 2 + 10, vG.y + 1.5 * step + 55);
+        buff2.pop();
+
+        buff2.push();
+        buff2.text(" The square function", r - r / 2 + 10, vG.y + 1.5 * step + 75);
+        buff2.pop();
+    }
+
+    s.sqf = (x) => {
+        let sum = 0;
+        for (let i = 0; i < cs.length; i++) {
+            sum += cs[i].A * s.sin(cs[i].F * x);
+        }
+        return sum;
+    }
+
+    s.drawCircles = () => {
+        s.push();
+        s.noFill();
+        // update centers
+        let ly = 0;
+        for (let i = 0; i < cs.length; i++) {
+            if (i > 0) {
+                cs[i].vC.y = cs[i - 1].vC.y - cs[i - 1].A * s.sin(cs[i - 1].F * angl);
+                s.push();
+                s.stroke(theme.radiusColorLight);
+                s.line(cs[i].vC.x, cs[i].vC.y, cs[i - 1].vC.x, cs[i].vC.y);
+                s.pop();
+            }
+            s.fill(theme.textColor);
+            s.circle(cs[i].vC.x, cs[i].vC.y, 3);
+            let df = cs[i].A * s.sin(cs[i].F * angl)
+            ly += df;
+            s.arrowCt(cs[i].vC.x, cs[i].vC.y, cs[i].vC.x, cs[i].vC.y - df, 5);
+        }
+        s.push();
+        s.fill(theme.sineColor);
+        s.stroke(theme.sineColor);
+        s.circle(vG.x - r, vG.y - ly, 5);
+        s.circle(vG.x + angl * step, vG.y - ly, 5);
+        s.fill(theme.cosineColor);
+        s.stroke(theme.cosineColor);
+        let yOff = (angl * step) > L ? -step : step;
+        s.circle(vG.x + angl * step, vG.y - yOff, 5);
+        s.circle(vG.x - 4 / 5 * step, vG.y - yOff, 5);
+        s.pop();
+        s.pop();
+    }
+
+    s.draw = () => {
+        s.background(theme.bkgColor);
+        s.image(buff, w / 2, 0);
+        s.image(buff2, 0, 0);
+        s.drawCircles();
+        angl += 0.01;
+        if (angl > 2) angl = 0;
+        s.showFps();
+    }
+}
+
+let tightFourierAvgSketch = new p5(tightFourierAvg, 'tight-fourier-avg-sketch');
+```
+
+</CodeContainer.Runner>
+
+#### 三角波的复指数表示
+
+$$
+s(t)=\frac{8}{\pi^2}\sum_{k=1}^{N}\frac{(-1)^{k-1}}{(2k-1)^2}\cdot\sin((2k-1)t)
+$$
+
+#### 锯齿波的复指数表示
+
+$$
+s(t)=\frac{2}{\pi}\sum_{k=1}^{N}(-1)^k\cdot\frac{\sin(kt)}{k}
+$$
+
+<span><Selector id="fm-wave" defaultValue={"sawtooth"} options={["sawtooth", "triangle", "square"]} /></span>的波形如下
+
+<CodeContainer.Runner id="fmachinery-sketch">
+
+```js:fMachinery.js
+let crtWave = "sawtooth";
+const fMachinery = (s) => {
+    addPaintGrid(s);
+    addArrow(s);
+
+    // the radius of the circle
+    const r = 60;
+    // the sampling frequency
+    const f = 0.1;
+    // frequency scaled with r
+    const fR = f * r;
+    // lol
+    const infty = 2000;
+    // the number of individual terms to render
+    const numTerms = 12;
+
+    let k;
+    // absolute center of the coordinate system
+    let vC;
+    // center of axis for circles
+    let vCC;
+    // font used for the 3d canvas
+    let cfont;
+
+    // angle starts with a phase
+    // initial value of the angle
+    let angl = 0;
+    // a phase so i can emulate the unit circle
+    let dphs = s.HALF_PI;
+    // the maximum rotations of the circle 
+    // afterwards angl is reset to 0
+    let maxAngl = 2 * s.TWO_PI + dphs;
+    // the angl scaled to the x-axis (by r)
+    let mpX = 0;
+
+    let someColors = [
+        "#00CED1", "#B22222",
+        "#FF1493", "#2F4F4F",
+        "#FFA500", "#F4A460",
+        "#ADFF2F", "#4682B4",
+        "#5F9EA0", "#9ACD32",
+        "#FF0000", "#696969",
+        "#8B4513", "#FF6347",
+        "#FFD700", "#000080",
+        "#778899", "#48D1CC",
+        "#FFFF00", "#20B2AA",
+        "#4682B4", "#B0C4DE",
+        "#00CED1", "#B22222",
+        "#FF1493", "#2F4F4F",
+        "#FFA500", "#F4A460",
+        "#ADFF2F", "#4682B4",
+        "#5F9EA0", "#9ACD32",
+        "#FF0000", "#696969",
+        "#8B4513", "#FF6347",
+        "#FFD700", "#000080",
+        "#778899", "#48D1CC",
+        "#FFFF00", "#20B2AA",
+        "#4682B4", "#B0C4DE"
+    ]
+
+    s.preload = () => {
+        cfont = s.loadFont(theme.webGLFont);
+    }
+
+    let waves = {
+        "sawtooth": {
+            impl: {
+                amp: (k) => { return 2 / (s.PI * k) },
+                freq: (k) => { return k },
+                phase: (k) => { return ((k % 2 == 0) ? (0) : (s.PI)); },
+            },
+            vals: [],
+            coeffs: [],
+            sum: {},
+            maxFreq: 0
+        },
+        "square": {
+            impl: {
+                amp: (k) => { return 4 / s.PI / (2 * k - 1); },
+                freq: (k) => { return (2 * k - 1); },
+                phase: (k) => { return 0; },
+            },
+            vals: [],
+            coeffs: [],
+            sum: {},
+            maxFreq: 0
+        },
+        "triangle": {
+            impl: {
+                amp: (k) => { return 8 / s.PI / s.PI / (2 * k - 1) / (2 * k - 1); },
+                freq: (k) => { return (2 * k - 1); },
+                phase: (k) => { return ((k % 2 == 0) ? (s.PI) : (0)); },
+            },
+            vals: {},
+            coeffs: {},
+            sum: {},
+            maxFreq: 0
+        }
+    };
+
+    s.initWaves = () => {
+        for (let wave in waves) {
+            for (let i = 0, j = 1; i < numTerms; i++, j++) {
+                let cFreq = waves[wave].impl.freq(j);
+                let cAmp = waves[wave].impl.amp(j);
+                let cPhase = waves[wave].impl.phase(j);
+
+                waves[wave].coeffs[cFreq] = {
+                    amp: cAmp,
+                    freq: cFreq,
+                    phase: cPhase
+                };
+
+                waves[wave].vals[cFreq] = {};
+
+                for (let x = 0; x < maxAngl; x += f) {
+                    let yV = -s.sin(cFreq * x + cPhase) * (cAmp * r);
+                    let xV = x * r;
+                    waves[wave].vals[cFreq][xV] = yV;
+                    if (!(xV in waves[wave].sum)) {
+                        waves[wave].sum[xV] = 0;
+                    }
+                    waves[wave].sum[xV] += yV;
+                }
+                waves[wave].maxFreq = cFreq;
+            }
+        }
+    }
+
+    s.setup = () => {
+        const canvas = s.createCanvas(800, 500, s.WEBGL);
+        canvas.parent('fmachinery-sketch');
+        s.frameRate(10);
+        s.textFont(cfont);
+        // absolute center
+        vC = s.createVector(0, 0, 0);
+        // the center for the moving circles
+        vCC = s.createVector(-2 * r, 0, 0);
+        s.initWaves();
+        s.camera(-400, -400, 500, 0, 0, 0, 0, 1, 0);
+    };
+
+    s.draw = () => {
+        s.background(theme.bkgColor);
+        s.translate(vC.x, vC.y, 0);
+        s.orbitControl();
+
+        // Draw coordinates system
+        s.push();
+        s.smooth();
+        s.translate(vC.x, vC.y, 0);
+        s.fill(255, 255, 255);
+        s.stroke(theme.radiusColorLight);
+        // X
+        s.line(-s.width, 0, 0, s.width, 0, 0);
+        s.stroke(theme.radiusColorLight);
+        s.push();
+        s.stroke(theme.textColor);
+        s.fill(theme.textColor);
+        s.textSize(24);
+        s.text("time (t)", 200, +30);
+        s.pop();
+        // Y
+        s.line(0, -s.height, 0, 0, s.height, 0);
+        s.stroke(theme.radiusColorLight);
+        s.push();
+        s.stroke(theme.textColor);
+        s.fill(theme.textColor);
+        s.textSize(24);
+        s.text("amplitude (A)", 10, -140);
+        s.pop();
+        // Z
+        s.line(0, 0, -infty, 0, 0, infty);
+        // A secondary Z
+        s.line(vCC.x, 0, -infty, vCC.x, 0, infty)
+        s.pop();
+
+        // Additional x axes for each frequency
+        s.push();
+        s.stroke(theme.radiusColorLight);
+        s.beginShape(s.LINES);
+        s.noFill();
+        for (let i = 1; i <= waves[crtWave].maxFreq; i++) {
+            // s.translate(0, 0, -r * i);
+            s.vertex(0, 0, -r*i);
+            s.vertex(s.width, 0, -r*i);
+        }
+        s.endShape();
+        s.pop();
+
+        // Draw circles, amplitudes  and phases
+        s.push();
+        s.noFill();
+        for (let i in waves[crtWave].coeffs) {
+            // each time we go back to draw a circle
+            // that operates at a higher frequnecy
+            s.translate(0, 0, -r*i);
+            s.stroke(someColors[i]);
+            s.circle(-2 * r, 0, waves[crtWave].coeffs[i].amp * 2 * r);
+            s.stroke(theme.textColor);
+            s.circle(-2 * r, 0, 3);
+            // draw text near circle
+            s.push();
+            s.fill(someColors[i]);
+            s.text("ω=" + waves[crtWave].coeffs[i].freq, -3 * r - 10, 15);
+            s.pop();
+            // draw amplitude
+            s.push();
+            s.stroke(someColors[i]);
+            s.fill(someColors[i]);
+            s.arrow(0, 0, 0, -waves[crtWave].coeffs[i].amp * r);
+            s.text("A="+waves[crtWave].coeffs[i].amp.toFixed(2),0, -waves[crtWave].coeffs[i].amp * r)
+            s.arrow(0, 0, -waves[crtWave].coeffs[i].phase * r / 10, 0);
+            s.text("φ=" + waves[crtWave].coeffs[i].phase.toFixed(2), -r, +15);
+            s.pop();
+            s.resetMatrix();
+        }
+        s.pop();
+
+        // Draw moving radius for each circle
+        s.push();
+        for (let i in waves[crtWave].coeffs) {
+            s.translate(0, 0, -r*i);
+            let cAmp = waves[crtWave].coeffs[i].amp;
+            let cFreq = waves[crtWave].coeffs[i].freq;
+            let cPhase = waves[crtWave].coeffs[i].phase; 
+            let localX = -2 * r + cAmp * r * s.sin(angl * cFreq + dphs + cPhase);
+            let localY = cAmp * r * s.cos(angl * cFreq + dphs + cPhase);
+            s.push();
+            s.stroke(someColors[i]);
+            s.line(-2 * r, 0, localX, localY);
+            s.stroke(theme.sineColor);
+            s.circle(localX, localY, 3);
+            s.stroke(theme.lightCircleColor);
+            s.line(localX, localY, mpX, localY);
+            s.stroke(theme.sineColor);
+            s.circle(mpX, localY, 3);
+            s.pop();
+            s.resetMatrix();
+        }
+        s.pop();
+
+        // Paint each individual component as the rotation from the circles go
+        s.push();
+        for (let i in waves[crtWave].coeffs) {
+            s.translate(0, 0, -r*i);
+            s.stroke(someColors[i]);
+            s.beginShape();
+            s.noFill();
+            for (let x = 0; x < angl; x += f) {
+                let k = x * r;
+                s.vertex(k, waves[crtWave].vals[i][k]);
+            }
+            s.endShape();
+            s.resetMatrix();
+        }
+        s.pop();
+
+        // Paint the sum of the components
+        s.push();
+        s.beginShape();
+        s.noFill();
+        let textX;
+        for (let x = 0; x < angl; x += f) {
+            k = x * r;
+            s.vertex(k, waves[crtWave].sum[k]);
+            textX = k;
+        }
+        s.stroke(theme.sineColor);
+        s.endShape();
+        s.pop();
+
+        angl += f;
+        mpX += fR;
+        if (angl > maxAngl) {
+            angl = 0;
+            mpX = 0;
+        }
+    };
+}
+
+let fMachinerySketch = new p5(fMachinery, 'fmachinery-sketch');
+
+const updateFmWave = () => {
+    crtWave = document.getElementById('fm-wave').value;
+    fMachinerySketch.remove();
+    fMachinerySketch = new p5(fMachinery, 'fmachinery-sketch');
+};
+document.getElementById('fm-wave').onchange = updateFmWave;
 ```
 
 </CodeContainer.Runner>

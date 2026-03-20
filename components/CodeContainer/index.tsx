@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { compile, execute } from "./runner";
+import { compile, deconstruct, execute } from "./runner";
 import { useContainer } from "./hooks";
 import { setDependencies, initialContext, emitEvent, onEvent } from "./sandbox";
 
@@ -46,6 +46,8 @@ const DependenciesResolver: React.FC<{ dependencies: string[] }> = ({
     setDependencies(container, dependencies).catch((e) =>
       emitEvent(container, "DependenciesError", e)
     );
+
+    return () => dependencies.forEach((dep) => deconstruct(dep, container));
   });
 
   return (
@@ -65,8 +67,8 @@ const Runner: React.FC<
   React.DetailedHTMLProps<
     React.BlockquoteHTMLAttributes<HTMLQuoteElement>,
     HTMLQuoteElement
-  > & { noOutput: boolean }
-> = ({ children, style, noOutput = false, ...props }) => {
+  > & { noOutput: boolean; nomodule: boolean }
+> = ({ children, style, noOutput = false, nomodule = false, ...props }) => {
   const [filename, setFilename] = React.useState("");
   const [error, setError] = React.useState("");
 
@@ -88,17 +90,24 @@ const Runner: React.FC<
     setFilename(name);
     codeElement.style.display = "none";
 
-    console.log("[CodeContainer] file %s loaded, %i bytes", name, code.length);
+    console.log("[CodeContainer] file %s loaded, %d bytes", name, code.length);
     ref.setAttribute("filename", name);
     onEvent(container, name + "RunnerError", (e) =>
-      setError((e as any).reason ?? String(e))
+      setError((e as any).reason ?? String((e as any).detail) ?? String(e))
     );
     onEvent(container, "DependenciesResolved", () => {
-      console.log("[CodeContainer] %s compiling...", name);
       compile(code)
-        .then((result) => execute(name, result.outputText, container))
+        .then((result) =>
+          execute(result.outputText, {
+            filename: name,
+            context: container,
+            nomodule,
+          })
+        )
         .catch((e) => emitEvent(container, name + "RunnerError", e));
     });
+
+    return () => deconstruct(name, container);
   });
 
   return (
