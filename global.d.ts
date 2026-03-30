@@ -1,5 +1,7 @@
 type ArrayItem<T extends any[]> = T extends (infer S)[] ? S : never;
 
+type Maybe<T> = T | null | undefined;
+
 type Overview = {
   length: number;
   name: string;

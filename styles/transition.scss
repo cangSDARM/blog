@@ -1,0 +1,36 @@
+:root {
+  view-transition-name: root;
+}
+
+@keyframes view-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes view-out {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(2);
+  }
+}
+
+/* Apply the custom animation to the old and new page states */
+::view-transition-group(root) {
+  transform-origin: 0 0;
+}
+::view-transition-old(root) {
+  animation: 0.5s ease-in both view-out;
+}
+::view-transition-new(root) {
+  animation: 0.5s ease-in both view-in;
+}
+
+@view-transition {
+  navigation: auto;
+}
