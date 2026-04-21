@@ -23,18 +23,18 @@ export default function App({ Component, pageProps }: EnhancedAppProps) {
   /// FIXME:
   // If the loading takes more than 0.5 seconds, ViewTransition may cause strange effects.
   // May need to manually control the start and end of the loading.
-  let transition: Maybe<ViewTransition> = null;
+  // let transition: Maybe<ViewTransition> = null;
 
   //useEffect only run after window useable
   React.useEffect(() => {
-    router.events.on("routeChangeStart", () => {
-      transition = document.startViewTransition(() => {
-        NProgress.start();
-      });
-    });
+    // router.events.on("routeChangeStart", () => {
+    //   transition = document.startViewTransition(() => {
+    //     NProgress.start();
+    //   });
+    // });
     router.events.on("routeChangeComplete", () => NProgress.done());
     router.events.on("routeChangeError", () => {
-      transition?.skipTransition();
+      // transition?.skipTransition();
       NProgress.done();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

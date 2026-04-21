@@ -1,7 +1,7 @@
-@import "./reset.scss";
-@import "./theme/index.scss";
-@import "./katex/katex.min.css";
-@import "./transition.scss";
+@use "./reset.scss";
+@use "./theme/index.scss";
+@use "./katex/katex.min.css";
+@use "./transition.scss";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap");
 
 html {

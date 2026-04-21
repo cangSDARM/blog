@@ -1,8 +1,8 @@
-@import "./fluent.weblight.scss";
-@import "./prismplus.light.scss";
+@use "./fluent.weblight.scss" as f;
+@use "./prismplus.light.scss" as p;
 
-@mixin light-theme {
-  @include fluent-web_light-mixin();
-  @include prismplus-light-mixin();
+@mixin theme {
+  @include f.fluent-web_light-mixin();
+  @include p.prismplus-light-mixin();
   --color-scheme: "light";
 }

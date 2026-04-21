@@ -5,7 +5,7 @@
  * lodash-es v4.17.15 | MIT License - https://lodash.com/custom-builds
  */
 
-export default function () {
+export default function float16() {
   "use strict";
 
   // algorithm: ftp://ftp.fox-toolkit.org/pub/fasthalffloatconversion.pdf

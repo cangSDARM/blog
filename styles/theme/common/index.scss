@@ -1,4 +1,4 @@
-@import "./fluent.scss";
+@use "./fluent.scss";
 
 @mixin common {
   @extend .fluent-common;
