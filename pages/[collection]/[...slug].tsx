@@ -71,11 +71,7 @@ const Anchor: React.FC<
     );
   }
 
-  return (
-    <Link href={href} scroll={false} legacyBehavior>
-      <a {...props}></a>
-    </Link>
-  );
+  return <Link href={href} scroll={false} {...props}></Link>;
 };
 
 export default injectLayoutContext(function Page({

@@ -1,0 +1,111 @@
+---
+title: "梯度"
+tags: ["math"]
+---
+
+<style
+  dangerouslySetInnerHTML={{
+  __html: `
+  h1 { font-size: 1.75em; margin-block: 1em; }
+  article { h2, h3, h4 { margin-block: 0.5em; } }
+  article h2 { font-size: 1.5em; }
+  article h3 { font-size: 1.25em; }
+  article h4 { font-size: 1.125em; }
+`
+  }}
+/>
+
+对多变量函数的导数的推广
+
+## 标量
+
+对于一个标量函数$f(x_1, x_2, ..., x_n)$，其梯度$\nabla f$是一个向量，由所有变量的一阶偏导组成
+
+例如$f(x,y,z)=x^2+yz$，梯度为: $\nabla f=(2x,z,y)$
+
+### Hessian 矩阵(二阶梯度)
+
+是对这个梯度向量的每个分量再求一次偏导。
+
+因此，它是一个$n\times n$的方阵，由所有二阶偏导数组成
+$$
+\mathbf{H}=\nabla^2 f=
+\begin{bmatrix}
+\dfrac{\partial^2 f_1}{\partial x_1 \partial x_1} & \dfrac{\partial^2 f_1}{\partial x_1 \partial x_2} & \cdots & \dfrac{\partial f_1}{\partial x_1 \partial x_n} \\
+\dfrac{\partial^2 f_1}{\partial x_2 \partial x_1} & \dfrac{\partial^2 f_1}{\partial x^2_2} & \cdots & \dfrac{\partial f_1}{\partial x_2 \partial x_n} \\
+\vdots & \vdots & \ddots & \vdots \\
+\dfrac{\partial^2 f}{\partial x_n \partial x_1} & \dfrac{\partial^2 f_1}{\partial x_n \partial x_2} & \cdots & \dfrac{\partial f_m}{\partial^2 x_n}
+\end{bmatrix}
+$$
+
+如果函数性质良好（二阶偏导连续），混合偏导与次序无关，即$\dfrac{\partial^2 f}{\partial x_m \partial x_n}=\dfrac{\partial^2 f}{\partial x_m \partial x_n}$。
+
+所以 Hessian 矩阵通常是一个对称矩阵
+
+## 向量(Jacobian 矩阵)
+
+当一个函数输出的是向量时，梯度就扩展成了矩阵
+
+设$F(\mathbf{x})=[f_1(\mathbf{x}), f_2(\mathbf{x}), ..., f_m(\mathbf{x})]^T$，$\mathbf{x}$为$n$维，
+则$\nabla F$为$m\times n$矩阵
+$$
+\mathbf{J}_F = \mathbf{J}(\mathbf{x}) = \frac{\partial(f_1, f_2, ..., f_m)}{\partial(x_1, x_2, ..., x_n)} = \nabla_{\mathbf{x}} F = \frac{\partial F}{\partial \mathbf{x}} =
+\begin{bmatrix}
+\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} \\
+\vdots & \ddots & \vdots \\
+\dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n}
+\end{bmatrix}
+$$
+
+例如(极坐标变换):
+$$
+f(r, \theta) =
+\begin{cases}
+x = r \cos{\theta} \\
+y = r \sin{\theta} \\
+\end{cases},
+
+\text{其 }\mathbf{J} =
+\begin{bmatrix}
+\dfrac{\partial x}{\partial r} & \dfrac{\partial x}{\partial \theta} \\
+\dfrac{\partial y}{\partial r} & \dfrac{\partial y}{\partial \theta}
+\end{bmatrix} =
+\begin{bmatrix}
+\cos{\theta} & -r \sin{\theta} \\
+\sin{\theta} & r \cos{\theta}
+\end{bmatrix}
+$$
+
+## 矩阵
+
+若函数$F(\mathbf{X})$输入$m\times n$，输出$p\times q$，
+则$\nabla F$为$m\times n\times p\times q$个元素的四阶张量
+$$
+\nabla_{\mathbf{X}} F = \frac{\partial F}{\partial \mathbf{X}} =
+\begin{bmatrix}
+\dfrac{\partial f}{\partial \mathbf{X_{11}}} & \cdots & \dfrac{\partial f}{\partial \mathbf{X_{1q}}} \\
+\vdots & \ddots & \vdots \\
+\dfrac{\partial f}{\partial \mathbf{X_{p1}}} & \cdots & \dfrac{\partial f}{\partial \mathbf{X_{pq}}}
+\end{bmatrix}
+$$
+
+- 若$F=a^T\mathbf{X}b$，则$\nabla_{\mathbf{X}} F=ab^T$
+- 若$F=tr(\mathbf{X}^T\mathbf{X})$，则$\nabla_{\mathbf{X}} F=2\mathbf{X}$
+
+## 泰勒展开式
+
+### 二阶泰勒展开式
+
+对于单变量函数$f(x)$在点$x_k$处，展开式为: 
+$$
+f(x)\approx f(x_k)+f'(x_k)(x-x_k)+\frac{1}{2}f''(x_k)(x-x_k)^2
+$$
+
+对于向量形式有: 
+$$
+f(\mathbf{x})=f(\mathbf{x}_k)+\nabla f(\mathbf{x}_k)^T(\mathbf{x}-\mathbf{x}_k)+\frac{1}{2}(\mathbf{x}-\mathbf{x}_k)^T\mathbf{H}(\mathbf{x}_k)(\mathbf{x}-\mathbf{x}_k)+o\big(\|\mathbf{x}-\mathbf{x}_k\|^2\big)
+$$
+
+一阶泰勒展开（只用梯度）把函数近似成一条直线，而二阶展开用 Hessian 矩阵把函数的曲率也考虑了进去，所以近似更精确，特别是在极值点附近
+
+皮亚诺余项$O\big(\|\Delta x\|^2\big)$表示“所有剩下的、比二阶项趋于零更快的误差”，但在极值点附近会迅速变得微不足道

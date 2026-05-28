@@ -1,0 +1,390 @@
+---
+title: "单目标无约束优化"
+tags: ["math"]
+---
+
+<style
+  dangerouslySetInnerHTML={{
+  __html: `
+  h1 { font-size: 1.75em; margin-block: 1em; }
+  article { h2, h3, h4 { margin-block: 0.5em; } }
+  article h2 { font-size: 1.5em; }
+  article h3 { font-size: 1.25em; }
+  article h4 { font-size: 1.125em; }
+`
+  }}
+/>
+
+最优化问题的一般形式为:
+$$
+\begin{aligned}
+& \min f(\mathbf{x})\\
+& s.t.\quad f: \mathbb{R}^n\rightarrow\mathbb{R}\;;\mathbf{x} \in X
+\end{aligned}
+$$
+其中$\mathbf{x}$为决策变量，$f(\mathbf{x})$是目标函数，$X$为约束集或可行域。
+
+若$f: \mathbb{R}^n\rightarrow\mathbb{R}$则是单目标优化；
+若$X=\mathbf{R}^n$，则最优化问题成为无约束最优化问题
+
+<br/>
+
+所有无约束优化方法，都可以写成迭代法的形式，其基本思想是：给定一个初始点$\mathbf{x}_0$，按照某一迭代规则产生一个点列$\{\mathbf{x}_n\}$，使得当$\{\mathbf{x}_n\}$是有穷点列时，其最后一个点是最优化模型问题的最优解。
+
+迭代规则由迭代公式决定，迭代公式的基本表示形式如下
+$$
+\mathbf{x}_{k+1}=\mathbf{x}_k+\alpha_k\mathbf{d}_k
+$$
+
+式中，$\alpha_k$为步长因子，$\mathbf{d}_k$为搜索方向
+
+<br />
+
+最优化方法的基本结构:
+
+- 给定初始点$\mathbf{x}_0$
+- 确定搜索方向$\mathbf{d}_k$，即按照一定规则，构造$f$在$\mathbf{x}_k$点处的下降方向作为搜索方向
+- 确定步长因子$\alpha_k$，使目标函数有某种意义的下降
+  - 对于一维线搜素子问题，有:
+    - $\alpha_k=\arg\min\limits_{\lambda > 0} \phi(x)$，其中$\phi(\lambda)=f(\mathbf{x}_k+\lambda\mathbf{d}_k)$
+    - $\phi'(\lambda)=\nabla f(x_k+\lambda d_k)^T d_k$
+
+## 确定搜索方向
+
+### 最速下降法
+
+给定: 初始点$x_0$，误差$\varepsilon > 0$
+
+输出: 最优点
+
+优点: 每一步都能保证函数值下降；实现简单，计算成本低
+
+缺点: 收敛速度慢，路径呈“锯齿”状；会掉入局部最优
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}\text{计算}\quad d_k=-\nabla f(x_k)\\
+& \hspace{2em}\text{if}\quad \|\nabla f(x_k)\|<\varepsilon\;;\text{return}\quad x_k\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\text{确定步长因子}\;\lambda_k>0\\
+& \hspace{2em}\hspace{2em}x_{k+1}=x_k+\lambda_k d_k\\
+& \hspace{2em}\hspace{2em}k=k+1
+\end{aligned}
+$$
+
+### 牛顿法
+
+给定: 初始点$x_0$，误差$\varepsilon > 0$
+
+输出: 最优点
+
+优点: 收敛速度极快；自带步长估计
+
+缺点: 计算($O(n^3)$)和存储($O(n^2)$)成本高；对初始点敏感；会掉入局部最优
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}\text{if}\quad \|\nabla f(x_k)\|<\varepsilon\;;\text{return}\quad x_k\\
+& \hspace{2em}H_k=\nabla^2 f(x_k)\\
+& \hspace{2em}B_k=H_k\\
+& \hspace{2em}\text{if}\quad H_k\text{不是正定矩阵}\\
+& \hspace{2em}\hspace{2em}B_k=\text{正定化}H_k\\
+& \hspace{2em}d_k=-B_k^{-1}\nabla f(x_k)\\
+& \text{经典牛顿}\\
+& \hspace{2em}x_{k+1}=x_k+d_k\\
+& \hspace{2em}k=k+1\\
+& \text{带线搜索牛顿}\\
+& \hspace{2em}\text{确定步长因子}\lambda_k\\
+& \hspace{2em}x_{k+1}=x_k+\lambda_k d_k\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
+
+#### 阻尼高斯-牛顿法
+
+专门用来解非线性最小二乘问题。即形如$f(x)=\frac{1}{2}\sum\limits_{i=1}^{m} r_i(x)^2=\frac{1}{2}\|r(x)\|^2$，其中$r_i(x)$是残差函数且至少一个非线性
+
+给定: 初始点$x_0$，误差$\varepsilon > 0$
+
+输出: 最优点
+
+优点: 无需计算完整的海森矩阵；收敛速度快
+
+缺点: 对大残差问题效果差甚至可能不收敛；要求雅可比矩阵列满秩；只能处理平方和形式的目标函数
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}f_k=(r_1(x), r_2(x), ..., r_m(x))^T\\
+& \hspace{2em}A_k=(\nabla r_1(x_k), \nabla r_2(x_k), ..., \nabla r_m(x_k))\\
+& \hspace{2em}\text{if}\quad \|A_k^T f_k\|<\varepsilon\\
+& \hspace{2em}\hspace{2em}\text{return}\quad x_k\\
+& \hspace{2em}d_k=-(A_k^T A_k)^{-1}A_k^T f_k\\
+& \hspace{2em}\text{确定步长因子}\lambda_k\\
+& \hspace{2em}x_{k+1}=x_k+\lambda_k d_k\\
+& \hspace{2em}k=k+1\\
+\end{aligned}
+$$
+
+#### Levenberg-Marquardt 法
+
+专门用来解非线性最小二乘问题。即形如$f(x)=\frac{1}{2}\sum\limits_{i=1}^{m} r_i(x)^2=\frac{1}{2}\|r(x)\|^2$，其中$r_i(x)$是残差函数且至少一个非线性
+
+给定: 初始点$x_0$，误差$\varepsilon > 0$，$\alpha_0>0$，$\beta>1$
+
+输出: 最优点
+
+优点: 保证了系数矩阵总是正定、可逆的，不要求雅可比矩阵列满秩；能在 Gauss-Newton 和最速下降之间平滑切换；对大残差问题更稳健
+
+缺点: 当$\alpha$很大时效率低；$\alpha$调节策略依赖经验
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}f_k=(r_1(x), r_2(x), ..., r_m(x))^T\\
+& \hspace{2em}A_k=(\nabla r_1(x_k), \nabla r_2(x_k), ..., \nabla r_m(x_k))\\
+& \hspace{2em}\text{if}\quad \|A_k^T f_k\|<\varepsilon\\
+& \hspace{2em}\hspace{2em}\text{return}\quad x_k\\
+& \hspace{2em}d_k=-(A_k^T A_k+\alpha I)^{-1}(A_k^T f_k)\\
+& \hspace{2em}\text{if}\quad f(x_k+d_k)<f(x_k)\\
+& \hspace{2em}\hspace{2em}\alpha_{k+1}=\frac{\alpha_k}{\beta}\\
+& \hspace{2em}\hspace{2em}x_{k+1}=x_k+d_k\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\alpha_{k+1}=\beta\alpha_k\\
+& \hspace{2em}\hspace{2em}x_{k+1}=x_k\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
+
+### 共轭梯度法
+
+给定: 初始点$x_0$，误差$\varepsilon > 0$
+
+输出: 最优点
+
+优点: 收敛速度远快于最速下降法；存储和计算成本较低
+
+缺点: 严重依赖线搜索精度；必须加入重启机制（如每n步或方向上升时强行重置为最速下降方向）；会掉入局部最优
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}\text{if}\quad \|\nabla f(x_k)\|<\varepsilon\;;\text{return}\quad x_k\\
+& \hspace{2em}F_{k-1}=\nabla f(x_{k-1})\\
+& \hspace{2em}F_k=\nabla f(x_k)\\
+& \text{CW公式}\\
+& \hspace{2em}d_k=
+\begin{cases}
+-F_k & k=0 \\
+-F_k+\frac{F_k^T(F_k-F_{k-1})}{d_{k-1}^T(F_k-F_{k-1})}d_{k-1} & k\neq 0 \\
+\end{cases}\\
+& \text{FR公式}\\
+& \hspace{2em}d_k=
+\begin{cases}
+-F_k & k=0 \\
+-F_k+\frac{F_k^T F_k}{F_{k-1}^T F_{k-1}}d_{k-1} & k\neq 0 \\
+\end{cases}\\
+& \text{PRP公式}\\
+& \hspace{2em}d_k=
+\begin{cases}
+-F_k & k=0 \\
+-F_k+\frac{F_k^T [F_k-F_{k-1}]}{F_{k-1}^T F_{k-1}}d_{k-1} & k\neq 0 \\
+\end{cases}\\
+& \text{Dixon公式}\\
+& \hspace{2em}d_k=
+\begin{cases}
+-F_k & k=0 \\
+-F_k-\frac{F_k^T F_k}{F_{k-1}^T d_{k-1}}d_{k-1} & k\neq 0 \\
+\end{cases}\\
+& \text{DY公式}\\
+& \hspace{2em}d_k=
+\begin{cases}
+-F_k & k=0 \\
+-F_k+\frac{F_k^T F_k}{d_{k-1} [F_k-F_{k-1}]^T}d_{k-1} & k\neq 0 \\
+\end{cases}\\
+& \hspace{2em}\text{确定步长因子}\lambda_k\\
+& \hspace{2em}x_{k+1}=x_k+\lambda_k d_k\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
+
+以上公式在函数为二次型，且使用精准线搜时完全等价。
+实际使用中，常使用 FR 和 PRP，因为这两个公式只需要梯度信息。尤其 PRP，数值表现更好
+
+### 拟牛顿法
+
+给定: 初始点$x_0$，误差$\varepsilon > 0$，$H_0$(通常为单位矩阵$I$)
+
+输出: 最优点
+
+优点: 计算效率非常接近牛顿法；存储和计算成本可控($O(n^2)$)，对于大规模问题，还有有限记忆拟牛顿法(L-BFGS)；算法的全局收敛性非常好
+
+缺点: 对线搜索精度敏感；在非凸问题中可能失效；会掉入局部最优
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}d_k=-H_k\nabla f(x_k)\\
+& \hspace{2em}\text{使用 Wolfe 准则确定步长因子}\lambda_k\\
+& \hspace{2em}x_{k+1}=x_k+\lambda_k d_k\\
+& \hspace{2em}\text{if}\quad \|\nabla f(x_{k+1})\|<\varepsilon\\
+& \hspace{2em}\hspace{2em}\text{return}\quad x_k\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}S_k=x_{k+1}-x_k\\
+& \hspace{2em}\hspace{2em}\gamma_k=\nabla f(x_{k+1})-\nabla f(x_k)\\
+& \text{DFP法}\\
+& \hspace{2em}\hspace{2em}H_{k+1}=H_k-\frac{(H_k \gamma_k)(\gamma_k^T H_k)}{\gamma_k^T H_k \gamma_k}+\frac{S_k S_k^T}{\gamma_k^T S_k}\\
+& \text{BFGS法}\\
+& \hspace{2em}\hspace{2em}\rho_k = \frac{1}{\gamma_k^T S_k}\\
+& \hspace{2em}\hspace{2em}H_{k+1}=(I-\rho_k S_k \gamma_k^T)H_k(I-\rho_k \gamma_k S_k^T)+\rho_k S_k S_k^T\\
+& \hspace{2em}\hspace{2em}k=k+1
+\end{aligned}
+$$
+
+### 信赖域法
+
+给定: 初始点$x_0$，误差$\varepsilon > 0$，信赖域$\hat{\Delta}$，初始半径$\delta_0\in(0, \hat{\Delta})$，参数$0<\eta_1\leq\eta_2<1$，$0<\gamma_1<1<\gamma_2$
+
+输出: 最优点
+
+优点: 能处理非正定海森矩阵，全局收敛性强；适合困难的非凸问题
+
+缺点: 子问题求解成本较高；对精度和初始值敏感；会掉入局部最优
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}\text{if}\quad \|\nabla f(x_k)\|<\varepsilon\;;\text{return}\quad x_k\\
+& \hspace{2em}
+\begin{aligned}
+\text{求解子问题(近似解即可)}\min q_k(d)&=f(x_k)+\nabla f(x_k)^T d+\frac{1}{2}d^T\mathbf{H}(x_k)d\\
+         \text{s.t.}\quad\|d\|&\leq\delta_k\;\text{得}\;d_k\\
+\end{aligned}\\
+& \hspace{2em}\rho_k=\frac{f(x_k)-f(x_k+d_k)}{q_k(0)-q_k(d_k)}\\
+& \hspace{2em}\text{if}\quad \rho_k<\eta_1\\
+& \hspace{2em}\hspace{2em}x_{k+1}=x_k\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}x_{k+1}=x_k+d_k\\
+& \hspace{2em}\delta_{k+1}=
+\begin{cases}
+\gamma_1\delta_k                           & \rho_k<\eta_1 \\
+\delta_k                                   & \eta_1\leq\rho_k<\eta_2 \\
+\min\{\gamma_2 \delta_k, \hat{\Delta}\}   & \rho_k\geq\eta_2 \\
+\end{cases}\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
+
+## 确定步长因子
+
+*准则*只提供判别条件，步长迭代逻辑可以自定义
+
+### 黄金分割
+
+给定: 区间$[a_0, b_0]$，精度$\varepsilon > 0$，且$f(x)$在区间内为单峰函数
+
+输出: 精确步长$\lambda$
+
+优点: 不需要$f(x)$可导，保证输出步长为最优
+
+缺点: 计算代价高昂
+
+$$
+\begin{aligned}
+& \text{if}\quad b_0 - a_0 < \varepsilon\; ; \text{return}\quad \lambda = \frac{a_0 + b_0}{2}\\
+& t_0=a_0+0.382(b_0-a_0);\; S_0=a_0+0.618(b_0-a_0);\; k=0\\
+& \text{while(true):}\\
+& \hspace{2em}\text{if}\quad \phi(t_k) > \phi(S_k)\text{:}\\
+& \hspace{2em}\hspace{2em}\text{if}\quad b_k-t_k<\varepsilon\;; \text{return}\quad \lambda=S_k\\
+& \hspace{2em}\hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\hspace{2em}a_{k+1}=t_k\;;b_{k+1}=b_k\\
+& \hspace{2em}\hspace{2em}\hspace{2em}t_{k+1}=S_k\;;S_{k+1}=a_{k+1}+0.618(b_{k+1}-a_{k+1})\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\text{if}\quad S_k-a_k<\varepsilon\;; \text{return}\quad \lambda=t_k\\
+& \hspace{2em}\hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\hspace{2em}a_{k+1}=a_k\;;b_{k+1}=S_k\\
+& \hspace{2em}\hspace{2em}\hspace{2em}S_{k+1}=t_k\;;t_{k+1}=a_{k+1}+0.382(b_{k+1}-a_{k+1})\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
+
+### Armijo 准则
+
+给定: $\rho > 0$，$\sigma, \gamma \in (0,1)$，当前搜索方向$d_k$，当前迭代点$x_k$
+
+输出: 步长$\lambda$
+
+优点: 计算量小
+
+缺点: 只管下降量，不管步长本身。即极小步长$\lambda_\epsilon$往往也能轻松满足，导致算法迭代速度过慢
+
+$$
+\begin{aligned}
+& m_0=0\\
+& z(a)=a\sigma\nabla f(x_k)^T d_k\\
+& \text{while(true):}\\
+& \hspace{2em}\text{if}\quad \phi(\rho\gamma^{m_k})-f(x_k)\leq z(\rho\gamma^{m_k})\;; \text{return}\quad \lambda=\rho\gamma^{m_k}\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}m_k=m_k+1
+\end{aligned}
+$$
+
+### Goldstein 准则
+
+给定: 区间$[a_0, b_0]$和$\lambda_0 \in [a_0, b_0]$，$\sigma \in (0, \frac{1}{2})$
+
+输出: 步长$\lambda$
+
+优点: 计算量小，能有效的避免过小步长
+
+缺点: 需要外推定界来提供有效的初始区间；可能会把$\phi(\lambda)$的真实极小值点也排除在外，基本被 Wolfe 替代
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}\text{if}\quad \phi(\lambda_k)-\phi(0)>\sigma\lambda_k\phi'(0)\\
+& \hspace{2em}\hspace{2em}a_{k+1}=a_k\;;b_{k+1}=\lambda_k\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\text{if}\quad \phi(\lambda_k)-\phi(0)<(1-\sigma)\lambda_k\phi'(0)\\
+& \hspace{2em}\hspace{2em}\hspace{2em}a_{k+1}=\lambda_k\;;b_{k+1}=b_k\\
+& \hspace{2em}\hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\hspace{2em}\text{return}\quad \lambda=\lambda_k\\
+& \hspace{2em}\lambda_{k+1}=\frac{a_{k+1}+b_{k+1}}{2}\\
+& \hspace{2em}k=k+1\\
+\end{aligned}
+$$
+
+### Wolfe 准则
+
+给定: 区间$[a_0, b_0]$和$\lambda_0 \in (a_0, b_0)$，$\sigma \in (0, \frac{1}{2})$，$\delta \in (\sigma, 1)$，当前搜索方向$d_k$，当前迭代点$x_k$
+
+输出: 步长$\lambda$
+
+优点: 最后得出的步长比较合理，且收敛有保证
+
+缺点: 需要外推定界来提供有效的初始区间；实现较为复杂
+
+$$
+\begin{aligned}
+& \text{while(true):}\\
+& \hspace{2em}\text{if}\quad \phi(\lambda_k)-\phi(a_k)>\sigma\lambda_k\phi'(a_k)\\
+& \hspace{2em}\hspace{2em}a_{k+1}=a_k\;;b_{k+1}=\lambda_k\\
+& \hspace{2em}\hspace{2em}z=1+\frac{\phi(a_k)-\phi(\lambda_k)}{(\lambda_k-a_k)\phi'(a_k)}\\
+& \hspace{2em}\hspace{2em}\lambda_{k+1}=a_k+\frac{\lambda_k-a_k}{2z}\\
+& \hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\text{if}\quad \phi'(\lambda_k)\geq\delta\phi'(a_k)\;; \text{return}\quad \lambda=\lambda_k\\
+& \hspace{2em}\hspace{2em}\text{else}\\
+& \hspace{2em}\hspace{2em}\hspace{2em}a_{k+1}=\lambda_k\;;b_{k+1}=b_k\\
+& \hspace{2em}\hspace{2em}\hspace{2em}\lambda_{k+1}=\lambda_k+\frac{(\lambda_k-a_k)\phi'(\lambda_k)}{\phi'(a_k)-\phi'(\lambda_k)}
+\end{aligned}
+$$

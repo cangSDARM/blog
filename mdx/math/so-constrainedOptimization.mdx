@@ -1,0 +1,210 @@
+---
+title: "单目标有约束优化"
+tags: ["math"]
+---
+
+<style
+  dangerouslySetInnerHTML={{
+  __html: `
+  h1 { font-size: 1.75em; margin-block: 1em; }
+  article { h2, h3, h4 { margin-block: 0.5em; } }
+  article h2 { font-size: 1.5em; }
+  article h3 { font-size: 1.25em; }
+  article h4 { font-size: 1.125em; }
+`
+  }}
+/>
+
+最优化问题的一般形式为:
+$$
+\begin{aligned}
+& \min f(\mathbf{x})\\
+& s.t.\quad\mathbf{x} \in X
+\end{aligned}
+$$
+其中$\mathbf{x}$为决策变量，$f(\mathbf{x})$是目标函数，$X$为约束集或可行域。
+
+若$f: \mathbb{R}^n\rightarrow\mathbb{R}$则是单目标优化；
+若$X$有限，则最优化问题成为有约束最优化问题。即
+
+$$
+X=\begin{cases}
+g_i(x)&\leq 0, \quad i=1,2,...,m\\
+h_j(x)&= 0, \quad j=1,2,...,n\\
+l_k(x)&\geq 0, \quad k=1,2,...,p
+\end{cases}
+$$
+
+其中，对于$\geq$约束问题，可以等价的$\times-1$来转化为$\leq$问题。若未提及，一般不考虑
+
+## KKT 条件
+
+Kuhn-Tucker Conditions 是判断有约束优化问题一个点是否为局部最优解的必要条件
+
+即: 在最优解$x^*$处，目标函数的负梯度方向，恰好与所有“起作用”约束的梯度方向达到一种力的平衡
+
+<br/>
+
+如果$x^*$是一个局部最优解，那么必然存在两组数(称为拉格朗日乘子):
+
+- $\lambda_i \geq 0$，对应于不等式约束$g_i(x)\leq 0$
+- $\nu_j$(无符号限制)，对应于等式约束$h_j(x)=0$
+
+使得以下四个条件同时成立:
+
+- 原始可行性(Primal Feasibility): $g_i(x^*)\leq 0,\;i=1,2,...,m;\quad h_j(x^*)=0,\;j=1,2,...,n$
+- 稳定性条件(Stationarity): $\nabla f(x^*)+\sum\limits_{i=1}^m \lambda_i\nabla g_i(x^*)+\sum\limits_{j=1}^n \nu_j\nabla h_j(x^*)=0$
+  - “力的平衡”的数学表达式
+- 对偶可行性(Dual Feasibility): $\lambda_i\geq 0, i=1,2,...m$
+  - 保证“支撑力”的方向是指向可行域内部
+- 互补松弛性(Complementary Slackness): $\lambda_i g_i(x^*)=0,\; i=1,2,...,m$
+  - 要么约束是“起作用的”($g_i(x^*)=0$)，$\lambda_i$可以大于0
+  - 要么约束是“不起作用的”($g_i(x^*)\neq 0$)，此时$\lambda_i$必须等于0(还未到最优点)
+
+### 拉格朗日函数法
+
+一般问题的拉格朗日函数定义为: $\mathcal{L}(x, \lambda, \nu)=f(x)+\sum\limits_{i=1}^m \lambda_i g_i(x)+\sum\limits_{j=1}^n \nu_j h_j(x)$
+
+优点: 对初始点无要求；能同时处理等式和不等式约束
+
+缺点: 直接求解十分困难；对非凸问题需要额外的限制避免发散；会掉入局部最优
+
+$$
+\text{联立求解}
+\left\{
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial x_i}=0\\
+\frac{\partial \mathcal{L}}{\partial \nu_i}=0\\
+\lambda_i\geq 0\\
+g_i(x)=0
+\end{aligned}
+\right.
+$$
+
+## 非线性规划
+
+非线性规划 (Nonlinear Programming, NLP) 是有约束优化问题的一个子类。
+
+严格定义: 在有约束优化问题中，如果目标函数$f(x)$或任一约束函数$g_i(x), h_j(x)$是非线性函数，则该问题称为非线性规划问题
+
+线性规划是非线性规划的特例。任何非线性规划的算法，只要它不要求目标函数或约束必须是"真正非线性的"，都可以把线性函数当作一种特殊的非线性函数来处理。
+但线性规划具有其本身的特点，应用对应更高效的算法求解
+
+### 外罚函数法
+
+转化为无约束: $\min P(x,\sigma)=f(x)+\sigma \hat{P}(x)$
+
+其中:
+- $\sigma$是惩罚因子(一个很大的正数)
+- $\hat{P}(x)$是惩罚函数，度量了当前点$x$违反约束的程度
+   - 惩罚函数需要满足: 当约束满足时，惩罚为零；当约束违反时，惩罚为正且很大
+   - 通常形为: $\hat{P}(x)=\sum\limits_i^m [\max\{0, g_i(x)\}]^\beta + \sum\limits_j^n [h_j(x)]^\mu$，其中$\beta=\mu=2$
+
+给定: 初始点$x_0$，初始惩罚因子$\sigma_0>0$，放大系数$c>1$，误差$\varepsilon > 0$
+
+优点: 对初始点无要求；能同时处理等式和不等式约束
+
+缺点: 当$\sigma$变得非常大时，无约束子问题$P(x)$会变得“病态”（其海森矩阵条件数很差）；所有中间迭代点通常是不可行的；每次都要较精确地求解无约束子问题，计算量可能很大
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}
+\begin{aligned}
+\text{求解无约束子问题}\min P(x_k, \sigma_k)&=f(x_k)+\sigma_k\hat{P}(x_k)\\
+         &\text{得}\;x_{k+1}\\
+\end{aligned}\\
+& \hspace{2em}\text{if}\quad \sigma_k\hat{P}(x_{k+1})<\varepsilon\;;\text{return}\quad x_{k+1}\\
+& \hspace{2em}\sigma_{k+1}=c \sigma_k\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
+
+### 内点法
+
+只适用于只含不等式约束的问题(等式约束若能转化为不等式约束，也能解)
+
+转化为无约束: $\min P(x,\mu)=f(x)+\mu \hat{B}(x)$
+
+其中:
+- $\mu$是障碍因子
+  - 会逐渐$\rightarrow 0^+$，影响逐渐减弱
+  - 因而子问题的解会从可行域内部逼近真实的最优解(真实最优解往往在边界上)
+- $\hat{B}(x)$是障碍函数，用于确保搜索点始终在可行域内部
+  - 与外点法不同，内点法要求迭代点必须满足所有约束条件
+  - 障碍函数需要满足: 在可行域内部值很小，但当$x$靠近边界(即某个$g_i(x) \rightarrow 0^-$时)，会急剧增大至无穷
+  - 通常形为: 
+    - 对数障碍函数: $\hat{B}(x)=-\sum\limits_{i=1}^m \ln(-g_i(x))$
+    - 倒数障碍函数: $\hat{B}(x)=-\sum\limits_{i=1}^m \frac{1}{g_i(x)}$
+
+给定: 初始点$x_0$(必须在可行域内部)，初始障碍因子$\mu_0>0$，缩小系数$c\in (0,1)$，误差$\varepsilon > 0$
+
+优点: 所有迭代点严格可行；理论性质好
+
+缺点: 当$\mu$很小时，障碍函数在边界附近极度陡峭(Hessian 矩阵会严重病态)；与外部算法组合时较复杂；所有中间迭代点都是严格可行的
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):}\\
+& \hspace{2em}
+\begin{aligned}
+\text{求解无约束子问题}\min P(x_k, \mu_k)&=f(x_k)+\mu_k\hat{B}(x_k)\\
+         &\text{得}\;x_{k+1}\\
+\end{aligned}\\
+& \hspace{2em}\text{if}\quad \mu_k\hat{B}(x_{k+1})<\varepsilon\;;\text{return}\quad x_{k+1}\\
+& \hspace{2em}\mu_{k+1}=c \mu_k\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
+
+## 线性规划
+
+标准形式:
+
+$$
+\begin{aligned}
+\min\quad   & c^T x\\
+  s.t.\quad & Ax=b\\
+            & x\geq 0
+\end{aligned}
+$$
+
+其可行域是一个多面体。
+
+基本定理: 如果存在最优解，那么一定存在一个最优解落在可行域的某个顶点上
+
+### 单纯形法
+
+若有$n$个变量和$m$个等式约束$n\geq m$，定义:
+
+- 基: 在$n$个变量中，选取$m$个作为基变量(对应基矩阵$B$，其列向量线性无关)使得$A_B$是满秩且可逆，其余$n-m$个为非基变量(对应矩阵$N$)
+- 基本解：强制所有非基变量为 0，解线性方程组$B x_B=b$，得到$x_B$。这个解$x=(x_B, 0, 0,..., 0)^T$称为基本解
+- 基本可行解: 如果基本解还满足$x_B\geq 0$，那么它就是一个顶点，也称为基本可行解
+
+给定: 初始基本可行解的基$B_0$
+
+优点: 有限步内精确收敛；直接给出了解对各种参数变化的敏感度信息
+
+缺点: 通常需要两阶段法或大M法来找到第一个基本可行解；最坏情况复杂度高: 存在人为构造的“Klee-Minty 立方体”，需要遍历所有点；对大问题可能变慢
+
+$$
+\begin{aligned}
+& k=0\\
+& \text{while(true):} \\
+& \hspace{2em}\omega_k = (B_k^{-1})^T c_{B}\\
+& \hspace{2em}z_j=A_j^T \omega_k,\quad \forall j \in N_k\\
+& \hspace{2em}\gamma=\arg\min\{z_j-c_{Nj}\mid j \in N_k\}\\
+& \hspace{2em}\text{if}\quad z_{\gamma} - (c_N)_{\gamma} \geq 0\;;\text{return}\quad x_k=\{x_B, x_N\}\\
+& \hspace{2em}\upsilon^k=B_k^{-1} A_{\gamma}\\
+& \hspace{2em}\text{if}\quad \upsilon^k_i \leq 0\ ,\forall i=1,2,\dots,m\\
+& \hspace{2em}\hspace{2em}\text{return}\quad \varnothing\\
+& \hspace{2em}\rho=\arg\min\left\{\frac{(x_B)_i}{\upsilon^k_i}\mid \upsilon^k_i>0,\ i=1,2,\dots,m \right\}\\
+& \hspace{2em}\theta_k=\frac{(x_B)_{\rho}}{\upsilon_{\rho}}\\
+& \hspace{2em}r_k=B_k\left[\rho\right]\\
+& \hspace{2em}B_{k+1}=(B_k\setminus\{r\})\cup \{\gamma\}\\
+& \hspace{2em}N_{k+1}=(N_k\setminus\{\gamma\})\cup \{r_k\}\\
+& \hspace{2em}k=k+1
+\end{aligned}
+$$
