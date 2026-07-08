@@ -1,0 +1,28 @@
+.glitchable {
+  position: relative;
+
+  &::after {
+    content: attr(data-scrambled);
+    color: transparent;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    height: 100%;
+    width: fit-content;
+    display: grid;
+    place-items: center;
+  }
+}
+
+.active-ascii-animate {
+  color: transparent !important;
+  user-select: none;
+
+  &::selection {
+    background: transparent;
+  }
+
+  &::after {
+    color: var(--text-color) !important;
+  }
+}

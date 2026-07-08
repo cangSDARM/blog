@@ -1,5 +1,6 @@
-import Layout from "@/components/Layout";
+import Layout, { injectLayoutContext } from "@/components/Layout";
 import Meta from "@/components/Meta";
+import { collectionOverview } from "@/lib/api";
 import { clamp, random } from "lodash";
 import Link from "next/link";
 import React from "react";
@@ -441,4 +442,12 @@ const Boids: React.FC = () => {
   );
 };
 
-export default Boids;
+export default injectLayoutContext(Boids);
+
+export function getStaticProps() {
+  const overview = collectionOverview();
+
+  return {
+    props: { overview },
+  };
+}

@@ -4,6 +4,7 @@ import Layout, { injectLayoutContext } from "@/components/Layout";
 import puns from "@/row/pun";
 import { collectionOverview } from "@/lib/api";
 import Logo from "@/public/images/doctor-strange-logo.png";
+import Glitch from "@/components/Glitch";
 
 export default injectLayoutContext(function () {
   return (
@@ -39,7 +40,8 @@ export default injectLayoutContext(function () {
           >
             {puns.map((pun) => {
               return (
-                <blockquote
+                <Glitch
+                  as="blockquote"
                   style={{
                     color: "var(--colorNeutralForeground1Hover)",
                     padding: "4px 0 3px",
@@ -47,7 +49,7 @@ export default injectLayoutContext(function () {
                   key={pun.toString()}
                 >
                   {pun}
-                </blockquote>
+                </Glitch>
               );
             })}
           </div>

@@ -20,6 +20,7 @@ const nextConfig = {
     unoptimized: true,
   },
   basePath: "/blog",
+  experimental: {},
 };
 
 module.exports = nextConfig;

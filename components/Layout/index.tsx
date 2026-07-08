@@ -35,7 +35,7 @@ const Layout: React.FC<
 };
 
 export function injectLayoutContext<CompProp>(
-  Comp: (prop: CompProp) => React.ReactElement | null
+  Comp: (prop: CompProp) => React.ReactNode | null
 ) {
   const RetComp = ({ overview, ...rest }: { overview: any } & CompProp) => (
     <LCProvider overview={overview}>

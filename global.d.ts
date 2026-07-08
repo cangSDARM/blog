@@ -1,6 +1,29 @@
+type AsProp<C extends React.ElementType> = {
+  /**
+   * An override of the default HTML tag.
+   * Can also be another React component.
+   */
+  as?: C;
+};
+
+type OverridableProps<E = {}, O = {}> = O & Omit<E, keyof O>;
+
+type InheritableElementProps<
+  C extends React.ElementType,
+  P = {},
+  // replace to React.ComponentPropsWithRef will same error
+> = OverridableProps<React.ComponentPropsWithoutRef<C>, P>;
+
+type PolymorphicComponentProps<
+  C extends React.ElementType,
+  P = {},
+> = InheritableElementProps<C, P & AsProp<C>>;
+
 type ArrayItem<T extends any[]> = T extends (infer S)[] ? S : never;
 
 type Maybe<T> = T | null | undefined;
+
+type PartialRequired<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: T[P] };
 
 type Overview = {
   length: number;
