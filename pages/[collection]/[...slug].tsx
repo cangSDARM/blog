@@ -30,15 +30,7 @@ const MdxImage: React.FC<
 > = (props) => {
   return (
     <figure role="figure">
-      <span
-        className="resp-image-wrapper"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}
-      >
+      <span className="resp-image-wrapper flex items-center justify-center relative">
         <Link
           href={props.src || "/"}
           target="_blank"

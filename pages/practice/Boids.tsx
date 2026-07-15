@@ -1,7 +1,8 @@
 import Layout, { injectLayoutContext } from "@/components/Layout";
 import Meta from "@/components/Meta";
+import Tinker from "@/components/Tinker";
 import { collectionOverview } from "@/lib/api";
-import { clamp, random } from "lodash";
+import { random } from "lodash";
 import Link from "next/link";
 import React from "react";
 
@@ -89,62 +90,6 @@ function drawBoid(
     }
     ctx.stroke();
   }
-}
-
-function Tinker<
-  T extends React.HTMLInputTypeAttribute,
-  S = T extends "checkbox"
-    ? boolean
-    : T extends "number" | "range"
-      ? number
-      : string,
->({
-  label,
-  type,
-  value,
-  setValue,
-  max,
-  min,
-}: {
-  label: string;
-  type?: T;
-  value?: S;
-  setValue: React.Dispatch<React.SetStateAction<S>>;
-  max?: number;
-  min?: number;
-}): React.ReactElement {
-  return (
-    <label style={{ display: "flex", flexDirection: "column" }}>
-      <span>
-        {label}
-        <sup>{value as any}</sup>
-      </span>
-      <input
-        type={type}
-        value={value as any}
-        max={max}
-        min={min}
-        onChange={(e) => {
-          switch (type) {
-            case "checkbox":
-              setValue(e.target.checked as any);
-              break;
-            case "number":
-            case "range":
-              setValue(
-                Math.min(
-                  Math.max(parseInt(e.target.value), min ?? -Infinity),
-                  max ?? Infinity
-                ) as any
-              );
-              break;
-            default:
-              setValue(e.target.value as any);
-          }
-        }}
-      />
-    </label>
-  );
 }
 
 const Boids: React.FC = () => {
@@ -332,15 +277,7 @@ const Boids: React.FC = () => {
     <>
       <Meta />
       <Layout theme="light">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
+        <div className="flex flex-col justify-center items-center h-full">
           <div>
             <label>
               Reference:&nbsp;&nbsp;
@@ -366,10 +303,9 @@ const Boids: React.FC = () => {
 
           <h3>Options</h3>
           <div
+            className="flex justify-center"
             style={{
-              display: "flex",
               flexWrap: "wrap",
-              justifyContent: "center",
               gap: "1em",
             }}
           >

@@ -28,15 +28,7 @@ export default injectLayoutContext(function () {
     <>
       <Meta />
       <Layout theme="light">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            height: "100%",
-            alignItems: "center",
-          }}
-        >
+        <div className="flex flex-col justify-between items-center h-full">
           <Section>
             <label>
               Reference:

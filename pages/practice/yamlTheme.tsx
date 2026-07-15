@@ -8,15 +8,7 @@ export default injectLayoutContext(function () {
     <>
       <Meta />
       <Layout theme="light">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            height: "100%",
-            alignItems: "stretch",
-          }}
-        >
+        <div className="flex flex-col justify-center items-stretch h-full">
           <ul>
             TODO:
             <li>1. make it as whole web site theme</li>

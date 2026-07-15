@@ -46,7 +46,8 @@
     "remark-math": "^6.0.0",
     "remark-mdx-frontmatter": "^5.0.0",
     "remark-preset-lint-consistent": "^6.0.1",
-    "remark-squeeze-paragraphs": "^6.0.0"
+    "remark-squeeze-paragraphs": "^6.0.0",
+    "wgpu-matrix": "^3.4.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.16",

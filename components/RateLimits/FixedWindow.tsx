@@ -242,13 +242,11 @@ const FixedWindowRateLimiter = () => {
 
           {/* Time labels */}
           <div
+            className="absolute flex justify-evenly"
             style={{
-              position: "absolute",
               top: 0,
               right: 0,
               left: 0,
-              display: "flex",
-              justifyContent: "space-evenly",
             }}
           >
             {Array.from({ length: 6 }, (_, i) => {

@@ -315,7 +315,7 @@ const LeakyBucketSimulator: React.FC = () => {
           })}
 
           {/* Server */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div className="flex flex-col">
             <div>{/* <Server size={32} /> */}</div>
             <span>Server</span>
             <span>{fillRate} req/s</span>

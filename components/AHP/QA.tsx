@@ -10,10 +10,8 @@ const QA: React.FC<React.PropsWithChildren<{ question: string }>> = ({
     <li>
       {question}
       <div
+        className="flex flex-row items-center"
         style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
           flexWrap: "wrap",
         }}
       >

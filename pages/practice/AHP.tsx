@@ -9,14 +9,7 @@ export default injectLayoutContext(function () {
     <>
       <Meta />
       <Layout theme="light">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <div className="flex flex-col justify-center items-center">
           <AHP />
         </div>
       </Layout>

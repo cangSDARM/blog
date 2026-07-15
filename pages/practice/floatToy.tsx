@@ -11,12 +11,8 @@ export default injectLayoutContext(function () {
       <Meta />
       <Layout theme="light">
         <div
+          className="flex flex-col justify-center items-stretch h-full"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            height: "100%",
-            alignItems: "stretch",
             margin: "0 50px",
           }}
         >

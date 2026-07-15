@@ -1,0 +1,42 @@
+.flex {
+  display: flex;
+
+  &-col {
+    flex-direction: column;
+  }
+  &-row {
+    flex-direction: row;
+  }
+}
+
+.justify {
+  &-center {
+    justify-content: center;
+  }
+  &-between {
+    justify-content: space-between;
+  }
+  &-evenly {
+    justify-content: space-evenly;
+  }
+}
+
+.items {
+  &-center {
+    align-items: center;
+  }
+  &-stretch {
+    align-items: stretch;
+  }
+}
+
+.h-full {
+  height: 100%;
+}
+
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}

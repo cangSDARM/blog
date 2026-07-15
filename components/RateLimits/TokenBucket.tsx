@@ -191,7 +191,7 @@ const TokenBucketSimulator = () => {
             ></div>
           ))}
 
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div className="flex flex-col">
             <div>{/* <Server size={32} /> */}</div>
             <span>Server</span>
           </div>

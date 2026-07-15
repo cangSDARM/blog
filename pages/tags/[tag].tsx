@@ -40,13 +40,7 @@ export default injectLayoutContext<{
             open={open}
             onOpenChange={setOpen}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
+            <div className="flex items-center justify-between">
               <span className={styles.Text}>
                 Tag: <span className={styles.Tag}>{tag}</span> starred{" "}
                 {posts.length} posts

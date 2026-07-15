@@ -121,15 +121,7 @@ const AsciiArt: React.FC = () => {
     <>
       <Meta />
       <Layout theme="light">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
+        <div className="flex flex-col justify-center items-center h-full">
           <div>
             <label>
               Reference:&nbsp;&nbsp;
