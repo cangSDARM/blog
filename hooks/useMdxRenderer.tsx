@@ -16,8 +16,12 @@ const useMdxRenderer = ({
       },
     [code]
   );
+  const frontmatter = React.useMemo(() => {
+    const { frontmatter, ...extra } = rest as any;
+    return Object.assign({}, frontmatter, extra);
+  }, [rest]);
 
-  return [MdxModuleComponent, (rest as any).frontmatter];
+  return [MdxModuleComponent, frontmatter];
 };
 
 export default useMdxRenderer;

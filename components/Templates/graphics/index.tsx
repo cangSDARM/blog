@@ -34,7 +34,7 @@ const shotCodes = {
 };
 
 const Graphics: TemplateComponent = ({ frontmatter, children, compiled }) => {
-  const { title, ImgList, QuoteList } = frontmatter;
+  const { title, ImgList, QuoteList = [] } = frontmatter;
 
   CommentList(QuoteList);
 

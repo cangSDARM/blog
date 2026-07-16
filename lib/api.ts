@@ -137,8 +137,12 @@ export function getTagsInCollection(tag: string): Tag[] {
 }
 
 export function getPostBySlug(slug: string[], collection: string) {
-  return post.find(
-    (p) =>
-      _.difference(p.slug, slug).length === 0 && p.collection === collection
-  );
+  return post.find((p) => {
+    const sameCollection = p.collection === collection;
+    const samePost =
+      _.difference(p.slug, slug).length === 0 &&
+      // avoid subset
+      p.slug.length === slug.length;
+    return samePost && sameCollection;
+  });
 }
