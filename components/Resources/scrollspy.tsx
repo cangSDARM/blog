@@ -2,6 +2,8 @@
 import throttle from "lodash/throttle";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+const noop = () => {};
+
 const useThrottledOnScroll = <T extends (...args: any) => any>(
   callback: T | null,
   delay: number,
@@ -40,22 +42,28 @@ const getTarget = (
     : typeof target === "string" && typeof window !== "undefined"
       ? document.getElementById(target)
       : target;
-const noop = () => {};
 
 export type ScrollSpyItem = { hash: string };
+
+const getItemsClient = <T extends ScrollSpyItem>(items: T[]) =>
+  items.map(({ hash }) => ({
+    hash,
+    node: document?.getElementById(hash),
+  }));
 
 interface ScrollSpyConfig<T extends ScrollSpyItem> {
   items: T[];
   target?: (Window & typeof globalThis) | string | null | HTMLElement;
 }
 
-const useScrollSpy: <T extends ScrollSpyItem>(
-  data: ScrollSpyConfig<T>
-) => {
+const useScrollSpy = <T extends ScrollSpyItem>({
+  items = [],
+  target = window,
+}: ScrollSpyConfig<T>): {
   activated: string | null;
   requireLock: React.Dispatch<React.SetStateAction<boolean>>;
   onScroll: boolean;
-} = ({ items = [], target = window }) => {
+} => {
   const itemsWithNodeRef = useRef<ReturnType<typeof getItemsClient>>([]);
   const trueTarget = useRef<ReturnType<typeof getTarget>>(null);
 
@@ -127,11 +135,5 @@ const useScrollSpy: <T extends ScrollSpyItem>(
     onScroll,
   };
 };
-
-const getItemsClient = <T extends ScrollSpyItem>(items: T[]) =>
-  items.map(({ hash }) => ({
-    hash,
-    node: document?.getElementById(hash),
-  }));
 
 export default useScrollSpy;

@@ -8,3 +8,4 @@ export { TieBa as tieba } from "./tieba.module.scss";
 export { Weibo as weibo } from "./weibo.module.scss";
 export { ZhiHu_Zhuanlan as zhihu } from "./zhihu.module.scss";
 export { Github as github } from "./github.module.scss";
+export { MathAndAI as MathAndAI } from "./mathandai.module.scss";

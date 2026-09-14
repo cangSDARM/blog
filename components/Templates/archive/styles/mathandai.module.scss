@@ -1,0 +1,71 @@
+.MathAndAI {
+  --ink: #263b3a;
+  --paper: #faf9f5;
+  --warm: #b47745;
+  --muted: #5c6c67;
+
+  width: 100%;
+  padding: 62px 28px 68px;
+  background:
+    radial-gradient(ellipse 700px 430px at 95% 0, #eaf1e8 0, transparent 100%),
+    var(--paper);
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  color: var(--ink);
+
+  > * {
+    max-width: 1180px;
+    margin-left: auto;
+  }
+
+  h1 {
+    display: none;
+  }
+
+  article {
+    margin-right: calc(290px + 64px);
+    font-size: 1.14rem;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+
+    @media (max-width: 900px) {
+      margin-right: calc(250px + 36px);
+    }
+
+    h1 {
+      font-weight: 500;
+      display: block;
+      font-size: clamp(2.15rem, 4vw, 3.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+      text-wrap: balance;
+      unicode-bidi: isolate;
+
+      &::before {
+        content: "";
+        display: block;
+        width: 52px;
+        height: 4px;
+        border-radius: 4px;
+        background: var(--warm);
+        margin-bottom: 25px;
+      }
+    }
+    h3 {
+      margin: 0 0 2rem;
+    }
+
+    p {
+      margin: 0 0 1.2rem;
+      margin-bottom: 1.45rem;
+      unicode-bidi: isolate;
+      word-break: normal;
+    }
+
+    blockquote {
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+  }
+}

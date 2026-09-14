@@ -9,6 +9,7 @@ import {
   weibo,
   zhihu,
   github,
+  MathAndAI,
 } from "./styles";
 import clsx from "clsx";
 
@@ -23,6 +24,7 @@ const Type = {
   Godot: "docs.godotengine.org",
   Guancha: "user.guancha.cn",
   Github: "www.github.com",
+  MathAndAI: "mathandai.org",
 };
 
 function styleConcat(...typeStyle: string[]) {
@@ -51,6 +53,8 @@ export const useType = (typo: string = "") => {
       return styleConcat(guancha);
     case Type.Github:
       return styleConcat(github);
+    case Type.MathAndAI:
+      return styleConcat(MathAndAI);
     default:
       console.warn('unknown type "%s" for useType', typo);
       return styleConcat();
